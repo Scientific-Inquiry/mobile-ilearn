@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- Include meta tag to ensure proper rendering and touch zooming -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Include jQuery Mobile stylesheets -->
+  <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+  <!-- Include the jQuery library -->
+  <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+  <!-- Include the jQuery Mobile library -->
+  <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+</head>
+<body>
+  <div data-role="page" id="home">
+    <div data-role="header">
+      <h1>Home Screen</h1>      
+      <div data-role="navbar">
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#course">Classes</a></li>
+          <li><a href="#assn">Assignments</a></li>
+          <li><a href="#grade">Grades</a></li>
+          <li><a href="#setting">Settings</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <div data-role="main" class="ui-content">
+      <p>Hello world!</p>
+      <p>Welcome *insert name here*</p>
+    </div>
+    
+    <div data-role="footer">
+      <h1>Team 5X5</h1>
+    </div>
+  </div>
+  
+  <div data-role="page" id="course">
+    <div data-role="header">
+      <h1>Classes</h1>      
+      <div data-role="navbar">
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#course">Classes</a></li>
+          <li><a href="#assn">Assignments</a></li>
+          <li><a href="#grade">Grades</a></li>
+          <li><a href="#setting">Settings</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <div data-role="main" class="ui-content">
+      <p>Classes are displayed here.</p>
+      <div id="listClass">
+        <ul>
+          <li>Class 1 (001)</li>
+          <li>Section 1 (005)</li>
+          <li>Class 2 (001)</li>
+          <li>Lab 2 (021)</li>
+          <li>Class 3 (001)</li>
+          <li>Lab 3 (024)</li>
+          <li>Class 4</li>
+          <li>Section 4 (006)</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div data-role="footer">
+      <h1>Team 5X5</h1>
+    </div>
+  </div>
+  
+  <div data-role="page" id="assn">
+    <div data-role="header">
+      <h1>Assignments</h1>
+      <div data-role="navbar">
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#course">Classes</a></li>
+          <li><a href="#assn">Assignments</a></li>
+          <li><a href="#grade">Grades</a></li>
+          <li><a href="#setting">Settings</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <div data-role="main" class="ui-content">
+      <p>Assignments are displayed here.</p>
+      <p>Students can turn in grades here.</p>
+      <div id="listAssn">
+        <div class="assign" id="a0">
+          <h2>Assignment Name</h2>
+          <p>Description of assignment.</p>
+          <p>Due date (and time)</p>
+        </div>
+        <div class="assign" id="a1">
+          <h2>Assignment 1</h2>
+          <p>Write a short paper about ____.</p>
+          <p>Due 04/12/2016 18:00</p>
+        </div>
+        <div class="assign" id="a2">
+          <h2>Assignment 2</h2>
+          <p>Turn in your program here.</p>
+          <p>Due 04/23/2016 12:00</p>
+        </div>
+      </div>
+    </div>
+    
+    <div data-role="footer">
+      <h1>Team 5X5</h1>
+    </div>
+  </div>
+  
+  <div data-role="page" id="grade">
+    <div data-role="header">
+      <h1>Grades</h1>
+      <div data-role="navbar">
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#course">Classes</a></li>
+          <li><a href="#assn">Assignments</a></li>
+          <li><a href="#grade">Grades</a></li>
+          <li><a href="#setting">Settings</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <div data-role="main" class="ui-content">
+      <p>Grades are displayed here.</p>
+      <p>Students will (later) have panels that open the grades for that class up.</p>
+      <p>Instructors will be able to modify grades here.</p>
+      <div id="listGrade">
+        <div class="point" id="g0">
+          <p><strong>Assignment Name</strong></p>
+          <p>Status of assignment</p>
+          <p>Actual / Total points</p>
+        </div>
+        <div class="point" id="g1">
+          <p><strong>Assignment 1</strong></p>
+          <p>Pending</p>
+          <p>-/100</p>
+        </div>
+        <div class="point" id="g2">
+          <p><strong>Assignment 2</strong></p>
+          <p>Pending</p>
+          <p>-/200</p>
+        </div>
+      </div>
+    </div>
+    
+    <div data-role="footer">
+      <h1>Team 5X5</h1>
+    </div>
+  </div>
+  
+  <div data-role="page" id="setting">
+    <div data-role="header">
+      <h1>Settings</h1>
+      <div data-role="navbar">
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#course">Classes</a></li>
+          <li><a href="#assn">Assignments</a></li>
+          <li><a href="#grade">Grades</a></li>
+          <li><a href="#setting">Settings</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <div data-role="main" class="ui-content">
+      <p>Settings are displayed here.</p>
+      <p>Users can set what alert message they want and can change theme.</p>
+    </div>
+    
+    <div data-role="footer">
+      <h1>Team 5X5</h1>
+    </div>
+  </div>
+</body>
+</html>
