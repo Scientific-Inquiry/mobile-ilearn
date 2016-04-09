@@ -2,15 +2,15 @@
 CS 180 Project
 
 #Licensing Information
-Read [license](LICENSE)
+Read [LICENSE](LICENSE)
 
 #Contributor List
 
-Vincent Chang
-Candice Bentejac
-Rebecca Hom
-Krissi Mena
-Katie Nelson
+* Vincent Chang
+* Candice Bentejac
+* Rebecca Hom
+* Krissi Mena
+* Katie Nelson
 
 #File List
 
