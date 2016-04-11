@@ -12,6 +12,12 @@ Read [LICENSE](LICENSE)
 * Krissi Mena
 * Katie Nelson
 
+# Tools Used
+
+* Amazon Web Services (Cloud service)
+* Android Studio (Development environment)
+* jQuery Mobile (UI framework)
+
 #File List
 
 ```
