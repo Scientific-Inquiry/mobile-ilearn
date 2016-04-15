@@ -1,50 +1,87 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <!-- Meta Attributes -->
-    <title>Mobile iLearn Screen</title>
-    <!-- Viewport in order to ensure proper rendering and touch zooming -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Meta Attributes -->
+  <title>Mobile iLearn Screen</title>
+  <!-- Viewport in order to ensure proper rendering and touch zooming -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- jQuery Mobile Attributes -->
-    <!-- jQuery Mobile stylesheet -->
-    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
-    <!-- jQuery library -->
-    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
-    <!-- jQuery Mobile library -->
-    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+  <!-- jQuery Mobile Attributes -->
+  <!-- jQuery Mobile stylesheet -->
+  <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+  <!-- jQuery library -->
+  <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+  <!-- jQuery Mobile library -->
+  <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
 
-    <!-- Custom Attributes -->
-    <!-- App stylesheet -->
-    <link rel="stylesheet" href="css/style.css">
-    <!-- App JavaScript -->
-    <script src="js/format.js"></script>
-
+  <!-- Custom Attributes -->
+  <!-- App stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+  <!-- App JavaScript -->
+  <script src="js/format.js"></script>
+  <script>footer();</script>
 </head>
 <body>
+  <!-- Container Page -->
+  <script>footer();</script>
+  <div data-role="page" id="container">
     <!-- Home Screen -->
-    <div data-role="page" id="home">
-
+      <div data-role="header" class="app-header">
+        <div data-role="navbar" id="app-screen">
+          <ul>
+            <li><a href="#" id="app-title">Welcome to iLearn Mobile</a></li>
+            <li><a id="app-logout" href="#" data-icon="power">Logout</a></li>
+          </ul>
+        </div>
+        
+        <div data-role="navbar" class="app-menu">
+          <ul>
+            <li><a href="#home" data-icon="home"><span class="app-overflow">Home</span></a></li>
+            <li><a href="#course" data-icon="bars"><span class="app-overflow">Classes</span></a></li>
+            <li><a href="#assn" data-icon="edit"><span>Assignments</span></a></li>
+            <li><a href="#grade" data-icon="check"><span>Grades</span></a></li>
+            <li><a href="#setting" data-icon="gear"><span>Settings</span></a></li>
+          </ul>
+        </div>
+      </div><!--
+      <div data-role="navbar" class="app-menu app-access">
+        <ul>
+          <li><a href="#logout" data-icon="power"><span>Logout</span></a></li>
+        </ul>
+      </div>-->
+      
+      <div data-role="content" class="ui-content app-active" id="home">
+          <h1>Hello world!</h1>
+      </div>
+      
+      <div data-role="content" class="ui-content" id="course">
+        <h1>Classes</h1>
+      </div>
+      
+      <div data-role="content" class="ui-content" id="assn">
+        <h1>Assignments</h1>
+      </div>
+      
+      <div data-role="content" class="ui-content" id="grade">
+        <h1>Grades</h1>
+      </div>
+      
+      <div data-role="content" class="ui-content" id="setting">
+        <h1>Settings</h1>
+      </div>
+      
+      <div data-role="footer" class="app-footer">
+        <script>footer();</script>
+      </div>
     </div>
+  </div>
 
-    <!-- Classes Screen -->
-    <div data-role="page" id="course">
+  <!-- Classes Screen -->
 
-    </div>
+  <!-- Assignments Screen -->
 
-    <!-- Assignments Screen -->
-    <div data-role="page" id="assn">
+  <!-- Grades Screen -->
 
-    </div>
-
-    <!-- Grades Screen -->
-    <div data-role="page" id="grade">
-
-    </div>
-
-    <!-- Settings Screen -->
-    <div data-role="page" id="setting">
-
-    </div>
+  <!-- Settings Screen -->
 </body>
 </html>

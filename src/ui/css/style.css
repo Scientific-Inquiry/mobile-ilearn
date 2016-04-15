@@ -1,2 +1,11 @@
 /* Custom stylesheet for app */
+.ui-content { display: none; }
+.app-active { display: block; }
 
+/* Header title */
+.ui-grid-a.ui-block-a.#app-title { width: 90%; display: inline; float: left; margin: auto; text-align: center; }
+#app-logout { width: 10%; display: inline; float: right; margin: auto; }
+
+/* For navigation */
+/* Minimum width for displaying all text is 495px */
+.app-menu a { display: none; }
