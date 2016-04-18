@@ -19,70 +19,73 @@
   <link rel="stylesheet" href="css/style.css">
   <!-- App JavaScript -->
   <script src="js/format.js"></script>
-  <script>footer();</script>
+  <script>
+    $(document).ready(function(){
+      // Initially loads the Home screen
+      loadHome();
+      // Loads the menu
+      menu();
+    });
+  </script>
 </head>
 <body>
   <!-- Container Page -->
-  <script>footer();</script>
   <div data-role="page" id="container">
-    <!-- Home Screen -->
-      <div data-role="header" class="app-header">
-        <!--<div data-role="navbar" id="app-screen">
-          <ul>
-            <li><a href="#" id="app-title">Welcome to iLearn Mobile</a></li>
-            <li><a id="app-logout" href="#" data-icon="power">Logout</a></li>
-          </ul>
-        </div>-->
-        <h1>Home Screen</h1>
-        
-        <div data-role="navbar" class="app-menu">
-          <ul>
-            <li><a href="#home" data-icon="home"><span class="app-overflow">Home</span></a></li>
-            <li><a href="#course" data-icon="bars"><span class="app-overflow">Classes</span></a></li>
-            <li><a href="#assn" data-icon="edit"><span>Assignments</span></a></li>
-            <li><a href="#grade" data-icon="check"><span>Grades</span></a></li>
-            <li><a href="#setting" data-icon="gear"><span>Settings</span></a></li>
-          </ul>
-        </div>
-      </div><!--
-      <div data-role="navbar" class="app-menu app-access">
+    <!-- Header -->
+    <div data-role="header" class="app-header">
+      <!-- Screen title -->
+      <h1 id="app-title">Home Screen</h1>
+      
+      <!-- Logo, legend, and logout -->
+      <div class="app-head" id="app-admin">
+        <!-- Logo -->
+        <!-- Legend -->
+        <!-- Logout -->
+      </div>
+      
+      <!-- Menu -->
+      <div data-role="navbar" id="app-menu">
         <ul>
-          <li><a href="#logout" data-icon="power"><span>Logout</span></a></li>
+          <li><a href="#home" data-icon="home" class="app-menu-link app-menu-active" id="app-menu-home"><span class="app-small">Home</span></a></li>
+          <li><a href="#course" data-icon="bars" class="app-menu-link" id="app-menu-course"><span class="app-small">Classes</span></a></li>
+          <li><a href="#assn" data-icon="edit" class="app-menu-link" id="app-menu-assn"><span class="app-small">Assignments</span></a></li>
+          <li><a href="#grade" data-icon="check" class="app-menu-link" id="app-menu-grade"><span class="app-small">Grades</span></a></li>
+          <li><a href="#setting" data-icon="gear" class="app-menu-link" id="app-menu-setting"><span class="app-small">Settings</span></a></li>
         </ul>
-      </div>-->
-      
-      <div data-role="content" class="ui-content app-active" id="home">
-          <h1>Hello world!</h1>
-      </div>
-      
-      <div data-role="content" class="ui-content" id="course">
-        <h1>Classes</h1>
-      </div>
-      
-      <div data-role="content" class="ui-content" id="assn">
-        <h1>Assignments</h1>
-      </div>
-      
-      <div data-role="content" class="ui-content" id="grade">
-        <h1>Grades</h1>
-      </div>
-      
-      <div data-role="content" class="ui-content" id="setting">
-        <h1>Settings</h1>
-      </div>
-      
-      <div data-role="footer" class="app-footer">
-        <script>footer();</script>
       </div>
     </div>
+      
+    <!-- Home Screen -->
+    <div data-role="content" class="ui-content app-active" id="home">
+        <h1>Hello world!</h1>
+        <p>Welcome <span class="app-user-name"></span>!</p>
+    </div>
+    
+    <!-- Classes Screen -->
+    <div data-role="content" class="ui-content" id="course">
+      <h1>Classes</h1>
+    </div>
+    
+    <!-- Assignments Screen -->
+    <div data-role="content" class="ui-content" id="assn">
+      <h1>Assignments</h1>
+    </div>
+    
+    <!-- Grades Screen -->
+    <div data-role="content" class="ui-content" id="grade">
+      <h1>Grades</h1>
+    </div>
+    
+    <!-- Settings Screen -->
+    <div data-role="content" class="ui-content" id="setting">
+      <h1>Settings</h1>
+    </div>
+      
+    <!-- Footer -->
+    <div data-role="footer" class="app-footer">
+      <h1>Team 5X5</h1>
+      <p id="app-time"></p>
+    </div>
   </div>
-
-  <!-- Classes Screen -->
-
-  <!-- Assignments Screen -->
-
-  <!-- Grades Screen -->
-
-  <!-- Settings Screen -->
 </body>
 </html>
