@@ -1,11 +1,24 @@
 /* Custom stylesheet for app */
+/* For displaying content. */
 .ui-content { display: none; }
 .app-active { display: block; }
 
-/* Header title */
-.ui-grid-a.ui-block-a.#app-title { width: 90%; display: inline; float: left; margin: auto; text-align: center; }
-#app-logout { width: 10%; display: inline; float: right; margin: auto; }
+/* Changes the color of the menu buttons. */
+#app-menu .app-menu-link { xbackground-color: #aaaaff; }
+#app-menu .app-menu-link:hover { xbackground-color: #bbaaff; }
+#app-menu .app-menu-active { xbackground-color: #aabbff; }
 
-/* For navigation */
-/* Minimum width for displaying all text is 495px */
-.app-menu a { display: none; }
+/* Styles for footer area. */
+#app-title { overflow: visible; }
+
+/* Styles for footer area. */
+#app-time { text-align: center; }
+
+/* Minimum width for displaying all text is 495px.
+ * If the screen is less than this width, then the words in the menu
+ * are not displayed.
+ * The legend should also then display between the screen title and
+ * the menu.*/
+@media only screen and (max-width: 495px) {
+    .app-small { display: none; }
+}
