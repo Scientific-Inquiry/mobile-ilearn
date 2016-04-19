@@ -6,7 +6,7 @@
 /* Changes the color of the menu buttons. */
 #app-menu .app-menu-link { xbackground-color: #aaaaff; }
 #app-menu .app-menu-link:hover { xbackground-color: #bbaaff; }
-#app-menu .app-menu-active { xbackground-color: #aabbff; }
+#app-menu .app-menu-active { background-color: #e9e9e9; }
 
 /* Styles for footer area. */
 #app-title { overflow: visible; }
