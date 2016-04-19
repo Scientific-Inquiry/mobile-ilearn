@@ -1,0 +1,58 @@
+MiLearn by Team 5X5
+Data directory tree
+/data
+    /classes
+        /[quarter name]
+            /[course number]
+    /users
+        /[user name] (restrict only to current quarter)
+
+Student user named John Doe whose login is jdoe035
+Student can only view (maybe submit???)
+jdoe035 logs in
+Directory called: jdoe035/ (is generated/accessed)
+Files:
+    classes.json (class information) [alphabetical by course number]
+        courseName (Introduction to Software Engineering)
+        courseNumber (CS180)
+        courseSection (01)
+        quarter (S16)
+        instructor (Oben)
+    assign.json (assignment information) [ordered from earliest to latest]
+        title (Assignment 2)
+        dueDate (Mon May 31 18:30:00 PDT 2016)
+        description (This is a description string)
+        point (10)
+        courseNumber (CS180)
+    grade.json (grades) [same order as assignments]
+        grade (9)
+        title (Assignment 2)
+        statusIn (on time) [when student turned in]
+        total (10)
+        statusOut (graded) [when instructor finished grading]
+        courseNumber (CS180)
+        dueDate (Mon May 31 18:30:00 PDT 2016)
+
+Teacher user John Smith logs in
+Teacher can update assignments and grades
+Gets access to class directory
+Directory (accessed): cs180/
+Files:
+    assigner.json (assignments for the class) [can change anything]
+        title (Assignment 2)
+        dueDate (Mon May 31 18:30:00 PDT 2016)
+        description (This is a description string)
+        points (10)
+    graded.json (grades for the class) [can change grade]
+        grade (9) [can change grade]
+        title (Assignment 2)
+        statusIn (on time) [when student turned in]
+        total (10)
+        statusOut (graded) [when instructor finished grading]
+        due date (Mon May 31 18:30:00 PDT 2016)
+        student (jdoe035)
+Directory (accessed): jsmit021/
+    course.json (course information) [courses they are teaching]
+        courseName (Introduction to Software Engineering)
+        courseNumber (CS180)
+        quarter (S16)
