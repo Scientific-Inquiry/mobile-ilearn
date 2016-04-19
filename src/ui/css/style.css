@@ -1,4 +1,7 @@
 /* Custom stylesheet for app */
+/* Styles for header area. */
+#app-title { overflow: visible; }
+
 /* For displaying content. */
 .ui-content { display: none; }
 .app-active { display: block; }
@@ -8,8 +11,20 @@
 #app-menu .app-menu-link:hover { xbackground-color: #bbaaff; }
 #app-menu .app-menu-active { background-color: #e9e9e9; }
 
-/* Styles for footer area. */
-#app-title { overflow: visible; }
+/* Alerts styles. */
+#app-priority { background-color: #d9edf7; }
+.ui-listview > .priorityHigh { background-color: #f2dede; }
+.ui-listview > .priorityMed { background-color: #fcf8e3; }
+.ui-listview > .priorityLow { background-color: #dff0d8; }
+
+/* Classes styles. */
+.scheduled .ui-btn { xbackground-color: #44eeff; }
+
+/* Assignments styles. */
+.assigned .ui-btn { xbackground-color: #bbccff; }
+
+/* Grades styles. */
+.graded .ui-btn { background-color: #cc33ff; }
 
 /* Styles for footer area. */
 #app-time { text-align: center; }
