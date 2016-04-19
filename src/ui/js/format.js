@@ -1,7 +1,8 @@
 /* Custom JavaScript functions */
 /* Global variables. */
 var title = null;
-var name = "Rebecca Hom";
+var name = "John/Jane Doe";
+var login = "jdoe035";
 
 /* Function for adding functions on to the menu. */
 function menu() {
