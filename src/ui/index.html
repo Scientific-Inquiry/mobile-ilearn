@@ -57,34 +57,177 @@
       
     <!-- Home Screen -->
     <div data-role="content" class="ui-content app-active" id="home">
-        <h1>Hello world!</h1>
+        <h2>Hello world!</h2>
         <p>Welcome <span class="app-user-name"></span>!</p>
+        <div id="app-home">
+          <!-- A listview that shows different alerts in order of priority.
+          Currently we will have assignments as alerts.
+          Alerts are separated into high priority (red), medium priority (yellow), and low priority (green).
+          JavaScript is used to determine low, medium, and high priority as well as user settings. -->
+          <ul data-role="listview">
+            <li data-role="list-divider">Alerts</li>
+            <li class="priorityHigh">PHYS163 &mdash; Project 2</li>
+            <li class="priorityMed">BIOL124 &mdash; Lab 3 &ndash; Investigate a Mugging</li>
+            <li class="priorityLow">CRWT177 &mdash; Investigation Article 4</li>
+          </ul>
+        </div>
     </div>
     
     <!-- Classes Screen -->
     <div data-role="content" class="ui-content" id="course">
-      <h1>Classes</h1>
+      <h2><span id="courseQuarter">Summer 2016</span></h2>
+      <div id="app-course">
+        <!-- A collapsible schedule of classes that display the course number and section as well as the full course name and instructor. -->
+        <div data-role="collapsibleset" class="schedule">
+          <div data-role="collapsible">
+            <h3 class="scheduled"><span id="courseName1">Forensic Biology</span> <span id="courseNumber1">(BIOL124)</span> <span id="courseSec1">001)</span></h3>
+            <p>Instructor: <span id="courseInstruct1">Barry Allen (The Flash)</span></p>
+          </div>
+          <div data-role="collapsible">
+            <h3 class="scheduled"><span id="courseName2">Forensic Biology</span> <span id="courseNumber2">(BIOL124)</span> <span id="courseSec2">(014)</span></h3>
+            <p>Instructor: <span id="courseInstruct2">Dick Grayson (Nightwing)</span></p>
+          </div>
+          <div data-role="collapsible">
+            <h3 class="scheduled"><span id="courseName3">Forensic Biology</span> <span id="courseNumber3">(BIOL124L)</span> <span id="courseSec3">(002)</span></h3>
+            <p>Instructor: <span id="courseInstruct3">Kirk Langstrom (Manbat)</span></p>
+          </div>
+          <div data-role="collapsible">
+          <h3 class="scheduled"><span id="courseName4">Investigative Journalism</span> <span id="courseNumber4">(CRWT177)</span> <span id="courseSec4">(001)</span></h3>
+            <p>Instructor: <span id="courseInstruct4">Clark Kent (Superman)</span></p>
+          </div>
+          <div data-role="collapsible">
+            <h3 class="scheduled"><span id="courseName5">Investigative Journalism</span> <span id="courseNumber5">(CRWT177)</span> <span id="courseSec5">(022)</span></h3>
+            <p>Instructor: <span id="courseInstruct5">Renee Montoya (The Question)</span></p>
+          </div>
+          <div data-role="collapsible">
+            <h3 class="scheduled"><span id="courseName6">Advanced Choreography</span> <span id="courseNumber6">(DNCE181)</span> <span id="courseSec6">(001)</span></h3>
+            <p>Instructor: <span id="courseInstruct6">Diana Prince (Wonder Woman)</span></p>
+          </div>
+          <div data-role="collapsible">
+            <h3 class="scheduled"><span id="courseName7">Advanced Choreography</span> <span id="courseNumber7">(DNCE181)</span> <span id="courseSec7">(024)</span></h3>
+            <p>Instructor: <span id="courseInstruct7">Talia al'Ghul</span></p>
+          </div>
+          <div data-role="collapsible">
+            <h3 class="scheduled"><span id="courseName8">Introduction to Gadget Engineering</span> <span id="courseNumber8">(PHYS163)</span> <span id="courseSec8">(001)</span></h3>
+            <p>Instructor: <span id="courseInstruct8">Victor Stone (Cyborg)</span></p>
+          </div>
+          <div data-role="collapsible">
+            <h3 class="scheduled"><span id="courseName9">Introduction to Gadget Engineering</span> <span id="courseNumber9">(PHYS163)</span> <span id="courseSec9">(021)</span></h3>
+            <p>Instructor: <span id="courseInstruct9">Lucius Fox</span></p>
+          </div>
+        </div>
+      </div>
     </div>
     
     <!-- Assignments Screen -->
     <div data-role="content" class="ui-content" id="assn">
-      <h1>Assignments</h1>
+      <h2>Assignments Due</h2>
+      <div id="app-assn">
+        <!-- A list of all assignments from all classes.
+              Later can click on the title to upload files. -->
+        <div data-role="collapsibleset" class="assign">
+          <div data-role="collapsible">
+            <h3 class="assigned"><span id="assnNum1">PHYS163</span> &mdash; <span id="assnTitle1">Project 2</span></h3>
+            <p id="assnDesc1">Design and build a projectile machine. You will need to turn in your design document, a blueprint, and the prototype of your machine.</p>
+            <p>Due: <span id="assnDue1">Wed April 20 18:30:00 PDT 2016</span></p>
+            <p>Points: <span id="assnPoint1">100</span></p>
+          </div>
+          <div data-role="collapsible">
+            <h3 class="assigned"><span id="assnNum2">BIOL124L</span> &mdash; <span id="assnTitle2">Lab 3 &ndash; Investigate a Mugging</span></h3>
+            <p id="assnDesc2">You will be taken to a fake crime scene on campus and have the entire lab time to gather as much evidence as you can from the scene and write a report about your findings.<br /><br />
+            You should be as thorough and conscientious as possible when deciding what evidence that you will use in your report as well use proper investigative principles.</p>
+            <p>Due: <span id="assnDue2">Thur April 21 14:30:00 PDT 2016</span></p>
+            <p>Points: <span id="assnPoint2">10</span></p>
+          </div>
+          <div data-role="collapsible">
+            <h3 class="assigned"><span id="assnNum3">CRWT177</span> &mdash; <span id="assnTitle3">Investigation Article 4</span></h3>
+            <p id="assnDesc3">Pick up your assigned evidence to write an article about an ongoing investigation. You will be penalized for for not writing about what evidence you have.</p>
+            <p>Due: <span id="assnDue3">Mon April 25 16:00:00 PDT 2016</span></p>
+            <p>Points: <span id="assnPoint3">50</span></p>
+          </div>
+        </div>
+      </div>
     </div>
     
     <!-- Grades Screen -->
     <div data-role="content" class="ui-content" id="grade">
-      <h1>Grades</h1>
+      <h2>Grades</h2>
+      <div id="app-grade">
+        <ul data-role="listview" class="grades">
+          <li><a href="#graded1">BIOL124 (001)</a></li>
+          <li><a href="#graded2">BIOL124 (014)</a></li>
+          <li><a href="#graded3">BIOL124L (002)</a></li>
+          <li><a href="#graded4">CRWT177 (001)</a></li>
+          <li><a href="#graded5">CRWT177 (022)</a></li>
+          <li><a href="#graded6">DNCE181 (001)</a></li>
+          <li><a href="#graded7">DNCE181 (024)</a></li>
+          <li><a href="#graded8">PHYS163 (001)</a></li>
+          <li><a href="#graded9">PHYS163 (021)</a></li>
+        </ul>
+      </div>
     </div>
     
     <!-- Settings Screen -->
     <div data-role="content" class="ui-content" id="setting">
-      <h1>Settings</h1>
+      <h2>Settings</h2>
+      <div id="app-setting">
+      
+      </div>
     </div>
       
+    <!-- Grade screen panels -->
+    <div data-role="panel" data-position="right" id="graded1">
+      <ul data-role="listview" id="gradebook1">
+        
+      </ul>
+    </div>
+    <div data-role="panel" data-position="right" id="graded2">
+      <ul data-role="listview" id="gradebook2">
+      
+      </ul>
+    </div>
+    <div data-role="panel" data-position="right" id="graded3">
+      <ul data-role="listview" id="gradebook3">
+        <li><span class="graded-name">Lab 1 &ndash; Forensic Tools</span><br /><span class="graded-grade">10</span>/<span class="graded-total">10</span></li>
+        <li><span class="graded-name">Lab 2 &ndash; Crime Lab Processing</span><br /><span class="graded-grade">10</span>/<span class="graded-total">10</span></li>
+      </ul>
+    </div>
+    <div data-role="panel" data-position="right" id="graded4">
+      <ul data-role="listview" id="gradebook4">
+        <li><span class="graded-name">Investigation Article 1</span><br /><span class="graded-grade">35</span>/<span class="graded-total">50</span></li>
+        <li><span class="graded-name">Investigation Article 2</span><br /><span class="graded-grade">45</span>/<span class="graded-total">50</span></li>
+        <li><span class="graded-name">Investigation Article 3</span><br /><span class="graded-grade">47</span>/<span class="graded-total">50</span></li>
+      </ul>
+    </div>
+    <div data-role="panel" data-position="right" id="graded5">
+      <ul data-role="listview" id="gradebook5">
+      
+      </ul>
+    </div>
+    <div data-role="panel" data-position="right" id="graded6">
+      <ul data-role="listview" id="gradebook6">
+        
+      </ul>
+    </div>
+    <div data-role="panel" data-position="right" id="graded7">
+      <ul data-role="listview" id="gradebook7">
+      
+      </ul>
+    </div>
+    <div data-role="panel" data-position="right" id="graded8">
+      <ul data-role="listview" id="gradebook8">
+        <li><span class="graded-name">Project 1</span><br /><span class="graded-grade">90</span>/<span class="graded-total">100</span></li>
+      </ul>
+    </div>
+    <div data-role="panel" data-position="right" id="graded9">
+      <ul data-role="listview" id="gradebook9">
+      
+      </ul>
+    </div>
     <!-- Footer -->
     <div data-role="footer" class="app-footer">
-      <h1>Team 5X5</h1>
-      <p id="app-time"></p>
+      <h1>Team 5X5<br />
+      <span id="app-time"></span></h1>
     </div>
   </div>
 </body>
