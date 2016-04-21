@@ -8,17 +8,17 @@ import java.io.File;
 
 
 public class Assignment {
-    //private Calendar due_date;
-    Date due_date;
-    //private DateFormat dateFormat;
+    private Date due_date;
     private String description;
     private String title;
     private int points;
+    private boolean late;
 
     public int submission(Student s, File file) {
         //stub
         return 1; //success
     }
+
     public Assignment()
     {
         title = "Untitled";
@@ -26,6 +26,7 @@ public class Assignment {
         due_date = new Date();
         description = "Start homework early";
         points = 10;
+        late = false;
         //System.out.println(dateFormat.format(cal.getTime()));
     }
     public Assignment(String t, String d, Date due, int pts)
@@ -35,25 +36,43 @@ public class Assignment {
         due_date = due;
         description = d;
         points = pts;
+        late = false;
     }
     public String toString(){
         return "{\"title\":" + "\"" + title + "\"" + ", " + "\"due\":" + "\"" + due_date + "\"" + ", "
-                + "\"description\":" + "\"" + description + "\"" + ", " + "\"points\":" + "\"" + points + "\"" + "]";
-        //return title + "\nDue: " + due_date + "\nDescription: " + description
-        //        + "\nPoints: " + points;
+                + "\"description\":" + "\"" + description + "\"" + ", " + "\"points\":" + "\"" + points + "\"" + ", "
+                + "\"late\":" + "\"" + late + "\"" + "}";
     }
-    public String createJSON_String(){
-        return this.toString();
-    }
+
     public void createJSON_File(){
         try{
-            PrintWriter file = new PrintWriter("JSON_assignment.txt");
+            PrintWriter file = new PrintWriter("Assignment.json");
             file.println(this.toString());
             file.close();
         }catch(Exception e) {
             System.out.println("ERROR");
             e.printStackTrace();
         }
+    }
+
+    public Date getDate(){
+        return due_date;
+    }
+
+    public String getDescription(){
+        return description;
+    }
+
+    public String getTitle(){
+        return title;
+    }
+
+    public int getPoints(){
+        return points;
+    }
+
+    public boolean getLate(){
+        return late;
     }
 }
 

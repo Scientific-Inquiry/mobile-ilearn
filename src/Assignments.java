@@ -1,0 +1,47 @@
+import java.io.PrintWriter;
+import java.util.*;//vectors
+
+public class Assignments {
+    private Vector<Assignment> assignList;
+
+    public Assignments() {
+        assignList = new Vector<Assignment>();
+    }
+
+    public Assignments(Vector<Assignment> a){
+        assignList = new Vector<Assignment>();
+        assignList = a;
+    }
+
+    public void addAssign(Assignment a){
+        assignList.add(a);
+    }
+
+    public void removeAssign(Assignment a){
+        assignList.removeElement(a);
+    }
+    public String toString(){
+        String temp = "", begin = "{\"Assignments\":[\n", end = "\n]}";
+
+        for(int i = 0; i < assignList.size(); i++) {
+            if(i != 0)
+                temp += ",";
+            temp +=assignList.get(i).toString() + "\n";
+        }
+        temp = temp.replace("[","");
+        temp = temp.replace("]","");
+        temp = temp.trim();
+        return begin + temp + end;
+    }
+
+    public void createJSON_File(){
+        try{
+            PrintWriter file = new PrintWriter("Assignments.json");
+            file.println(this.toString());
+            file.close();
+        }catch(Exception e) {
+            System.out.println("ERROR");
+            e.printStackTrace();
+        }
+    }
+}
