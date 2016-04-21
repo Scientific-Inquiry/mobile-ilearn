@@ -1,0 +1,5 @@
+"assigned":[
+    {"title":"Project 2", "due":"Wed April 20 18:30:00 PDT 2016", "desc":"Design and build a projectile machine. You will need to turn in your design document, a blueprint, and the prototype of your machine.", "points":"100", "courseNum":"PHYS163", "courseSec":"001"},
+    {"title":"Lab 3: Investigate a Mugging", "due":"Thur April 21 14:30:00 PDT 2016", "desc":"You will be taken to a fake crime scene on campus and have the entire lab time to gather as much evidence as you can from the scene and write a report about your findings.<br /><br />You should be as thorough and conscientious as possible when deciding what evidence that you will use in your report as well use proper investigative principles.", "points":"10", "courseNum":"BIOL124L", "courseSec":"002"},
+    {"title":"Investigation Article 4", "due":"Mon April 25 16:00:00 PDT 2016", "desc":"Pick up your assigned evidence to write an article about an ongoing investigation. You will be penalized for for not writing about what evidence you have.", "points":"50", "courseNum":"CRWT177", "courseSec":"001"}
+]
