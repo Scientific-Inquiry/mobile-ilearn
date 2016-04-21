@@ -10,7 +10,7 @@ Data directory tree
 Student user named Bruce Wayne whose login is bwayn052
 Student can only view (maybe submit???)
 bwayn052 logs in
-Directory called: jdoe035/ (is generated/accessed)
+Directory called: bwayn052/ (is generated/accessed)
 Files:
     classes.json (class information) [alphabetical by course number]
         courseName (Introduction to Software Engineering)
@@ -56,3 +56,15 @@ Directory (accessed): jsmit021/
         courseName (Introduction to Software Engineering)
         courseNumber (CS180)
         quarter (S16)
+        
+All users will have a file that holds their name and configurations
+Directory (accessed): bwayn052/
+    user.json (user configurations and data)
+        name (Bruce Wayne)
+        login (bwayn052)
+        password (imbatman)
+        theme (default)
+        notifyH (24) [this is in hours]
+        notifyM (3) [this is in days]
+        notifyL (7) [this is in days]
+        
