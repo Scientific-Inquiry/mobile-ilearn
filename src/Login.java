@@ -1,7 +1,5 @@
 import java.util.ArrayList;
-import java.sql.DriverManager;
-import java.sql.Connection;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class Login {
     /* Assume that the user has already "sent" a login and a password.
@@ -90,6 +88,26 @@ public class Login {
 
         try {
             connection = DriverManager.getConnection(dbURL, user, pass);
+            System.out.println("Connected to the database!");
+
+            Statement st = connection.createStatement();
+            st.execute("CREATE TABLE IF NOT EXISTS Usr(uid int PRIMARY KEY, unetid char(10), uname char(50), upassword char(50), umail char(50), urank char(10))");
+            st.close();
+
+            st = connection.createStatement();
+            ResultSet rs = st.executeQuery("SELECT * FROM Usr");
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int numCols = rsmd.getColumnCount();
+            while (rs.next())
+            {
+                int i = 1;
+                while(i <= numCols) {
+                    System.out.println(rs.getString(i));
+                    i++;
+                }
+            }
+            rs.close();
+            st.close();
         }
         catch (SQLException e)
         {
@@ -97,7 +115,16 @@ public class Login {
             e.printStackTrace();
             return;
         }
-        System.out.println("Connected to the database!");
+
+        finally
+        {
+            try{
+                connection.close();
+                System.out.println("Connection closed!");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private String username;
