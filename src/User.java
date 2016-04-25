@@ -35,6 +35,22 @@ public abstract class User implements UserInterface {
 	{
 		this.classes = (ArrayList<Class>) classes.clone();
 	}
+	public String getNetid()
+	{
+		return this.netid;
+	}
+	public void setNetid(String netid)
+	{
+		this.netid = new String(netid);
+	}
+	public int getSid()
+	{
+		return this.sid;
+	}
+	public void setSid(int sid)
+	{
+		this.sid = sid;
+	}
 	
 	public void writeJson()
 	{
@@ -56,6 +72,8 @@ public abstract class User implements UserInterface {
 
 
 	protected String name;
+	protected String netid;
+	protected int sid;
 	protected Rank rank;
 	protected ArrayList<Class> classes;
 }
