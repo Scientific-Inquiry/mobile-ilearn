@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Login {
     /* Assume that the user has already "sent" a login and a password.
     So far, that's the only thing we are parsing.
@@ -42,11 +44,11 @@ public class Login {
             ArrayList<Class> classes = load all the classes for this user
             if (result[rank] == INSTRUCTOR)
             {
-              return Instructor(username, classes); // Creates the course.json file as well
+              return new Instructor(username, classes); // Creates the course.json file as well
             }
             else
             {
-              return Student(username, classes); // Creates the classes.json file as well
+              return new Student(username, classes); // Creates the classes.json file as well
             }
         }
         else
@@ -56,6 +58,8 @@ public class Login {
 
 
          */
+        ArrayList<Class> classes = new ArrayList<Class>();
+        return new Student(username, classes);
     }
 
     private String username;
