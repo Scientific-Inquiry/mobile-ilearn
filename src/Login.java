@@ -1,4 +1,7 @@
 import java.util.ArrayList;
+import java.sql.DriverManager;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 public class Login {
     /* Assume that the user has already "sent" a login and a password.
@@ -53,13 +56,48 @@ public class Login {
         }
         else
         {
-          return void;
+          return;
         }
 
 
          */
         ArrayList<Class> classes = new ArrayList<Class>();
         return new Student(username, classes);
+    }
+
+    public static void main(String[] argv)
+    {
+        System.out.println("-------- PostgreSQL "
+                + "JDBC Connection Testing ------------");
+
+        try {
+            DriverManager.registerDriver(new org.postgresql.Driver());
+        }
+        catch (SQLException e)
+        {
+            System.out.println("Driver registration failed!");
+            e.printStackTrace();
+            return;
+        }
+
+        System.out.println("PostgreSQL JDBC Driver Registered!");
+
+        Connection connection = null;
+
+        String dbURL = "jdbc:postgresql://dbmilearn.c8o8famsdyyy.us-west-2.rds.amazonaws.com:5432/dbmilearn";
+        String user = "group5";
+        String pass = "cs180group5";
+
+        try {
+            connection = DriverManager.getConnection(dbURL, user, pass);
+        }
+        catch (SQLException e)
+        {
+            System.out.println("Connection Failed! Check output console");
+            e.printStackTrace();
+            return;
+        }
+        System.out.println("Connected to the database!");
     }
 
     private String username;
