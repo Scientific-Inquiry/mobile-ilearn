@@ -9,10 +9,18 @@ public class Login {
     given as parameters here)
      */
 
+    public Login()
+    {
+        this.username = null;
+        this.password = null;
+        this.user = null;
+    }
+
     public Login(String username, String password)
     {
         this.username = new String(username);
         this.password = new String(password);
+        this.user = null;
     }
 
     public String getUsername()
@@ -35,32 +43,70 @@ public class Login {
         this.password = new String(password);
     }
 
-    /* Written in pseudo-code since there's no usable database so far */
-    public User checkCredentials()
+    public User getUser()
     {
-        /* Request checkUser = new String ('SELECT * FROM User U WHERE U.username = %s AND U.password = %s;', getUsername(), getPassword());
+        return this.user;
+    }
 
-        if (checkUser.execute() == 1) // If the request returns something
+    public void setUser(User user)
+    {
+        if (user instanceof Student)
         {
-            ArrayList<Class> classes = load all the classes for this user
-            if (result[rank] == INSTRUCTOR)
-            {
-              return new Instructor(username, classes); // Creates the course.json file as well
-            }
-            else
-            {
-              return new Student(username, classes); // Creates the classes.json file as well
-            }
+            this.user = (Student) ((Student)user).clone();
         }
         else
         {
-          return;
+            this.user = (Instructor) ((Instructor)user).clone();
+        }
+    }
+
+
+
+    /* Written in pseudo-code since there's no usable database so far */
+    public void checkCredentials(Connection connection)
+    {
+        try
+        {
+            PreparedStatement st = connection.prepareStatement("SELECT COUNT(*) FROM Usr WHERE unetid = ? AND upassword = ?");
+            st.setString(1, this.getUsername());
+            st.setString(2, this.getPassword());
+            ResultSet rs = st.executeQuery();
+
+            rs.next();
+
+            if (rs.getInt(1) == 1)//if (Integer.parseInt(rs.getString(1)) == 1)
+            {
+                System.out.println("User found!");
+                st = connection.prepareStatement("SELECT * FROM Usr WHERE unetid = ?");
+                st.setString(1, this.getUsername());
+                rs = st.executeQuery();
+                rs.next();
+
+                String name = rs.getString("uname");
+                int sid = rs.getInt("uid");
+
+                /*
+                    Request to get all the user's classes
+                    Store them into an array list
+                 */
+                ArrayList<Class> classes = new ArrayList<Class> ();
+
+                if (rs.getString("urank").trim().equals("STUDENT"))
+                    this.user = new Student (name, this.getUsername(), sid, classes);
+                else
+                    this.user = new Instructor (name, this.getUsername(), sid, classes);
+            }
+            else
+            {
+                System.out.println("User not found!");
+            }
+            rs.close();
+            st.close();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
         }
 
-
-         */
-        ArrayList<Class> classes = new ArrayList<Class>();
-        return new Student(username, classes);
     }
 
     public static void main(String[] argv)
@@ -79,7 +125,6 @@ public class Login {
         }
 
         System.out.println("PostgreSQL JDBC Driver Registered!");
-
         Connection connection = null;
 
         String dbURL = "jdbc:postgresql://dbmilearn.c8o8famsdyyy.us-west-2.rds.amazonaws.com:5432/dbmilearn";
@@ -90,24 +135,22 @@ public class Login {
             connection = DriverManager.getConnection(dbURL, user, pass);
             System.out.println("Connected to the database!");
 
-            Statement st = connection.createStatement();
-            st.execute("CREATE TABLE IF NOT EXISTS Usr(uid int PRIMARY KEY, unetid char(10), uname char(50), upassword char(50), umail char(50), urank char(10))");
-            st.close();
+            Login log = new Login("bwayn052", "iambatman");
+            log.checkCredentials(connection);
 
-            st = connection.createStatement();
-            ResultSet rs = st.executeQuery("SELECT * FROM Usr");
-            ResultSetMetaData rsmd = rs.getMetaData();
-            int numCols = rsmd.getColumnCount();
-            while (rs.next())
+            while (log.getUser() != null)
             {
-                int i = 1;
-                while(i <= numCols) {
-                    System.out.println(rs.getString(i));
-                    i++;
-                }
+                /*
+                The user is connected, do something
+                We go out of the while loop once the user has logged out
+                 */
+
+                /* At some point, the user logs out */
+                log = new Login();
             }
-            rs.close();
-            st.close();
+
+            /* Need to see how to get arguments and what to do once the first user logged out */
+            System.out.println("Logged out!");
         }
         catch (SQLException e)
         {
@@ -129,4 +172,5 @@ public class Login {
 
     private String username;
     private String password;
+    private User user;
 }
