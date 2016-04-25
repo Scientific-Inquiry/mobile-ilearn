@@ -24,6 +24,11 @@ public class Instructor extends User {
 	        e.printStackTrace();
 	    }
 	}
+
+	public Object clone()
+    {
+        return new Instructor(getName(), getClasses());
+    }
 	
 	public static void main(String[] args)
 	{

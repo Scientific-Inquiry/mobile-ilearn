@@ -8,6 +8,11 @@ public class Student extends User {
 		this.classes = (ArrayList<Class>) classes.clone();
 		this.writeJson();
 	}
+
+	public Object clone()
+	{
+		return new Student(getName(), getClasses());
+	}
 	
 	public static void main(String[] args)
 	{
