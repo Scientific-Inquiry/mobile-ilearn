@@ -36,11 +36,13 @@
       <!-- Screen title -->
       <h1 id="app-title">Home Screen</h1>
       
-      <!-- Logo, legend, and logout -->
-      <div class="app-head" id="app-admin">
-        <!-- Logo -->
-        <!-- Legend -->
-        <!-- Logout -->
+      <!-- Logo, help, and logout -->
+      <div class="app-head" data-role="navbar" id="app-admin">
+        <ul>
+          <li><a href="#app-logo-link"><span id="app-logo">MiLearn</span></a></li>
+          <li><a href="#app-help" data-rel="popup" data-position-to="window" data-icon="info"><span class="app-small">Help</span></a></li>
+          <li><a href="#" data-icon="power"><span class="app-small">Logout</span></a></li>
+        </ul>
       </div>
       
       <!-- Menu -->
@@ -70,7 +72,10 @@
             <li class="priorityMed">BIOL124 &mdash; Lab 3 &ndash; Investigate a Mugging</li>
             <li class="priorityLow">CRWT177 &mdash; Investigation Article 4</li>
           </ul>
-        </div>
+        </div><!--
+        <script> 
+            getData('js/classes.json', jsonClasses);
+        </script>-->
     </div>
     
     <!-- Classes Screen -->
@@ -224,6 +229,22 @@
       
       </ul>
     </div>
+
+    <!-- Help Popup -->
+    <div data-role="popup" id="app-help">
+        <h2>Help</h2>
+        <!-- Legend -->
+        <ul data-role="listview" data-inset="true">
+            <li data-icon="home"><a href="#">Home</a></li>
+            <li data-icon="bars"><a href="#">Classes</a></li>
+            <li data-icon="edit"><a href="#">Assignments</a></li>
+            <li data-icon="check"><a href="#">Grades</a></li>
+            <li data-icon="gear"><a href="#">Settings</a></li>
+            <li data-icon="info"><a href="#">Help</a></li>
+            <li data-icon="power"><a href="#">Logout</a></li>
+        </ul>
+    </div>
+
     <!-- Footer -->
     <div data-role="footer" class="app-footer">
       <h1>Team 5X5<br />
