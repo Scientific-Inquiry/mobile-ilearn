@@ -6,10 +6,16 @@
 .ui-content { display: none; }
 .app-active { display: block; }
 
+/* Configures styles for the administration area. */
+#app-admin .ui-grid-b .ui-block-a { width: 60%; }
+#app-admin .ui-grid-b .ui-block-b, 
+#app-admin .ui-grid-b .ui-block-c { width: 20%; }
+#app-logo { font-size: 30px; }
+
 /* Changes the color of the menu buttons. */
 #app-menu .app-menu-link { xbackground-color: #aaaaff; }
 #app-menu .app-menu-link:hover { xbackground-color: #bbaaff; }
-#app-menu .app-menu-active { background-color: #e9e9e9; }
+#app-menu .app-menu-active { background-color: #38c; border-color: #38c; color: #ffffff; text-shadow: 0 1px 0 #059; }
 
 /* Alerts styles. */
 #app-priority { background-color: #d9edf7; }
@@ -36,4 +42,5 @@
  * the menu.*/
 @media only screen and (max-width: 495px) {
     .app-small { display: none; }
+    #app-logo { font-size: 18px; }
 }
