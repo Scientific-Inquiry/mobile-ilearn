@@ -13,7 +13,7 @@ public class Instructor extends User {
 		/* Writes course.json as soon as a new instructor is created */
 		try{
 			PrintWriter file = new PrintWriter("course.json");
-			file.println("\"course\":[");
+			file.println("[");
 			for (int i = 0; i < this.getClasses().size(); i++)
 			{
 				file.println("{\"courseName\":" + "\"" + this.getClasses().get(i).getName() + "\", " + "\"courseNumber\":\"" + this.getClasses().get(i).getNumber() + 

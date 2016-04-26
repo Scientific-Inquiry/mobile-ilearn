@@ -56,7 +56,7 @@ public abstract class User implements UserInterface {
 	{
 		try{
 			PrintWriter file = new PrintWriter("classes.json");
-			file.println("\"classes\":[");
+			file.println("[");
 			for (int i = 0; i < this.getClasses().size(); i++)
 			{
 				file.println(classes.get(i).toString());

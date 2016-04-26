@@ -9,46 +9,46 @@ public class Login {
     given as parameters here)
      */
 
-    public Login()
+    private Login()
     {
         this.username = null;
         this.password = null;
         this.user = null;
     }
 
-    public Login(String username, String password)
+    private Login(String username, String password)
     {
         this.username = new String(username);
         this.password = new String(password);
         this.user = null;
     }
 
-    public String getUsername()
+    private String getUsername()
     {
         return this.username;
     }
 
-    public void setUsername(String username)
+    private void setUsername(String username)
     {
         this.username = new String(username);
     }
 
-    public String getPassword()
+    private String getPassword()
     {
         return this.password;
     }
 
-    public void setPassword(String password)
+    private void setPassword(String password)
     {
         this.password = new String(password);
     }
 
-    public User getUser()
+    private User getUser()
     {
         return this.user;
     }
 
-    public void setUser(User user)
+    private void setUser(User user)
     {
         if (user instanceof Student)
         {
@@ -63,7 +63,7 @@ public class Login {
 
 
     /* Written in pseudo-code since there's no usable database so far */
-    public void checkCredentials(Connection connection)
+    private void checkCredentials(Connection connection)
     {
         try
         {
