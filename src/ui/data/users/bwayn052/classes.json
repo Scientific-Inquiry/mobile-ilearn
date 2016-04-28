@@ -1,0 +1,11 @@
+[
+    {"courseName":"Forensic Biology", "courseNum":"BIOL124", "courseSec":"001", "quarter":"qyyyy", "instructor":"Barry Allen"},
+    {"courseName":"Forensic Biology", "courseNum":"BIOL124", "courseSec":"014", "quarter":"qyyyy", "instructor":"Dick Grayson"},
+    {"courseName":"Forensic Biology", "courseNum":"BIOL124L", "courseSec":"002", "quarter":"qyyyy", "instructor":"Kirk Langstrom"},
+    {"courseName":"Investigative Journalism", "courseNum":"CRWT177", "courseSec":"001", "quarter":"qyyyy", "instructor":"Clark Kent"},
+    {"courseName":"Investigative Journalism", "courseNum":"CRWT177", "courseSec":"023", "quarter":"qyyyy", "instructor":"Vic Sage"},
+    {"courseName":"Advanced Choreography", "courseNum":"DNCE181", "courseSec":"001", "quarter":"qyyyy", "instructor":"Diana Prince"},
+    {"courseName":"Advanced Choreography", "courseNum":"DNCE181", "courseSec":"024", "quarter":"qyyyy", "instructor":"Talia al'Ghul"},
+    {"courseName":"Introduction to Gadget Engineering", "courseNum":"PHYS163", "courseSec":"001", "quarter":"qyyyy", "instructor":"Victor Stone"},
+    {"courseName":"Introduction to Gadget Engineering", "courseNum":"PHYS163", "courseSec":"021", "quarter":"qyyyy", "instructor":"Lucius Fox"}
+]
