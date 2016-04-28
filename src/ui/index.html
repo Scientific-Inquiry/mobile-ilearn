@@ -59,8 +59,9 @@
       
     <!-- Home Screen -->
     <div data-role="content" class="ui-content app-active" id="home">
-        <h2>Hello world!</h2>
-        <p>Welcome <span class="app-user-name"></span>!</p>
+        <!--<h2>Hello world!</h2>
+        <p>Welcome <span class="app-user-name"></span>!</p>-->
+        <h2>Welcome <span class="app-user-name"></span></h2>
         <div id="app-home">
           <!-- A listview that shows different alerts in order of priority.
           Currently we will have assignments as alerts.
@@ -72,15 +73,12 @@
             <li class="priorityMed">BIOL124 &mdash; Lab 3 &ndash; Investigate a Mugging</li>
             <li class="priorityLow">CRWT177 &mdash; Investigation Article 4</li>
           </ul>
-        </div><!--
-        <script> 
-            getData('js/classes.json', jsonClasses);
-        </script>-->
+        </div>
     </div>
     
     <!-- Classes Screen -->
     <div data-role="content" class="ui-content" id="course">
-      <h2><span id="courseQuarter">Summer 2016</span></h2>
+      <h2><span id="courseQuarter"></span></h2>
       <div id="app-course">
         <!-- A collapsible schedule of classes that display the course number and section as well as the full course name and instructor. -->
         <div data-role="collapsibleset" class="schedule">
@@ -105,9 +103,9 @@
     <div data-role="content" class="ui-content" id="grade">
       <h2>Grades</h2>
       <div id="app-grade">
-        <ul data-role="listview" class="grades">
-            <!-- Displays the list of classes that users can check grades with. -->
-        </ul>
+        <div data-role="collapsibleset" class="grades">
+          <!-- Displays the user's grades as a collapsible. -->
+        </div>
       </div>
     </div>
     
@@ -119,57 +117,6 @@
       </div>
     </div>
       
-    <!-- Grade screen panels -->
-    <div data-role="content" id="gradePanels"><!--
-    <div data-role="panel" data-position="right" data-display="overlay" id="graded1">
-      <ul data-role="listview" id="gradebook1">
-        
-      </ul>
-    </div>
-    <div data-role="panel" data-position="right" data-display="overlay" id="graded2">
-      <ul data-role="listview" id="gradebook2">
-      
-      </ul>
-    </div>
-    <div data-role="panel" data-position="right" data-display="overlay" id="graded3">
-      <ul data-role="listview" id="gradebook3">
-        <li><span class="graded-name">Lab 1 &ndash; Forensic Tools</span><br /><span class="graded-grade">10</span>/<span class="graded-total">10</span></li>
-        <li><span class="graded-name">Lab 2 &ndash; Crime Lab Processing</span><br /><span class="graded-grade">10</span>/<span class="graded-total">10</span></li>
-      </ul>
-    </div>
-    <div data-role="panel" data-position="right" data-display="overlay" id="graded4">
-      <ul data-role="listview" id="gradebook4">
-        <li><span class="graded-name">Investigation Article 1</span><br /><span class="graded-grade">35</span>/<span class="graded-total">50</span></li>
-        <li><span class="graded-name">Investigation Article 2</span><br /><span class="graded-grade">45</span>/<span class="graded-total">50</span></li>
-        <li><span class="graded-name">Investigation Article 3</span><br /><span class="graded-grade">47</span>/<span class="graded-total">50</span></li>
-      </ul>
-    </div>
-    <div data-role="panel" data-position="right" data-display="overlay" id="graded5">
-      <ul data-role="listview" id="gradebook5">
-      
-      </ul>
-    </div>
-    <div data-role="panel" data-position="right" data-display="overlay" id="graded6">
-      <ul data-role="listview" id="gradebook6">
-        
-      </ul>
-    </div>
-    <div data-role="panel" data-position="right" data-display="overlay" id="graded7">
-      <ul data-role="listview" id="gradebook7">
-      
-      </ul>
-    </div>
-    <div data-role="panel" data-position="right" data-display="overlay" id="graded8">
-      <ul data-role="listview" id="gradebook8">
-        <li><span class="graded-name">Project 1</span><br /><span class="graded-grade">90</span>/<span class="graded-total">100</span></li>
-      </ul>
-    </div>
-    <div data-role="panel" data-position="right" data-display="overlay" id="graded9">
-      <ul data-role="listview" id="gradebook9">
-      
-      </ul>
-    </div>-->
-    </div>
     <!-- Help Popup -->
     <div data-role="popup" id="app-help">
         <h2>Help</h2>

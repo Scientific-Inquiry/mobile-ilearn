@@ -3,7 +3,8 @@
 var title = null;
 var name = "Bruce Wayne";
 var login = "bwayn052";
-var url = "js/"; //"/home/rhom001/Documents/CS180/mobile-ilearn/data/users/exampleDC/" + login + "/";
+var url = "data/users/" + login + "/";
+var graded = false;
 
 /* Function for adding functions on to the menu. */
 function menu() {
@@ -46,9 +47,7 @@ function getData(url, func) {
     var file = new XMLHttpRequest();
     
     file.onreadystatechange = function() {
-        //alert(file.readyState + " " + file.status);
         if(file.readyState == 4 && file.status == 200) {
-            //alert(url);
             var response = JSON.parse(file.responseText);
             func(response);
         }
@@ -70,6 +69,22 @@ function jsonClasses(arr) {
     }
     // Refreshes the schedule collapsible set.
     $(".schedule").html(out).collapsibleset("refresh");
+    // Gets the quarter name
+    var qyear = arr[0].quarter;
+    // If qyear does not match the format such that the first letter of the quarter followed by the year, then output "Class Schedule".
+    if(qyear.length != 5) { $("#courseQuarter").text("Class Schedule"); }
+    else {
+        var q = qyear.slice(0,1);   // Quarter letter
+        var y = qyear.slice(1);     // Year (four digits)
+        if((q === "F") || (q === "f")) { out = "Fall "; }
+        else if((q === "W") || (q === 'w')) { out = "Winter "; }
+        else if((q === "S") || (q === 's')) { out = "Spring "; }
+        else if((q === "U") || (q === 'u')) { out = "Summer "; }
+        else { out = "Unknown "; }
+        if (isNaN(y)) { y = "Quarter"; }
+        out += y;
+        $("#courseQuarter").text(out);
+    }
 }
 
 /* Function for getting a user's assignments. */
@@ -86,61 +101,83 @@ function jsonAssigns(arr) {
     $(".assign").html(out).collapsibleset("refresh");
 }
 
-// Work on this
+/* Function for generating a class list. */
+/* Creates a set of collapsibles that contain a list of grades */
+function jsonClassList(arr) {
+    var out = "";
+    var className = "";
+    
+    // Generates a collapsible with the classname and a blank list.
+    for(var i = 0; i < arr.length; i++) {
+        className = arr[i].courseNum + '-' + arr[i].courseSec;
+        out += '<div data-role="collapsible" class="graded" id="graded-' + className + '"><h3>' + className + '</h3><ul data-role="listview" class="gradebook" id="gradebook-' + className + '"></ul></div>';
+    }
+    // Refreshes the grades collapsible set.
+    $(".grades").html(out).collapsibleset("refresh");
+}
+/* Originally for panel list.
+function jsonClassList(arrC) {
+    out = "";
+    var classId = "";
+    var className = "";
+    var classArr = [];
+    for(i = 0; i < arrC.length; i++) {
+        // Generates a list item with the class name and adds it to the array of class names.
+        className = arrC[i].courseNum + ' (' + arrC[i].courseSec + ')';
+        classId = arrC[i].courseNum + '-' + arrC[i].courseSec;
+        out += '<li><a href="#graded-' + classId + '">' + className + '</a></li>';
+        classArr.push(classId);
+    }
+    // Refreshes the list of classes.
+    $(".grades").html(out).listview("refresh");
+    
+    // Generates gradebooks
+    out = "";
+    for(i = 0; i < classArr.length; i++) {
+        out += '<div data-role="panel" data-position="right" data-display="overlay" id="graded-' + classArr[i] + '"><ul data-role="listview" data-inset="true" class="gradebook" id="gradebook-' + classArr[i] + '"></ul></div>';
+        $("#graded-"+classArr[i]).panel("refresh");
+    }
+    $("#container").append(out);
+}*/
+
 /* Function for getting a user's grades. */
 function jsonGrades(arr) {
     var out = "";
     var i;
-    var idNum;
+    var prevClass = arr[0].courseNum + '-' + arr[0].courseSec;
+    var currClass;
     
-    /* Function for generating a class list. */
-    function jsonClassList(arrC) {
-        out = "";
-        idNum = 0;
-        var className = "";
-        var classArr = [];
-        for(i = 0; i < arrC.length; i++) {
-            idNum++;
-            // Generates a list item with the class name and adds it to the array of class names.
-            className = arrC[i].courseNum + ' (' + arrC[i].courseSec + ')';
-            out += '<li><a href="#graded' + idNum + '">' + className + '</a></li>';
-            classArr.push(className);
-            alert(classArr[i]);
-        }
-        // Refreshes the list of classes.
-        $(".grades").html(out).listview("refresh");
-        
-        // Generates gradebooks
-        out = "";
-        idNum = 0;
-        for(i = 0; i < classArr.length; i++) {
-            idNum++;
-            out += '<div data-role="panel" data-position="right" data-display="overlay" id="graded' + idNum + '"><ul data-role="listview" class="gradebook" id="gradebook' + idNum + '"></ul></div>';
-        }
-        $("#gradePanels").html(out);
-    }
-    
-    // Gets the list of classes
-    getData(url + "classes.json", jsonClassList);
-    alert(document.getElementById("graded*").length);
-
-    // Gets the grades.
-    var prevClass = arr[i].courseNum;
-    idNum = 1;
-    for(i = 0; i < arr.length; i++) {
-        // While the course number and section do not equal the one at the array, then go to the next id number.
-        while(classArr[idNum-1] !== (arr[i].courseNum + ' (' + arr[i].courseSec + ')')) { 
-            $("#gradebook" + idNum).html(out).listview("refresh");
-            idNum++;
+    for (i = 0; i < arr.length; i++) {
+        currClass = arr[i].courseNum + '-' + arr[i].courseSec;
+        if (prevClass != currClass) {
+            // If the current class does not match the previous one, then the previous class's grades are put into the collapsible and the current class is now the previous class.
+            $("#gradebook-" + prevClass).html(out);
             out = "";
+            prevClass = currClass;
         }
-        
-        // Generates the panel holding the grade information
-        out += '<li>'+ arr[i].title + '<br /><span class="gradedTotal">' + arr[i].grade + '/' + arr[i].total + '</span></li>';
+        out += '<li>' + arr[i].title + '<br /><span class="gradedTotal">' + arr[i].grade + '/' + arr[i].total + '</span></li>';
     }
-    $("#gradebook" + idNum).html(out).listview("refresh");
-    //$(".grades").html(out).listview("refresh");
+    $("#gradebook-" + currClass).html(out);
+    $(".grades").collapsibleset("refresh");
 }
+/* Originally for a panel list.
+function jsonGrades(arr) {
+    var out = "";
+    var i;
+    
+    // Gets the grades.
+    var curClass = "";
+    for(i = 0; (i < arr.length) && (!graded); i++) {
+        // Generates the panel item holding the grade information
+        curClass = arr[i].courseNum + '-' + arr[i].courseSec;
+        alert(curClass);
+        alert(arr[i].courseNum);
+        out = '<li>'+ arr[i].title + '<br /><span class="gradedTotal">' + arr[i].grade + '/' + arr[i].total + '</span></li>';
+        alert(out);
+        $("#gradebook-" + curClass).append(out);
+    }
+    graded = true;
+}*/
 
 /* Function for setting the page title. */
 function header(pageName) {
@@ -182,7 +219,6 @@ function loadClasses() {
     changeContent(title);
     
     // Loads the list of classes.
-    //alert(url + "classes.json");
     getData(url + "classes.json", jsonClasses);
 }
 
@@ -195,7 +231,6 @@ function loadAssigns() {
     changeContent(title);
     
     // Loads all assignments.
-    //alert(url + "assign.json");
     getData(url + "assign.json", jsonAssigns);
 }
 
@@ -208,7 +243,7 @@ function loadGrades() {
     changeContent(title);
     
     // Reloads the grades for different assignments.
-    //alert(url + "grade.json");
+    getData(url + "classes.json", jsonClassList);
     getData(url + "grade.json", jsonGrades);
 }
 
