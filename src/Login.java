@@ -61,37 +61,88 @@ public class Login {
     }
 
 
-
-    /* Written in pseudo-code since there's no usable database so far */
     private void checkCredentials(Connection connection)
     {
         try
         {
-            PreparedStatement st = connection.prepareStatement("SELECT COUNT(*) FROM Usr WHERE unetid = ? AND upassword = ?");
+            /* Checks that there is a user in the Usr table with that username and that password (counts) */
+            PreparedStatement st = connection.prepareStatement("SELECT COUNT(*) FROM Usr U WHERE U.unetid = ? AND U.upassword = ?");
             st.setString(1, this.getUsername());
             st.setString(2, this.getPassword());
             ResultSet rs = st.executeQuery();
 
+            /* Places the "cursor" on the first (and only, in that case) result */
             rs.next();
 
-            if (rs.getInt(1) == 1)//if (Integer.parseInt(rs.getString(1)) == 1)
+            if (rs.getInt(1) == 1) /* If there is such a user */
             {
                 System.out.println("User found!");
-                st = connection.prepareStatement("SELECT * FROM Usr WHERE unetid = ?");
+
+                /* Selects all information about that user */
+                st = connection.prepareStatement("SELECT * FROM Usr U WHERE U.unetid = ?");
                 st.setString(1, this.getUsername());
                 rs = st.executeQuery();
                 rs.next();
 
+                /* Saves that info to use it later */
                 String name = rs.getString("uname");
                 int sid = rs.getInt("uid");
+                String rank = rs.getString("urank").trim();
 
-                /*
-                    Request to get all the user's classes
-                    Store them into an array list
-                 */
+                /* Prepares two query strings: one for a student, one for an instructor, since the JSON to generate are different */
+                String queryStudent = new String("SELECT C.cname, C.csection, C.cnum, C.cquarter, C.ctype, U2.uname FROM Class C, enrolls_in E, teaches T, Usr U, Usr U2 WHERE C.cid = E.cid AND U.uid = ? AND U2.uid = T.uid ORDER BY cnum ASC, csection ASC");
+                String queryInstructor = new String("SELECT C.cname, C.csection, C.cnum, C.cquarter, C.ctype FROM Class C, teaches T, Usr U WHERE C.cid = T.cid AND U.uid = ? ORDER BY cnum ASC, csection ASC");
+
+                /* Prepares the final query depending on the rank of the logged-in user */
+                if(rank.equals("STUDENT"))
+                    st = connection.prepareStatement(queryStudent);
+                else
+                    st = connection.prepareStatement(queryInstructor);
+
+                /* Sets the unknown parameter */
+                st.setInt(1, sid);
+                rs = st.executeQuery();
+
+                /* Initializes the array of classes */
                 ArrayList<Class> classes = new ArrayList<Class> ();
 
-                if (rs.getString("urank").trim().equals("STUDENT"))
+                /* Fills the array using the query results */
+                while(rs.next())
+                {
+                    String cname = rs.getString("cname").trim();
+                    String cnum = rs.getString("cnum").trim();
+                    String csection = rs.getString("csection").trim();
+                    String cquarter = rs.getString("cquarter").trim();
+                    String uname;
+
+                    /* Depending on the rank, we don't get the name of the instructor in the query.
+                       Handling the case here
+                     */
+                    if(rank.equals("STUDENT"))
+                        uname = rs.getString("uname").trim();
+                    else
+                        uname = name;
+
+                    /* Differentiates lecture, discussion and lab */
+                    if(rs.getString("ctype").trim().equals("LECTURE"))
+                    {
+                        Lecture lec = new Lecture(cnum, csection, cname, cquarter, uname);
+                        classes.add(lec);
+                    }
+                    else if(rs.getString("ctype").trim().equals("DISCUSSION"))
+                    {
+                        Discussion dis = new Discussion(cnum, csection, cname, cquarter, uname);
+                        classes.add(dis);
+                    }
+                    else
+                    {
+                        Lab lab = new Lab(cnum, csection, cname, cquarter, uname);
+                        classes.add(lab);
+                    }
+                }
+
+                /* Creates the final user (needs to recheck the rank to create the correct object) */
+                if (rank.trim().equals("STUDENT"))
                     this.user = new Student (name, this.getUsername(), sid, classes);
                 else
                     this.user = new Instructor (name, this.getUsername(), sid, classes);
@@ -111,9 +162,6 @@ public class Login {
 
     public static void main(String[] argv)
     {
-        System.out.println("-------- PostgreSQL "
-                + "JDBC Connection Testing ------------");
-
         try {
             DriverManager.registerDriver(new org.postgresql.Driver());
         }
@@ -123,8 +171,6 @@ public class Login {
             e.printStackTrace();
             return;
         }
-
-        System.out.println("PostgreSQL JDBC Driver Registered!");
         Connection connection = null;
 
         String dbURL = "jdbc:postgresql://dbmilearn.c8o8famsdyyy.us-west-2.rds.amazonaws.com:5432/dbmilearn";
@@ -133,10 +179,23 @@ public class Login {
 
         try {
             connection = DriverManager.getConnection(dbURL, user, pass);
-            System.out.println("Connected to the database!");
 
-            Login log = new Login("bwayn052", "iambatman");
+            Statement st = connection.createStatement();
+            //st.execute("CREATE TABLE IF NOT EXISTS enrolls_in(uid int, cid int, FOREIGN KEY (uid) REFERENCES Usr(uid) ON DELETE CASCADE, FOREIGN KEY (cid) REFERENCES Class(cid) ON DELETE CASCADE, PRIMARY KEY (uid, cid))");
+            //st.execute("DROP TABLE Class");
+            //st.close();
+            st.execute("ALTER TABLE Usr ADD UNIQUE (unetid)");
+
+            Login log = new Login("ckent038", "iamsuperman");
             log.checkCredentials(connection);
+
+            /*st = connection.createStatement();
+            st.executeUpdate("INSERT INTO enrolls_in(uid, cid) VALUES (861236524, 1)");
+            st.close();*/
+
+            //st = connection.createStatement();
+
+            st.close();
 
             while (log.getUser() != null)
             {
@@ -154,7 +213,6 @@ public class Login {
         }
         catch (SQLException e)
         {
-            System.out.println("Connection Failed! Check output console");
             e.printStackTrace();
             return;
         }
@@ -163,7 +221,6 @@ public class Login {
         {
             try{
                 connection.close();
-                System.out.println("Connection closed!");
             } catch (SQLException e) {
                 e.printStackTrace();
             }
