@@ -59,19 +59,14 @@
       
     <!-- Home Screen -->
     <div data-role="content" class="ui-content app-active" id="home">
-        <!--<h2>Hello world!</h2>
-        <p>Welcome <span class="app-user-name"></span>!</p>-->
         <h2>Welcome <span class="app-user-name"></span></h2>
         <div id="app-home">
           <!-- A listview that shows different alerts in order of priority.
           Currently we will have assignments as alerts.
           Alerts are separated into high priority (red), medium priority (yellow), and low priority (green).
           JavaScript is used to determine low, medium, and high priority as well as user settings. -->
-          <ul data-role="listview">
-            <li data-role="list-divider" id="app-priority">Alerts</li>
-            <li class="priorityHigh">PHYS163 &mdash; Project 2</li>
-            <li class="priorityMed">BIOL124 &mdash; Lab 3 &ndash; Investigate a Mugging</li>
-            <li class="priorityLow">CRWT177 &mdash; Investigation Article 4</li>
+          <ul data-role="listview" id="app-alerts">
+              <!-- This is where the user's alerts go. -->
           </ul>
         </div>
     </div>
@@ -113,7 +108,7 @@
     <div data-role="content" class="ui-content" id="setting">
       <h2>Settings</h2>
       <div id="app-setting">
-      
+        
       </div>
     </div>
       

@@ -5,6 +5,9 @@ var name = "Bruce Wayne";
 var login = "bwayn052";
 var url = "data/users/" + login + "/";
 var graded = false;
+var priLow = 7;     // Low priority is by default 7 days (7-21 days)
+var priMed = 3;     // Medium priority is by default 3 days (3-6 days)
+var priHigh = 24;   // High priority is by default 24 hours (1-72 hours)
 
 /* Function for adding functions on to the menu. */
 function menu() {
@@ -24,10 +27,7 @@ function menu() {
     $("#app-menu-setting").click(function(){
         loadSets();
     });
-    
-    // Welcome dialog box (testing)
-    //alert("Welcome to MiLearn!");
-    
+
     // Gets the current time.
     footer();
 }
@@ -110,35 +110,11 @@ function jsonClassList(arr) {
     // Generates a collapsible with the classname and a blank list.
     for(var i = 0; i < arr.length; i++) {
         className = arr[i].courseNum + '-' + arr[i].courseSec;
-        out += '<div data-role="collapsible" class="graded" id="graded-' + className + '"><h3>' + className + '</h3><ul data-role="listview" class="gradebook" id="gradebook-' + className + '"></ul></div>';
+        out += '<div data-role="collapsible" class="graded" id="graded-' + className + '"><h3>' + className + '</h3><ul data-role="listview" data-inset="true" class="gradebook" id="gradebook-' + className + '"><li>No grades are available for this class!</li></ul></div>';
     }
     // Refreshes the grades collapsible set.
     $(".grades").html(out).collapsibleset("refresh");
 }
-/* Originally for panel list.
-function jsonClassList(arrC) {
-    out = "";
-    var classId = "";
-    var className = "";
-    var classArr = [];
-    for(i = 0; i < arrC.length; i++) {
-        // Generates a list item with the class name and adds it to the array of class names.
-        className = arrC[i].courseNum + ' (' + arrC[i].courseSec + ')';
-        classId = arrC[i].courseNum + '-' + arrC[i].courseSec;
-        out += '<li><a href="#graded-' + classId + '">' + className + '</a></li>';
-        classArr.push(classId);
-    }
-    // Refreshes the list of classes.
-    $(".grades").html(out).listview("refresh");
-    
-    // Generates gradebooks
-    out = "";
-    for(i = 0; i < classArr.length; i++) {
-        out += '<div data-role="panel" data-position="right" data-display="overlay" id="graded-' + classArr[i] + '"><ul data-role="listview" data-inset="true" class="gradebook" id="gradebook-' + classArr[i] + '"></ul></div>';
-        $("#graded-"+classArr[i]).panel("refresh");
-    }
-    $("#container").append(out);
-}*/
 
 /* Function for getting a user's grades. */
 function jsonGrades(arr) {
@@ -147,7 +123,7 @@ function jsonGrades(arr) {
     var prevClass = arr[0].courseNum + '-' + arr[0].courseSec;
     var currClass;
     
-    for (i = 0; i < arr.length; i++) {
+    for(i = 0; i < arr.length; i++) {
         currClass = arr[i].courseNum + '-' + arr[i].courseSec;
         if (prevClass != currClass) {
             // If the current class does not match the previous one, then the previous class's grades are put into the collapsible and the current class is now the previous class.
@@ -160,24 +136,39 @@ function jsonGrades(arr) {
     $("#gradebook-" + currClass).html(out);
     $(".grades").collapsibleset("refresh");
 }
-/* Originally for a panel list.
-function jsonGrades(arr) {
-    var out = "";
+
+/* Function for getting alerts. */
+function jsonAlerts(arr) {
+    var out = '<li data-role="list-divider" id="app-priority">Alerts</li>';
     var i;
     
-    // Gets the grades.
-    var curClass = "";
-    for(i = 0; (i < arr.length) && (!graded); i++) {
-        // Generates the panel item holding the grade information
-        curClass = arr[i].courseNum + '-' + arr[i].courseSec;
-        alert(curClass);
-        alert(arr[i].courseNum);
-        out = '<li>'+ arr[i].title + '<br /><span class="gradedTotal">' + arr[i].grade + '/' + arr[i].total + '</span></li>';
-        alert(out);
-        $("#gradebook-" + curClass).append(out);
+    var now = new Date();
+    // Gets the assignment and checks it against the current time.
+    for(i = 0; i < arr.length; i++) {
+        // Gets the difference in milliseconds between the assignment due date and the current time.
+        var assn = new Date(arr[i].due);
+        var diff = assn.getTime() - now.getTime();
+        if(diff > 0) {
+            // Get the difference in hours.
+            var diffH = Math.floor(diff / (1000 * 60 * 60));
+            if(diffH < priHigh) { // Gets high priority
+                out += '<li class="priorityHigh">' + arr[i].courseNum + '&mdash;' + arr[i].title + '<br />' + diffH + ' hours left</li>'; 
+            }
+            else {
+                // Gets the difference in days.
+                var diffD = Math.floor(diffH / 24);
+                diffH -= (diffD * 24);
+                if(diffD < priMed) { // Gets medium priority
+                    out += '<li class="priorityMed">' + arr[i].courseNum + '&mdash;' + arr[i].title + '<br />' + diffD + ' days left</li>';
+                }
+                else if(diffD < priLow) { // Gets low priority
+                    out +='<li class="priorityLow">' + arr[i].courseNum + '&mdash;' + arr[i].title + '<br />' + diffD + ' days left</li>';
+                }
+            }
+        }
     }
-    graded = true;
-}*/
+    $("#app-alerts").html(out).listview("refresh");
+}
 
 /* Function for setting the page title. */
 function header(pageName) {
@@ -208,6 +199,7 @@ function loadHome() {
     $(".app-user-name").text(name);
     
     // Reloads alerts and puts them on to the content.
+    getData(url + "assign.json", jsonAlerts);
 }
 
 /* Function for loading the Classes screen. */

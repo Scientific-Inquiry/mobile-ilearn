@@ -30,7 +30,12 @@
 .assigned .ui-btn { xbackground-color: #bbccff; }
 
 /* Grades styles. */
-.graded .ui-btn { background-color: #cc33ff; }
+.graded .ui-btn { xbackground-color: #cc33ff; }
+.ui-collapsible-content.ui-body-inherit ul { margin: 0 -1em; }
+ul.gradebook { list-style-type: none; list-style-position: inside; padding: 0; }
+.gradebook li { padding: 1em; margin: 0; border-top: 1px solid grey; }
+.gradebook li:first-child { padding-top: 0.5em; border-top: none; }
+.gradebook li:last-child { padding-bottom: 0.5em; }
 
 /* Styles for footer area. */
 #app-time { text-align: center; }
