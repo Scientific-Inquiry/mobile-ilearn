@@ -94,7 +94,7 @@ public class Login {
                 String queryInstructor = new String("SELECT C.cname, C.csection, C.cnum, C.cquarter, C.ctype FROM Class C, teaches T, Usr U WHERE C.cid = T.cid AND U.uid = ? ORDER BY cnum ASC, csection ASC");
 
                 /* Prepares the final query depending on the rank of the logged-in user */
-                if(rank.equals("STUDENT"))
+                if(rank.equals("STUDENT") || rank.equals("TA"))
                     st = connection.prepareStatement(queryStudent);
                 else
                     st = connection.prepareStatement(queryInstructor);
@@ -141,11 +141,76 @@ public class Login {
                     }
                 }
 
+                /* Handles case where a class is taught by several instructors */
+                /* NEEDS TO BE CHECKED */
+                for (int i = 0; i < classes.size() - 1; i++)
+                {
+                    for (int j = 0; j < classes.size(); j++)
+                    {
+                        if (classes.get(i).getNumber().equals(classes.get(j).getNumber())
+                                && classes.get(i).getSection().equals(classes.get(j).getSection())
+                                && !classes.get(i).getFaculty().equals(classes.get(j).getFaculty()))
+                        {
+                            classes.get(i).setFaculty(classes.get(i).getFaculty() + ", " + classes.get(j).getFaculty());
+                            classes.remove(j);
+                        }
+                    }
+                }
+
+                /* Initializes the array of classes taught by a TA */
+                ArrayList<Class> taught = new ArrayList<Class> ();
+
+                /* Handles the case where the user is a TA and teaches classes as well */
+                /* NEEDS TO BE CHECKED !!! */
+                if (rank.equals("TA"))
+                {
+                    st = connection.prepareStatement(queryInstructor);
+                    /* Sets the unknown parameter */
+                    st.setInt(1, sid);
+                    rs = st.executeQuery();
+
+                    /* Fills the array using the query results */
+                    while(rs.next())
+                    {
+                        String cname = rs.getString("cname").trim();
+                        String cnum = rs.getString("cnum").trim();
+                        String csection = rs.getString("csection").trim();
+                        String cquarter = rs.getString("cquarter").trim();
+                        String uname;
+
+                    /* Depending on the rank, we don't get the name of the instructor in the query.
+                       Handling the case here
+                     */
+                       uname = name;
+
+                    /* Differentiates lecture, discussion and lab */
+                        if(rs.getString("ctype").trim().equals("LECTURE"))
+                        {
+                            Lecture lec = new Lecture(cnum, csection, cname, cquarter, uname);
+                            taught.add(lec);
+                        }
+                        else if(rs.getString("ctype").trim().equals("DISCUSSION"))
+                        {
+                            Discussion dis = new Discussion(cnum, csection, cname, cquarter, uname);
+                            taught.add(dis);
+                        }
+                        else
+                        {
+                            Lab lab = new Lab(cnum, csection, cname, cquarter, uname);
+                            taught.add(lab);
+                        }
+                    }
+                }
+
+
+
                 /* Creates the final user (needs to recheck the rank to create the correct object) */
                 if (rank.trim().equals("STUDENT"))
                     this.user = new Student (name, this.getUsername(), sid, classes);
-                else
+                else if (rank.trim().equals("INSTRUCTOR"))
                     this.user = new Instructor (name, this.getUsername(), sid, classes);
+                else
+                    this.user = new TA (name, this.getUsername(), sid, classes, taught);
             }
             else
             {
