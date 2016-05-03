@@ -76,20 +76,32 @@
       <h2><span id="courseQuarter"></span></h2>
       <div id="app-course">
         <!-- A collapsible schedule of classes that display the course number and section as well as the full course name and instructor. -->
-        <div data-role="collapsibleset" class="schedule">
-          <!-- The user's class schedule go here. -->
+        <h3><span class="app-label" id="app-enrolled">Classes enrolled in:</span></h3>
+        <div data-role="collapsibleset" class="schedule" id="courseS">
+          <!-- The student's class schedule goes here. -->
+        </div>
+        
+        <!-- A collapsible schedule of classes that displays the course number and section (possibly student list). -->
+        <h3><span class="app-label" id="app-teaching">Courses that you are teaching: </span></h3>
+        <div data-role="collapsibleset" class="schedule" id="courseI">
+            <!-- The instructor's class schedule goes here. -->
         </div>
       </div>
     </div>
     
     <!-- Assignments Screen -->
     <div data-role="content" class="ui-content" id="assn">
-      <h2>Assignments Due</h2>
       <div id="app-assn">
+        <h2>Assignments Due</h2>
         <!-- A list of all assignments from all classes.
               Later can click on the title to upload files. -->
-        <div data-role="collapsibleset" class="assign">
-          <!-- Displays the user's assignments that are due. -->
+        <h3 class="app-label" id="assnS">To Turn In:</h3>
+        <div data-role="collapsibleset" class="assign" id="assignS">
+          <!-- Displays the student's assignments that are due. -->
+        </div>
+        <h3 class="app-label" id="assnI">To Grade:</h3>
+        <div data-role="collapsibleset" class="assign" id="assignI">
+            <!-- Displays the assignments that will be turned in. -->
         </div>
       </div>
     </div>
@@ -98,8 +110,12 @@
     <div data-role="content" class="ui-content" id="grade">
       <h2>Grades</h2>
       <div id="app-grade">
-        <div data-role="collapsibleset" class="grades">
-          <!-- Displays the user's grades as a collapsible. -->
+        <div data-role="collapsibleset" class="grades" id="gradedS">
+            <!-- Displays the student's grades as a collapsible. -->
+        </div>
+        
+        <div data-role="collapsibleset" class="grades" id="gradedI">
+            <!-- Displays the assignments that the instructor can grade. -->
         </div>
       </div>
     </div>

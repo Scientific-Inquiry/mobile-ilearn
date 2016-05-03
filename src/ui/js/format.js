@@ -1,9 +1,20 @@
 /* Custom JavaScript functions */
 /* Global variables. */
-var title = null;
+/* // Bruce Wayne (student info)
+var typeS = true;   // Indicates user is a student
+var typeI = false;  // Indicates user is an instructor
 var name = "Bruce Wayne";
-var login = "bwayn052";
+var login = "bwayn052"; 
+*/
+// Clark Kent (instructor info)
+var typeS = false;
+var typeI = true;
+var name = "Clark Kent";
+var login = "ckent038";
+
+var quarter = "qyyyy";
 var url = "data/users/" + login + "/";
+var classURL = "data/classes/" + quarter + "/";
 var graded = false;
 var priLow = 7;     // Low priority is by default 7 days (7-21 days)
 var priMed = 3;     // Medium priority is by default 3 days (3-6 days)
@@ -57,34 +68,21 @@ function getData(url, func) {
     file.send();
 }
 
-/* Function for getting a user's classes. */
+/* Function for getting a student's classes. */
 function jsonClasses(arr) {
+    // Sets up quarter and title
+    quarter = arr[0].quarter;
+    $("#app-enrolled").removeClass("app-label");
     var out = "";
     var i;
     var idNum = 0;
     for(i = 0; i < arr.length; i++) {
         idNum++;
         // Generates a collapsible with the course information.
-        out += '<div data-role="collapsible" id="class' + idNum + '"><h3 class="scheduled">' + arr[i].courseNum + '-' + arr[i].courseSec + '</h3><p>Class Name: ' + arr[i].courseName + '<br />Instructor: ' + arr[i].instructor + '</p></div>';
+        out += '<div data-role="collapsible" id="classS' + idNum + '"><h3 class="scheduled">' + arr[i].courseNum + '-' + arr[i].courseSec + '</h3><p>Class Name: ' + arr[i].courseName + '<br />Instructor: ' + arr[i].instructor + '</p></div>';
     }
     // Refreshes the schedule collapsible set.
-    $(".schedule").html(out).collapsibleset("refresh");
-    // Gets the quarter name
-    var qyear = arr[0].quarter;
-    // If qyear does not match the format such that the first letter of the quarter followed by the year, then output "Class Schedule".
-    if(qyear.length != 5) { $("#courseQuarter").text("Class Schedule"); }
-    else {
-        var q = qyear.slice(0,1);   // Quarter letter
-        var y = qyear.slice(1);     // Year (four digits)
-        if((q === "F") || (q === "f")) { out = "Fall "; }
-        else if((q === "W") || (q === 'w')) { out = "Winter "; }
-        else if((q === "S") || (q === 's')) { out = "Spring "; }
-        else if((q === "U") || (q === 'u')) { out = "Summer "; }
-        else { out = "Unknown "; }
-        if (isNaN(y)) { y = "Quarter"; }
-        out += y;
-        $("#courseQuarter").text(out);
-    }
+    $("#courseS").html(out).collapsibleset("refresh");
 }
 
 /* Function for getting a user's assignments. */
@@ -98,10 +96,10 @@ function jsonAssigns(arr) {
         out += '<div data-role="collapsible" id="assnNum' + idNum + '"><h3 class="assigned">' + arr[i].courseNum + '-' + arr[i].courseSec + ': ' + arr[i].title + '</h3><p>' + arr[i].desc + '</p><p>Due: ' + arr[i].due + '</p><p>Points: ' + arr[i].points + '</p></div>';
     }
     // Refreshes the assignments collapsible set.
-    $(".assign").html(out).collapsibleset("refresh");
+    $("#assignS").html(out).collapsibleset("refresh");
 }
 
-/* Function for generating a class list. */
+/* Function for generating a student's class list. */
 /* Creates a set of collapsibles that contain a list of grades */
 function jsonClassList(arr) {
     var out = "";
@@ -116,7 +114,7 @@ function jsonClassList(arr) {
     $(".grades").html(out).collapsibleset("refresh");
 }
 
-/* Function for getting a user's grades. */
+/* Function for getting a student's grades. */
 function jsonGrades(arr) {
     var out = "";
     var i;
@@ -133,8 +131,8 @@ function jsonGrades(arr) {
         }
         out += '<li>' + arr[i].title + '<br /><span class="gradedTotal">' + arr[i].grade + '/' + arr[i].total + '</span></li>';
     }
-    $("#gradebook-" + currClass).html(out);
-    $(".grades").collapsibleset("refresh");
+    $("#gradebook-" + prevClass).html(out);
+    $("#gradedS").collapsibleset("refresh");
 }
 
 /* Function for getting alerts. */
@@ -170,6 +168,95 @@ function jsonAlerts(arr) {
     $("#app-alerts").html(out).listview("refresh");
 }
 
+/* Function for getting the classes an instructor teaches. */
+function jsonCourse(arr) {
+    // Sets up quarter and title
+    quarter = arr[0].quarter;
+    $("#app-teaching").removeClass("app-label");
+    var out = "";
+    var i = 0;
+    var idNum = 0;
+    var currClass = arr[0].courseNum + '-' + arr[0].courseSec;
+    var currStudent = "";
+    for(i = 0; i < arr.length; i++) {
+        // Generates a collapsible with the course information.
+        if(currClass !== currStudent) {
+            idNum++;
+            currClass = arr[i].courseNum + '-' + arr[i].courseSec; 
+            out += '<div data-role="collapsible" id="classI' + idNum + '"><h3 class="scheduled">' + currClass + '</h3><p>Class Name: ' + arr[i].courseName + '</p><table data-role="table" class="ui-responsive"><thead><tr><th>Student Name</th><th>Student Login</th></tr></thead><tbody>';
+        }
+        // Gets the students in the class.
+        out += '<tr><td>' + arr[i].sname + '</td><td>' + arr[i].slogin + '</td></tr>';
+        var next = i + 1;
+        if(next < arr.length) {
+            currStudent = arr[next].courseNum + '-' + arr[next].courseSec;
+            // Closes the collapsible
+            if(currStudent !== currClass) { out += '</tbody></table></div>'; }
+        }
+    }
+    // Refreshes the schedule collapsible set.
+    $("#courseI").html(out).collapsibleset("refresh");
+}
+
+/* Function for getting the assignments that an instructor assigned. */
+function jsonAssigner(arr) {
+    var out = "";
+    var i;
+    var idNum = 0;
+    for(i = 0; i < arr.length; i++) {
+        idNum++;
+        // Generates a collapsible with the assignment.
+        out += '<div data-role="collapsible" id="assnNum' + idNum + '"><h3 class="assigned">' + arr[i].courseNum + '-' + arr[i].courseSec + ': ' + arr[i].title + '</h3><p>' + arr[i].desc + '</p><p>Due: ' + arr[i].due + '</p><p>Points: ' + arr[i].points + '</p></div>';
+    }
+    // Refreshes the assignments collapsible set.
+    $("#assignI").html(out).collapsibleset("refresh");
+}
+
+/* Function for displaying the grades for a class. */
+function jsonGraded(arr) {
+    var out = "";
+    var i;
+    var currAssn = "";
+    var idNum = 0;
+    for(i = 0; i < arr.length; i++) {
+        var currGrade = arr[i].title;
+        // Generates a collapsible with the course information.
+        if(currAssn !== currGrade) {
+            idNum++;
+            currAssn = currGrade; 
+            out += '<div data-role="collapsible" id="gradeI' + idNum + '"><h3 class="grader">' + arr[i].courseNum + '-' + arr[i].courseSec + ': ' + currAssn + '</h3><p>Assignment Ttile: ' + arr[i].title + '<br />Total Points: ' + arr[i].total + '</p><table data-role="table" class="ui-responsive"><thead><tr><th>Student Login</th><th>Student Grade</th><th>Percent</tr></thead><tbody>';
+        }
+        // Gets the students in the class.
+        var percent = Number(arr[i].grade / arr[i].total);
+        out += '<tr><td>' + arr[i].slogin + '</td><td>' + arr[i].grade + '</td><td>' + percent + '</td></tr>';
+        var next = i + 1;
+        if(next < arr.length) {
+            currGrade = arr[next].title;
+            // Closes the collapsible
+            if(currAssn !== currGrade) { out += '</tbody></table></div>'; }
+        }
+    }
+    $("#gradedI").html(out).collapsibleset("refresh");
+}
+
+/* Function for getting the name of the quarter. */
+function changeQuarter(arr) {
+    // If quarter does not match the format such that the first letter of the quarter followed by the year, then output "Class Schedule".
+    if(quarter.length != 5) { $("#courseQuarter").text("Class Schedule"); }
+    else {
+        var q = quarter.slice(0,1);   // Quarter letter
+        var y = quarter.slice(1);     // Year (four digits)
+        if((q === "F") || (q === "f")) { out = "Fall "; }
+        else if((q === "W") || (q === 'w')) { out = "Winter "; }
+        else if((q === "S") || (q === 's')) { out = "Spring "; }
+        else if((q === "U") || (q === 'u')) { out = "Summer "; }
+        else { out = "Unknown "; }
+        if (isNaN(y)) { y = "Quarter"; }
+        out += y;
+        $("#courseQuarter").text(out);
+    }
+}
+
 /* Function for setting the page title. */
 function header(pageName) {
     $("#app-title").text(pageName);
@@ -189,7 +276,7 @@ function changeContent(content) {
 
 /* Function for loading the Home screen. */
 function loadHome() {
-    title = "home";
+    var title = "home";
     // Activates the Home screen.
     header("Home");
     changeLink(title);
@@ -199,49 +286,64 @@ function loadHome() {
     $(".app-user-name").text(name);
     
     // Reloads alerts and puts them on to the content.
-    getData(url + "assign.json", jsonAlerts);
+    if(typeS) { getData(url + "assign.json", jsonAlerts); }
+    if(typeI) { getData(url + "assigner.json", jsonAlerts); }
 }
 
 /* Function for loading the Classes screen. */
 function loadClasses() {
-    title = "course";
+    var title = "course";
     // Activates the Classes screen.
     header("Classes");
     changeLink(title);
     changeContent(title);
     
     // Loads the list of classes.
-    getData(url + "classes.json", jsonClasses);
+    if(typeS) { getData(url + "classes.json", jsonClasses); }
+    if(typeI) { getData(url + "course.json", jsonCourse); }
+    changeQuarter();
 }
 
 /* Function for loading the Assignments screen. */
 function loadAssigns() {
-    title = "assn";
+    var title = "assn";
     // Activates the Assignments screen.
     header("Assignments");
     changeLink(title);
     changeContent(title);
     
     // Loads all assignments.
-    getData(url + "assign.json", jsonAssigns);
+    if(typeS) { 
+        $("#assnS").removeClass("app-label");
+        getData(url + "assign.json", jsonAssigns);
+    }
+    if(typeI) { 
+        $("#assnI").removeClass("app-label");
+        getData(url + "assigner.json", jsonAssigner);
+    }
 }
 
 /* Function for loading the Grades screen. */
 function loadGrades() {
-    title = "grade";
+    var title = "grade";
     // Activates the Grades screen.
     header("Grades");
     changeLink(title);
     changeContent(title);
     
     // Reloads the grades for different assignments.
-    getData(url + "classes.json", jsonClassList);
-    getData(url + "grade.json", jsonGrades);
+    if(typeS) {
+        getData(url + "classes.json", jsonClassList);
+        getData(url + "grade.json", jsonGrades);
+    }
+    if(typeI) {
+        getData(url + "graded.json", jsonGraded);
+    }
 }
 
 /* Function for loading the Settings screen. */
 function loadSets() {
-    title = "setting";
+    var title = "setting";
     // Activates the Settings screen.
     header("Settings");
     changeLink(title);
