@@ -5,6 +5,7 @@
 /* For displaying content. */
 .ui-content { display: none; }
 .app-active { display: block; }
+.app-label { display: none; }
 
 /* Configures styles for the administration area. */
 #app-admin .ui-grid-b .ui-block-a { width: 60%; }
