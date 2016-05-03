@@ -35,8 +35,8 @@ Files:
 
 Teacher user Clark Kent logs in
 Teacher can update assignments and grades
-Gets access to class directory
-Directory (accessed): cs180/
+Gets access to his directory
+Directory (accessed): ckent038/
 Files:
     assigner.json (assignments for the class) [can change anything]
         title (Assignment 2)
@@ -50,12 +50,13 @@ Files:
         total (10)
         statusOut (graded) [when instructor finished grading]
         due date (Mon May 31 18:30:00 PDT 2016)
-        student (jdoe035)
-Directory (accessed): jsmit021/
-    course.json (course information) [courses they are teaching]
+        slogin (jdoe035)
+    course.json (course information) [courses they are teaching and students]
         courseName (Introduction to Software Engineering)
         courseNumber (CS180)
         quarter (S16)
+        sname (John Doe)
+        slogin (jdoe035)
         
 All users will have a file that holds their name and configurations
 Directory (accessed): bwayn052/
@@ -68,3 +69,4 @@ Directory (accessed): bwayn052/
         notifyM (3) [this is in days]
         notifyL (7) [this is in days]
         
+Finally, data/[quarter name]/[course number] will hold the turned in assignments for the students in that class.
