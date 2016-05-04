@@ -7,9 +7,9 @@ Data directory tree
     /users
         /[user name] (restrict only to current quarter)
 
-Student user named John Doe whose login is jdoe035
+Student user named Bruce Wayne whose login is bwayn052
 Student can only view (maybe submit???)
-jdoe035 logs in
+bwayn052 logs in
 Directory called: jdoe035/ (is generated/accessed)
 Files:
     classes.json (class information) [alphabetical by course number]
@@ -33,7 +33,7 @@ Files:
         courseNumber (CS180)
         dueDate (Mon May 31 18:30:00 PDT 2016)
 
-Teacher user John Smith logs in
+Teacher user Clark Kent logs in
 Teacher can update assignments and grades
 Gets access to class directory
 Directory (accessed): cs180/
