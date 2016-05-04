@@ -240,7 +240,7 @@ function jsonGraded(arr) {
 }
 
 /* Function for getting the name of the quarter. */
-function changeQuarter(arr) {
+function changeQuarter() {
     // If quarter does not match the format such that the first letter of the quarter followed by the year, then output "Class Schedule".
     if(quarter.length != 5) { $("#courseQuarter").text("Class Schedule"); }
     else {
