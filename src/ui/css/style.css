@@ -5,11 +5,18 @@
 /* For displaying content. */
 .ui-content { display: none; }
 .app-active { display: block; }
+.app-label { display: none; }
+
+/* Configures styles for the administration area. */
+#app-admin .ui-grid-b .ui-block-a { width: 60%; }
+#app-admin .ui-grid-b .ui-block-b, 
+#app-admin .ui-grid-b .ui-block-c { width: 20%; }
+#app-logo { font-size: 30px; }
 
 /* Changes the color of the menu buttons. */
 #app-menu .app-menu-link { xbackground-color: #aaaaff; }
 #app-menu .app-menu-link:hover { xbackground-color: #bbaaff; }
-#app-menu .app-menu-active { background-color: #e9e9e9; }
+#app-menu .app-menu-active { background-color: #38c; border-color: #38c; color: #ffffff; text-shadow: 0 1px 0 #059; }
 
 /* Alerts styles. */
 #app-priority { background-color: #d9edf7; }
@@ -24,7 +31,12 @@
 .assigned .ui-btn { xbackground-color: #bbccff; }
 
 /* Grades styles. */
-.graded .ui-btn { background-color: #cc33ff; }
+.graded .ui-btn { xbackground-color: #cc33ff; }
+.ui-collapsible-content.ui-body-inherit ul { margin: 0 -1em; }
+ul.gradebook { list-style-type: none; list-style-position: inside; padding: 0; }
+.gradebook li { padding: 1em; margin: 0; border-top: 1px solid grey; }
+.gradebook li:first-child { padding-top: 0.5em; border-top: none; }
+.gradebook li:last-child { padding-bottom: 0.5em; }
 
 /* Styles for footer area. */
 #app-time { text-align: center; }
@@ -36,4 +48,5 @@
  * the menu.*/
 @media only screen and (max-width: 495px) {
     .app-small { display: none; }
+    #app-logo { font-size: 18px; }
 }
