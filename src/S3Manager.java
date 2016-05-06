@@ -57,9 +57,9 @@ public class S3Manager {
 
         check_Folders();
 
-        if(find_Item(path)) {
+        if(find_Item()) {
             System.out.println("Found the File: " + path);
-            upload_file(path, fileName);
+            upload_file(fileName);
         }
         else
             System.out.println("File Not Found: " + path);
@@ -101,7 +101,7 @@ public class S3Manager {
     }
 
     //returns true if file exists
-    public boolean find_Item(String path){
+    public boolean find_Item(){
         boolean isValidFile = true;
         try {
             ObjectMetadata objectMetadata = s3Client.getObjectMetadata(bucketName, path);
@@ -132,7 +132,7 @@ public class S3Manager {
     }
 
     //uploads a file
-    public void upload_file(String path, String fileName){
+    public void upload_file(String fileName){
         s3Client.putObject(new PutObjectRequest(bucketName, path,
                 new File(fileName)));
     }
