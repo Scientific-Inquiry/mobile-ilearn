@@ -67,7 +67,7 @@ public class S3Manager {
 
     //reads the contents of the file
     //can check if updated with this function
-    public void read(String path){
+    public void read(){
         S3Object s3object = s3Client.getObject(new GetObjectRequest(bucketName, path));
         //System.out.println(s3object.getObjectMetadata().getContentType());
         //System.out.println(s3object.getObjectMetadata().getContentLength());
