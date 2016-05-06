@@ -1,5 +1,5 @@
 public class Lecture extends Class {
-    public Lecture(String number, String section, String name, String quarter, /*ArrayList<String> assignments, ArrayList<String> courseMaterial, ArrayList<String> grades, String syllabus,*/ String faculty)
+    public Lecture(String number, String section, String name, String quarter, String faculty)
     {
         this.number = new String (number);
         this.section = new String(section);

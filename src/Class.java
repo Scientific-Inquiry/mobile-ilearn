@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 public abstract class Class implements ClassInterface
 {
 	public String toString() 
@@ -49,46 +47,6 @@ public abstract class Class implements ClassInterface
 		this.quarter = quarter;
 	}
 
-/*    public ArrayList<String> getAssignments()
-    {
-        return (ArrayList<String>) this.assignments.clone();
-    }
-
-    public void setAssignments(ArrayList<String> assignments)
-    {
-        this.assignments = (ArrayList<String>) assignments.clone();
-    }
-
-    public ArrayList<String> getCourseMaterial()
-    {
-        return (ArrayList<String>) this.courseMaterial.clone();
-    }
-
-    public void setCourseMaterial(ArrayList<String> courseMaterial)
-    {
-        this.courseMaterial = (ArrayList<String>) courseMaterial.clone();
-    }
-
-    public ArrayList<String> getGrades()
-    {
-        return (ArrayList<String>) this.grades.clone();
-    }
-
-    public void setGrades(ArrayList<String> grades)
-    {
-        this.grades = (ArrayList<String>) grades.clone();
-    }
-
-    public String getSyllabus()
-    {
-        return this.syllabus;
-    }
-
-    public void setSyllabus(String syllabus)
-    {
-        this.syllabus = new String(syllabus);
-    }
-*/
     public String getFaculty()
     {
         return this.faculty;
@@ -104,12 +62,5 @@ public abstract class Class implements ClassInterface
 	protected String section;
 	protected String name;
 	protected String quarter;
-	/* Meant to be an array of Assignments objects */
-	/*protected ArrayList<String> assignments;*/
-	/* Meant to be an array of Course Material objects */
-	/*protected ArrayList<String> courseMaterial;*/
-    /* Meant to be an array of Grades objects */
-    /*protected ArrayList<String> grades;*/
-    /*protected String syllabus;*/
     protected String faculty; /* Faculty info */
 }

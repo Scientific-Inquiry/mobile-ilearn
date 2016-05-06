@@ -90,7 +90,7 @@ public class Login {
                 String rank = rs.getString("urank").trim();
 
                 /* Prepares two query strings: one for a student, one for an instructor, since the JSON to generate are different */
-                String queryStudent = new String("SELECT C.cname, C.csection, C.cnum, C.cquarter, C.ctype, U2.uname FROM Class C, enrolls_in E, teaches T, Usr U, Usr U2 WHERE C.cid = E.cid AND U.uid = ? AND U2.uid = T.uid ORDER BY cnum ASC, csection ASC");
+                String queryStudent = new String("SELECT C.cname, C.csection, C.cnum, C.cquarter, C.ctype, U2.uname FROM Class C, enrolls_in E, teaches T, Usr U, Usr U2 WHERE C.cid = E.cid AND U.uid = ? AND U2.uid = T.uid ORDER BY cnum ASC, csection ASC, U2.uname ASC");
                 String queryInstructor = new String("SELECT C.cname, C.csection, C.cnum, C.cquarter, C.ctype FROM Class C, teaches T, Usr U WHERE C.cid = T.cid AND U.uid = ? ORDER BY cnum ASC, csection ASC");
 
                 /* Prepares the final query depending on the rank of the logged-in user */
@@ -141,11 +141,10 @@ public class Login {
                     }
                 }
 
-                /* Handles case where a class is taught by several instructors */
-                /* NEEDS TO BE CHECKED */
+                /* Handles case where a class is taught by more than one instructor */
                 for (int i = 0; i < classes.size() - 1; i++)
                 {
-                    for (int j = 0; j < classes.size(); j++)
+                    for (int j = i+1; j < classes.size(); j++)
                     {
                         if (classes.get(i).getNumber().equals(classes.get(j).getNumber())
                                 && classes.get(i).getSection().equals(classes.get(j).getSection())
@@ -153,6 +152,7 @@ public class Login {
                         {
                             classes.get(i).setFaculty(classes.get(i).getFaculty() + ", " + classes.get(j).getFaculty());
                             classes.remove(j);
+                            j = j - 1; // We want to be sure that we are not "jumping" over a class
                         }
                     }
                 }
@@ -249,9 +249,9 @@ public class Login {
             //st.execute("CREATE TABLE IF NOT EXISTS enrolls_in(uid int, cid int, FOREIGN KEY (uid) REFERENCES Usr(uid) ON DELETE CASCADE, FOREIGN KEY (cid) REFERENCES Class(cid) ON DELETE CASCADE, PRIMARY KEY (uid, cid))");
             //st.execute("DROP TABLE Class");
             //st.close();
-            st.execute("ALTER TABLE Usr ADD UNIQUE (unetid)");
+            //st.execute("ALTER TABLE Usr ADD UNIQUE (unetid)");
 
-            Login log = new Login("ckent038", "iamsuperman");
+            Login log = new Login("balle056", "iamtheflash");
             log.checkCredentials(connection);
 
             /*st = connection.createStatement();
