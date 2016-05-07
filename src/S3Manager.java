@@ -9,6 +9,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class S3Manager {
     //data for curr_quarter
@@ -19,7 +20,7 @@ public class S3Manager {
     public static AmazonS3 s3Client;
     public static String bucketName;
     public static String curr_quarter;
-    public String path;
+    public static String path;
 
     S3Manager(){
         DateFormat dateFormat = new SimpleDateFormat("dyyyy");
@@ -55,7 +56,7 @@ public class S3Manager {
     //update Bucket with the your filename
     public void update_Bucket(String fileName){
 
-        check_Folders();
+        //check_Folders();
 
         if(find_Item()) {
             System.out.println("Found the File: " + path);
@@ -101,6 +102,7 @@ public class S3Manager {
     }
 
     //returns true if file exists
+    //set path correctly before using
     public boolean find_Item(){
         boolean isValidFile = true;
         try {
@@ -117,8 +119,9 @@ public class S3Manager {
         return isValidFile;
     }
 
-    //creates a folder
-    public static void create_Folder(String folderName) {
+    //creates a folder at root if path is empty
+    //otherwise creates a folder at the path
+    public void create_Folder(String folderName) {
         // create meta-data for your folder and set content-length to 0
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentLength(0);
@@ -126,31 +129,38 @@ public class S3Manager {
         InputStream emptyContent = new ByteArrayInputStream(new byte[0]);
         // create a PutObjectRequest passing the folder name suffixed by /
         PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName,
-                folderName + "/", emptyContent, metadata);
+               path + "/" + folderName + "/", emptyContent, metadata);
         // send request to S3 to create folder
         s3Client.putObject(putObjectRequest);
     }
 
-    //uploads a file
+    //uploads a file on the prefix specified by path
     public void upload_file(String fileName){
         s3Client.putObject(new PutObjectRequest(bucketName, path,
                 new File(fileName)));
     }
 
-    //prints folders in bucket
-    public void check_Folders() {
+    //prints folders in bucket from root
+    //prints folders which match the path if path is used instead of folderName
+    public void check_Folders(String folderName) {
+        ObjectListing objects = s3Client.listObjects(bucketName, folderName);
+        for (S3ObjectSummary objectSummary : objects.getObjectSummaries()) {
+            System.out.println(objectSummary.getKey());
+        }
+        /*
         try {
             System.out.println("Listing objects");
             ListObjectsRequest lor = new ListObjectsRequest()
                     .withBucketName(bucketName)
-                    .withPrefix("data/");
+                    .withPrefix(prefix);
             ObjectListing objectListing = s3Client.listObjects(lor);
             for (S3ObjectSummary summary : objectListing.getObjectSummaries()) {
-                System.out.println(summary.getKey());
+                System.out.println();
             }
         } catch (Exception e) {
             System.out.println("Error with processing folders");
         }
+        */
     }
 
     //prints buckets in s3
@@ -158,6 +168,14 @@ public class S3Manager {
         for (Bucket bucket : s3Client.listBuckets()) {
             bucketName = bucket.getName();
             System.out.println("Updating - " + bucket.getName()); // Lists the buckets
+        }
+    }
+
+    //delete objects/folder recursively
+    //be careful~!
+    void delete_Object(String folderPath) {
+        for (S3ObjectSummary file : s3Client.listObjects(bucketName, folderPath).getObjectSummaries()){
+            s3Client.deleteObject(bucketName, file.getKey());
         }
     }
 
