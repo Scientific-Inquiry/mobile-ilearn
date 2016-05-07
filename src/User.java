@@ -35,15 +35,34 @@ public abstract class User implements UserInterface {
 	{
 		this.classes = (ArrayList<Class>) classes.clone();
 	}
+	public String getNetid()
+	{
+		return this.netid;
+	}
+	public void setNetid(String netid)
+	{
+		this.netid = new String(netid);
+	}
+	public int getSid()
+	{
+		return this.sid;
+	}
+	public void setSid(int sid)
+	{
+		this.sid = sid;
+	}
 	
-	public void writeJson()
+	public void writeJson(String filename, Rank rank)
 	{
 		try{
-			PrintWriter file = new PrintWriter("classes.json");
-			file.println("\"classes\":[");
+			PrintWriter file = new PrintWriter(filename);
+			file.println("[");
 			for (int i = 0; i < this.getClasses().size(); i++)
 			{
-				file.println(classes.get(i).toString());
+                if (i != this.getClasses().size()-1)
+                    file.println(classes.get(i).toString(rank) + ",");
+                else
+                    file.println(classes.get(i).toString(rank));
 			}
 			file.println("]");
 	        file.close();
@@ -56,6 +75,8 @@ public abstract class User implements UserInterface {
 
 
 	protected String name;
+	protected String netid;
+	protected int sid;
 	protected Rank rank;
 	protected ArrayList<Class> classes;
 }

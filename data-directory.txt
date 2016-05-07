@@ -7,10 +7,10 @@ Data directory tree
     /users
         /[user name] (restrict only to current quarter)
 
-Student user named John Doe whose login is jdoe035
+Student user named Bruce Wayne whose login is bwayn052
 Student can only view (maybe submit???)
-jdoe035 logs in
-Directory called: jdoe035/ (is generated/accessed)
+bwayn052 logs in
+Directory called: bwayn052/ (is generated/accessed)
 Files:
     classes.json (class information) [alphabetical by course number]
         courseName (Introduction to Software Engineering)
@@ -33,10 +33,10 @@ Files:
         courseNumber (CS180)
         dueDate (Mon May 31 18:30:00 PDT 2016)
 
-Teacher user John Smith logs in
+Teacher user Clark Kent logs in
 Teacher can update assignments and grades
-Gets access to class directory
-Directory (accessed): cs180/
+Gets access to his directory
+Directory (accessed): ckent038/
 Files:
     assigner.json (assignments for the class) [can change anything]
         title (Assignment 2)
@@ -50,9 +50,23 @@ Files:
         total (10)
         statusOut (graded) [when instructor finished grading]
         due date (Mon May 31 18:30:00 PDT 2016)
-        student (jdoe035)
-Directory (accessed): jsmit021/
-    course.json (course information) [courses they are teaching]
+        slogin (jdoe035)
+    course.json (course information) [courses they are teaching and students]
         courseName (Introduction to Software Engineering)
         courseNumber (CS180)
         quarter (S16)
+        sname (John Doe)
+        slogin (jdoe035)
+        
+All users will have a file that holds their name and configurations
+Directory (accessed): bwayn052/
+    user.json (user configurations and data)
+        name (Bruce Wayne)
+        login (bwayn052)
+        password (imbatman)
+        theme (default)
+        notifyH (24) [this is in hours]
+        notifyM (3) [this is in days]
+        notifyL (7) [this is in days]
+        
+Finally, data/[quarter name]/[course number] will hold the turned in assignments for the students in that class.
