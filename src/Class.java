@@ -1,14 +1,36 @@
+import java.util.ArrayList;
+import java.util.Vector;
+
 public abstract class Class implements ClassInterface
 {
-	public String toString(Rank rank)
+	public String toString(Rank rank, ArrayList<Vector> snames)
 	{
 		if (rank.toString().equals("STUDENT"))
 		    return "{\"courseName\":" + "\"" + this.getName() + "\", " + "\"courseNumber\":\"" + this.getNumber() +
 				"\", \"courseSection\":\"" + this.getSection() + "\", \"quarter\":\"" + this.getQuarter() + 
 				"\", \"instructor\":\"" + this.getFaculty() + "\"}";
         else
+        {
+			String s = ", \"sname\":\"";
+			for (int i = 0; i < snames.size(); i++)
+			{
+				if (i != snames.size()-1)
+					s = s + snames.get(i).get(0) + ", ";
+				else
+					s = s + snames.get(i).get(0);
+			}
+			s = s + "\", \"slogin\":\"";
+			for (int i = 0; i < snames.size(); i++)
+			{
+				if (i != snames.size()-1)
+					s = s + snames.get(i).get(1) + ", ";
+				else
+					s = s + snames.get(i).get(1);
+			}
+			s = s + "\"";
             return "{\"courseName\":" + "\"" + this.getName() + "\", " + "\"courseNumber\":\"" + this.getNumber() +
-            "\", \"quarter\":\"" + this.getQuarter() + "\"}";
+                    "\", \"quarter\":\"" + this.getQuarter() + "\"" + s + "}";
+        }
 	}
 	
 	public String getNumber()
