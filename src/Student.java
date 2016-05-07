@@ -8,20 +8,12 @@ public class Student extends User {
 		this.sid = sid;
 		this.rank = Rank.STUDENT;
 		this.classes = (ArrayList<Class>) classes.clone();
-		this.writeJson();
+		this.writeJson("classes.json", Rank.STUDENT);
 	}
 
 	public Object clone()
 	{
 		return new Student(getName(), getNetid(), getSid(), getClasses());
 	}
-	
-	public static void main(String[] args)
-	{
-		ArrayList<Class> classes = new ArrayList<Class>();
-		classes.add(new Lecture("CS 180", "001", "Intro to Software Engineering", "Sping 2016", "Oben"));
-		classes.add(new Lecture("CS 183", "002", "Intro to Software Engineering", "Sping 2016", "Oben"));
-		Student me = new Student("John Doe", "jdoe123", 123456780, classes);
-		System.out.println("Done!");
-	}
+
 }

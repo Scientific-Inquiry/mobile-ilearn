@@ -16,6 +16,7 @@ public class Login {
         this.user = null;
     }
 
+    /* Constructor. user takes a value only once a user has logged in. */
     private Login(String username, String password)
     {
         this.username = new String(username);
@@ -60,7 +61,7 @@ public class Login {
         }
     }
 
-
+    /* Checks if the user trying to log in exists and logs in if so. Does nothing if not. */
     private void checkCredentials(Connection connection)
     {
         try
@@ -89,128 +90,26 @@ public class Login {
                 int sid = rs.getInt("uid");
                 String rank = rs.getString("urank").trim();
 
-                /* Prepares two query strings: one for a student, one for an instructor, since the JSON to generate are different */
-                String queryStudent = new String("SELECT C.cname, C.csection, C.cnum, C.cquarter, C.ctype, U2.uname FROM Class C, enrolls_in E, teaches T, Usr U, Usr U2 WHERE C.cid = E.cid AND U.uid = ? AND U2.uid = T.uid ORDER BY cnum ASC, csection ASC, U2.uname ASC");
-                String queryInstructor = new String("SELECT C.cname, C.csection, C.cnum, C.cquarter, C.ctype FROM Class C, teaches T, Usr U WHERE C.cid = T.cid AND U.uid = ? ORDER BY cnum ASC, csection ASC");
 
-                /* Prepares the final query depending on the rank of the logged-in user */
-                if(rank.equals("STUDENT") || rank.equals("TA"))
-                    st = connection.prepareStatement(queryStudent);
-                else
-                    st = connection.prepareStatement(queryInstructor);
-
-                /* Sets the unknown parameter */
-                st.setInt(1, sid);
-                rs = st.executeQuery();
-
-                /* Initializes the array of classes */
-                ArrayList<Class> classes = new ArrayList<Class> ();
-
-                /* Fills the array using the query results */
-                while(rs.next())
-                {
-                    String cname = rs.getString("cname").trim();
-                    String cnum = rs.getString("cnum").trim();
-                    String csection = rs.getString("csection").trim();
-                    String cquarter = rs.getString("cquarter").trim();
-                    String uname;
-
-                    /* Depending on the rank, we don't get the name of the instructor in the query.
-                       Handling the case here
-                     */
-                    if(rank.equals("STUDENT"))
-                        uname = rs.getString("uname").trim();
-                    else
-                        uname = name;
-
-                    /* Differentiates lecture, discussion and lab */
-                    if(rs.getString("ctype").trim().equals("LECTURE"))
-                    {
-                        Lecture lec = new Lecture(cnum, csection, cname, cquarter, uname);
-                        classes.add(lec);
-                    }
-                    else if(rs.getString("ctype").trim().equals("DISCUSSION"))
-                    {
-                        Discussion dis = new Discussion(cnum, csection, cname, cquarter, uname);
-                        classes.add(dis);
-                    }
-                    else
-                    {
-                        Lab lab = new Lab(cnum, csection, cname, cquarter, uname);
-                        classes.add(lab);
-                    }
-                }
-
-                /* Handles case where a class is taught by more than one instructor */
-                for (int i = 0; i < classes.size() - 1; i++)
-                {
-                    for (int j = i+1; j < classes.size(); j++)
-                    {
-                        if (classes.get(i).getNumber().equals(classes.get(j).getNumber())
-                                && classes.get(i).getSection().equals(classes.get(j).getSection())
-                                && !classes.get(i).getFaculty().equals(classes.get(j).getFaculty()))
-                        {
-                            classes.get(i).setFaculty(classes.get(i).getFaculty() + ", " + classes.get(j).getFaculty());
-                            classes.remove(j);
-                            j = j - 1; // We want to be sure that we are not "jumping" over a class
-                        }
-                    }
-                }
-
-                /* Initializes the array of classes taught by a TA */
-                ArrayList<Class> taught = new ArrayList<Class> ();
-
-                /* Handles the case where the user is a TA and teaches classes as well */
-                /* NEEDS TO BE CHECKED !!! */
-                if (rank.equals("TA"))
-                {
-                    st = connection.prepareStatement(queryInstructor);
-                    /* Sets the unknown parameter */
-                    st.setInt(1, sid);
-                    rs = st.executeQuery();
-
-                    /* Fills the array using the query results */
-                    while(rs.next())
-                    {
-                        String cname = rs.getString("cname").trim();
-                        String cnum = rs.getString("cnum").trim();
-                        String csection = rs.getString("csection").trim();
-                        String cquarter = rs.getString("cquarter").trim();
-                        String uname;
-
-                    /* Depending on the rank, we don't get the name of the instructor in the query.
-                       Handling the case here
-                     */
-                       uname = name;
-
-                    /* Differentiates lecture, discussion and lab */
-                        if(rs.getString("ctype").trim().equals("LECTURE"))
-                        {
-                            Lecture lec = new Lecture(cnum, csection, cname, cquarter, uname);
-                            taught.add(lec);
-                        }
-                        else if(rs.getString("ctype").trim().equals("DISCUSSION"))
-                        {
-                            Discussion dis = new Discussion(cnum, csection, cname, cquarter, uname);
-                            taught.add(dis);
-                        }
-                        else
-                        {
-                            Lab lab = new Lab(cnum, csection, cname, cquarter, uname);
-                            taught.add(lab);
-                        }
-                    }
-                }
-
-
-
-                /* Creates the final user (needs to recheck the rank to create the correct object) */
                 if (rank.trim().equals("STUDENT"))
+                {
+                    ArrayList<Class> classes = classesStudent(connection, sid);
+                    // login() that creates the correct structure in S3
                     this.user = new Student (name, this.getUsername(), sid, classes);
+                }
                 else if (rank.trim().equals("INSTRUCTOR"))
-                    this.user = new Instructor (name, this.getUsername(), sid, classes);
+                {
+                    ArrayList<Class> classes = classesInstructor(connection, sid, name);
+                    // login() that creates the correct structure in S3
+                    this.user = new Instructor(name, this.getUsername(), sid, classes);
+                }
                 else
-                    this.user = new TA (name, this.getUsername(), sid, classes, taught);
+                {
+                    ArrayList<Class> classes = classesStudent(connection, sid);
+                    ArrayList<Class> taught = classesInstructor(connection, sid, name);
+                    // login() that creates the correct structure in S3
+                    this.user = new TA(name, this.getUsername(), sid, classes, taught);
+                }
             }
             else
             {
@@ -224,6 +123,100 @@ public class Login {
         }
 
     }
+
+    /* Creates the classes array necessary to the creation of the Student or TA object */
+    public ArrayList<Class> classesStudent(Connection connection, int sid)
+    {
+        try {
+            PreparedStatement st = connection.prepareStatement("SELECT DISTINCT C.cname, C.csection, C.cnum, C.cquarter, C.ctype, U2.uname FROM Class C, enrolls_in E, teaches T, Usr U, Usr U2 WHERE U.uid = ? AND U.uid = E.uid AND C.cid = E.cid AND T.cid = E.cid AND U2.uid = T.uid ORDER BY cnum ASC, csection ASC, U2.uname ASC");
+            st.setInt(1, sid);
+            ResultSet rs = st.executeQuery();
+            ArrayList<Class> classes = new ArrayList<Class>();
+
+            while (rs.next()) {
+                String cname = rs.getString("cname").trim();
+                String cnum = rs.getString("cnum").trim();
+                String csection = rs.getString("csection").trim();
+                String cquarter = rs.getString("cquarter").trim();
+                String uname = rs.getString("uname").trim();
+
+                if (rs.getString("ctype").trim().equals("LECTURE")) {
+                    Lecture lec = new Lecture(cnum, csection, cname, cquarter, uname);
+                    classes.add(lec);
+                } else if (rs.getString("ctype").trim().equals("DISCUSSION")) {
+                    Discussion dis = new Discussion(cnum, csection, cname, cquarter, uname);
+                    classes.add(dis);
+                } else {
+                    Lab lab = new Lab(cnum, csection, cname, cquarter, uname);
+                    classes.add(lab);
+                }
+            }
+
+            severalInstructors(classes);
+            return classes;
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+            return new ArrayList<Class>();
+        }
+    }
+
+    /* Creates the classes (or taught) array necessary to the creation of the Instructor or TA object */
+    public ArrayList<Class> classesInstructor(Connection connection, int tid, String name)
+    {
+        try
+        {
+            PreparedStatement st = connection.prepareStatement("SELECT C.cname, C.csection, C.cnum, C.cquarter, C.ctype FROM Class C, teaches T, Usr U WHERE U.uid = ? AND T.uid = U.uid AND C.cid = T.cid ORDER BY cnum ASC, csection ASC");
+            st.setInt(1, tid);
+            ResultSet rs = st.executeQuery();
+            ArrayList<Class> classes = new ArrayList<Class>();
+
+            while (rs.next()) {
+                String cname = rs.getString("cname").trim();
+                String cnum = rs.getString("cnum").trim();
+                String csection = rs.getString("csection").trim();
+                String cquarter = rs.getString("cquarter").trim();
+
+                if (rs.getString("ctype").trim().equals("LECTURE")) {
+                    Lecture lec = new Lecture(cnum, csection, cname, cquarter, name);
+                    classes.add(lec);
+                } else if (rs.getString("ctype").trim().equals("DISCUSSION")) {
+                    Discussion dis = new Discussion(cnum, csection, cname, cquarter, name);
+                    classes.add(dis);
+                } else {
+                    Lab lab = new Lab(cnum, csection, cname, cquarter, name);
+                    classes.add(lab);
+                }
+            }
+            return classes;
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return new ArrayList<Class>();
+        }
+    }
+
+    /* Checks if some classes are taught by several instructors. If so, "merge" all the lines
+       corresponding to those classes to have one line per class with the names of all the instructors. */
+    public static void severalInstructors(ArrayList<Class> classes)
+    {
+        for (int i = 0; i < classes.size() - 1; i++)
+        {
+            for (int j = i+1; j < classes.size(); j++)
+            {
+                if (classes.get(i).getNumber().equals(classes.get(j).getNumber())
+                        && classes.get(i).getSection().equals(classes.get(j).getSection())
+                        && !classes.get(i).getFaculty().equals(classes.get(j).getFaculty()))
+                {
+                    classes.get(i).setFaculty(classes.get(i).getFaculty() + ", " + classes.get(j).getFaculty());
+                    classes.remove(j);
+                    j = j - 1; // We want to be sure that we are not "jumping" over a class
+                }
+            }
+        }
+    }
+
 
     public static void main(String[] argv)
     {
@@ -246,21 +239,9 @@ public class Login {
             connection = DriverManager.getConnection(dbURL, user, pass);
 
             Statement st = connection.createStatement();
-            //st.execute("CREATE TABLE IF NOT EXISTS enrolls_in(uid int, cid int, FOREIGN KEY (uid) REFERENCES Usr(uid) ON DELETE CASCADE, FOREIGN KEY (cid) REFERENCES Class(cid) ON DELETE CASCADE, PRIMARY KEY (uid, cid))");
-            //st.execute("DROP TABLE Class");
-            //st.close();
-            //st.execute("ALTER TABLE Usr ADD UNIQUE (unetid)");
 
             Login log = new Login("balle056", "iamtheflash");
             log.checkCredentials(connection);
-
-            /*st = connection.createStatement();
-            st.executeUpdate("INSERT INTO enrolls_in(uid, cid) VALUES (861236524, 1)");
-            st.close();*/
-
-            //st = connection.createStatement();
-
-            st.close();
 
             while (log.getUser() != null)
             {
@@ -275,6 +256,8 @@ public class Login {
 
             /* Need to see how to get arguments and what to do once the first user logged out */
             System.out.println("Logged out!");
+
+            st.close();
         }
         catch (SQLException e)
         {

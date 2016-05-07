@@ -11,16 +11,15 @@ public class TA extends User
             this.rank = Rank.TA;
             this.classes = (ArrayList<Class>) classes.clone();
             this.taught = (ArrayList<Class>) taught.clone();
-            this.writeJson();
+            this.writeJson("classes.json", Rank.STUDENT);
 
             /* Writes course.json as soon as a new instructor is created */
             try{
                 PrintWriter file = new PrintWriter("course.json");
                 file.println("[");
-                for (int i = 0; i < this.getClasses().size(); i++)
+                for (int i = 0; i < this.getTaught().size(); i++)
                 {
-                    file.println("{\"courseName\":" + "\"" + this.getClasses().get(i).getName() + "\", " + "\"courseNumber\":\"" + this.getClasses().get(i).getNumber() +
-                            "\", \"quarter\":\"" + this.getClasses().get(i).getQuarter() + "\"}");
+                    file.println(this.getTaught().get(i).toString(Rank.INSTRUCTOR));
                 }
                 file.println("]");
                 file.close();

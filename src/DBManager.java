@@ -487,7 +487,6 @@ public class DBManager {
         try {
             connection = DriverManager.getConnection(dbURL, user, pass);
 
-            displayTable(connection, "Grades");
         }
         catch (SQLException e)
         {

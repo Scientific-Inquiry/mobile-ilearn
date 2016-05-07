@@ -9,22 +9,7 @@ public class Instructor extends User {
         this.sid = sid;
 		this.rank = Rank.INSTRUCTOR;
 		this.classes = (ArrayList<Class>) classes.clone();
-		
-		/* Writes course.json as soon as a new instructor is created */
-		try{
-			PrintWriter file = new PrintWriter("course.json");
-			file.println("[");
-			for (int i = 0; i < this.getClasses().size(); i++)
-			{
-				file.println("{\"courseName\":" + "\"" + this.getClasses().get(i).getName() + "\", " + "\"courseNumber\":\"" + this.getClasses().get(i).getNumber() + 
-					"\", \"quarter\":\"" + this.getClasses().get(i).getQuarter() + "\"}");
-			}
-			file.println("]");
-	        file.close();
-	    }catch(Exception e) {
-	        System.out.println("ERROR");
-	        e.printStackTrace();
-	    }
+		this.writeJson("course.json", Rank.INSTRUCTOR);
 	}
 
 	public Object clone()

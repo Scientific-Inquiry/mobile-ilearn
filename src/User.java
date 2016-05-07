@@ -52,14 +52,17 @@ public abstract class User implements UserInterface {
 		this.sid = sid;
 	}
 	
-	public void writeJson()
+	public void writeJson(String filename, Rank rank)
 	{
 		try{
-			PrintWriter file = new PrintWriter("classes.json");
+			PrintWriter file = new PrintWriter(filename);
 			file.println("[");
 			for (int i = 0; i < this.getClasses().size(); i++)
 			{
-				file.println(classes.get(i).toString());
+                if (i != this.getClasses().size()-1)
+                    file.println(classes.get(i).toString(rank) + ",");
+                else
+                    file.println(classes.get(i).toString(rank));
 			}
 			file.println("]");
 	        file.close();

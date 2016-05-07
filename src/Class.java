@@ -1,10 +1,14 @@
 public abstract class Class implements ClassInterface
 {
-	public String toString() 
+	public String toString(Rank rank)
 	{
-		return "{\"courseName\":" + "\"" + this.getName() + "\", " + "\"courseNumber\":\"" + this.getNumber() + 
+		if (rank.toString().equals("STUDENT"))
+		    return "{\"courseName\":" + "\"" + this.getName() + "\", " + "\"courseNumber\":\"" + this.getNumber() +
 				"\", \"courseSection\":\"" + this.getSection() + "\", \"quarter\":\"" + this.getQuarter() + 
 				"\", \"instructor\":\"" + this.getFaculty() + "\"}";
+        else
+            return "{\"courseName\":" + "\"" + this.getName() + "\", " + "\"courseNumber\":\"" + this.getNumber() +
+            "\", \"quarter\":\"" + this.getQuarter() + "\"}";
 	}
 	
 	public String getNumber()
