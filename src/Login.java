@@ -324,8 +324,10 @@ public class Login {
 
             Login log = new Login(username, password);
             S3Manager s3 = new S3Manager();
-            if (log.checkCredentials(connection, s3))
+            if (log.checkCredentials(connection, s3)) {
+                login = log.getUsername();
                 return log.getUsername();
+            }
             else
                 return new String();
         }
@@ -352,16 +354,18 @@ public class Login {
         this.password = null;
         this.user = null;
         this.snames = null;
+        login = null;
     }
 
 
     public static void main(String[] argv)
     {
-        login("bwayn052", "iambatman");
+        login("ckent038", "iamsuperman");
     }
 
     private String username;
     private String password;
     private User user;
+    public static String login;
     private ArrayList<ArrayList<Vector>> snames;
 }
