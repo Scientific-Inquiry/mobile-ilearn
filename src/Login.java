@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.sql.*;
@@ -58,7 +59,7 @@ public class Login {
     }
 
     /* Checks if the user trying to log in exists and logs in if so. Does nothing if not. */
-    private boolean checkCredentials(Connection connection)
+    private boolean checkCredentials(Connection connection, S3Manager s3)
     {
         try
         {
@@ -93,26 +94,44 @@ public class Login {
                 String rank = rs.getString("urank").trim();
 
 
+                /* All JSON files are written locally, uploaded to S3, and then removed from the local memory */
                 if (rank.trim().equals("STUDENT"))
                 {
                     ArrayList<Class> classes = classesStudent(connection, sid);
-                    // login() that creates the correct structure in S3
                     this.user = new Student (name, this.getUsername(), sid, classes, this.snames);
+                    s3.path = "testCandice/user/" + this.getUsername() + "/classes.json";
+                    s3.upload_file("classes.json");
+                    File file = new File("classes.json");
+                    file.delete();
                 }
                 else if (rank.trim().equals("INSTRUCTOR"))
                 {
                     ArrayList<Class> classes = classesInstructor(connection, sid, name);
-                    // login() that creates the correct structure in S3
                     this.user = new Instructor(name, this.getUsername(), sid, classes, this.snames);
+                    s3.path = "testCandice/user/" + this.getUsername() + "/course.json";
+                    s3.upload_file("course.json");
+                    File file = new File("course.json");
+                    file.delete();
                 }
                 else
                 {
                     ArrayList<Class> classes = classesStudent(connection, sid);
                     ArrayList<Class> taught = classesInstructor(connection, sid, name);
-                    // login() that creates the correct structure in S3
                     this.user = new TA(name, this.getUsername(), sid, classes, taught, this.snames);
+                    s3.path = "testCandice/user/" + this.getUsername() + "/classes.json";
+                    s3.upload_file("classes.json");
+                    File file = new File("classes.json");
+                    file.delete();
+                    s3.path = "testCandice/user/" + this.getUsername() + "/course.json";
+                    s3.upload_file("course.json");
+                    file = new File("course.json");
+                    file.delete();
                 }
                 writeUser(name, login, password, theme, notifyH, notifyM, notifyL);
+                s3.path = "testCandice/user/" + this.getUsername() + "/user.json";
+                s3.upload_file("user.json");
+                File file = new File("user.json");
+                file.delete();
                 rs.close();
                 st.close();
                 return true;
@@ -304,7 +323,8 @@ public class Login {
             Statement st = connection.createStatement();
 
             Login log = new Login(username, password);
-            if (log.checkCredentials(connection))
+            S3Manager s3 = new S3Manager();
+            if (log.checkCredentials(connection, s3))
                 return log.getUsername();
             else
                 return new String();
