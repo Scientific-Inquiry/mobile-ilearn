@@ -103,6 +103,7 @@ public class Login {
                     s3.upload_file("classes.json");
                     File file = new File("classes.json");
                     file.delete();
+                    Login.rank = Rank.STUDENT;
                 }
                 else if (rank.trim().equals("INSTRUCTOR"))
                 {
@@ -112,6 +113,7 @@ public class Login {
                     s3.upload_file("course.json");
                     File file = new File("course.json");
                     file.delete();
+                    Login.rank = Rank.INSTRUCTOR;
                 }
                 else
                 {
@@ -126,6 +128,7 @@ public class Login {
                     s3.upload_file("course.json");
                     file = new File("course.json");
                     file.delete();
+                    Login.rank = Rank.TA;
                 }
                 writeUser(name, login, password, theme, notifyH, notifyM, notifyL);
                 s3.path = "testCandice/user/" + this.getUsername() + "/user.json";
@@ -329,7 +332,11 @@ public class Login {
                 return log.getUsername();
             }
             else
+            {
+                rank = null;
                 return new String();
+            }
+
         }
         catch (SQLException e)
         {
@@ -355,6 +362,7 @@ public class Login {
         this.user = null;
         this.snames = null;
         login = null;
+        rank = null;
     }
 
 
@@ -367,5 +375,6 @@ public class Login {
     private String password;
     private User user;
     public static String login;
+    public static Rank rank; /* rank.toString().equals("BLAHBLAH"); */
     private ArrayList<ArrayList<Vector>> snames;
 }
