@@ -1,3 +1,5 @@
+import java.io.File;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.sql.*;
 import java.util.Vector;
@@ -8,6 +10,7 @@ public class Login {
         this.username = null;
         this.password = null;
         this.user = null;
+        this.snames = null;
     }
 
     /* Constructor. user takes a value only once a user has logged in. */
@@ -56,7 +59,7 @@ public class Login {
     }
 
     /* Checks if the user trying to log in exists and logs in if so. Does nothing if not. */
-    private void checkCredentials(Connection connection)
+    private boolean checkCredentials(Connection connection, S3Manager s3)
     {
         try
         {
@@ -79,47 +82,76 @@ public class Login {
                 rs = st.executeQuery();
                 rs.next();
 
-                /* Saves that info to use it later */
-                String name = rs.getString("uname");
+                /* Saves that info to use it later (User objects generation & Json generation) */
+                String name = rs.getString("uname").trim();
+                String password = this.getPassword();
+                String login = this.getUsername();
                 int sid = rs.getInt("uid");
+                String theme = rs.getString("theme").trim();
+                int notifyH = rs.getInt("notifyH");
+                int notifyM = rs.getInt("notifyM");
+                int notifyL = rs.getInt("notifyL");
                 String rank = rs.getString("urank").trim();
 
 
+                /* All JSON files are written locally, uploaded to S3, and then removed from the local memory */
                 if (rank.trim().equals("STUDENT"))
                 {
                     ArrayList<Class> classes = classesStudent(connection, sid);
-                    // login() that creates the correct structure in S3
                     this.user = new Student (name, this.getUsername(), sid, classes, this.snames);
+                    s3.path = "testCandice/user/" + this.getUsername() + "/classes.json";
+                    s3.upload_file("classes.json");
+                    File file = new File("classes.json");
+                    file.delete();
                 }
                 else if (rank.trim().equals("INSTRUCTOR"))
                 {
                     ArrayList<Class> classes = classesInstructor(connection, sid, name);
-                    // login() that creates the correct structure in S3
                     this.user = new Instructor(name, this.getUsername(), sid, classes, this.snames);
+                    s3.path = "testCandice/user/" + this.getUsername() + "/course.json";
+                    s3.upload_file("course.json");
+                    File file = new File("course.json");
+                    file.delete();
                 }
                 else
                 {
                     ArrayList<Class> classes = classesStudent(connection, sid);
                     ArrayList<Class> taught = classesInstructor(connection, sid, name);
-                    // login() that creates the correct structure in S3
                     this.user = new TA(name, this.getUsername(), sid, classes, taught, this.snames);
+                    s3.path = "testCandice/user/" + this.getUsername() + "/classes.json";
+                    s3.upload_file("classes.json");
+                    File file = new File("classes.json");
+                    file.delete();
+                    s3.path = "testCandice/user/" + this.getUsername() + "/course.json";
+                    s3.upload_file("course.json");
+                    file = new File("course.json");
+                    file.delete();
                 }
+                writeUser(name, login, password, theme, notifyH, notifyM, notifyL);
+                s3.path = "testCandice/user/" + this.getUsername() + "/user.json";
+                s3.upload_file("user.json");
+                File file = new File("user.json");
+                file.delete();
+                rs.close();
+                st.close();
+                return true;
             }
             else
             {
                 System.out.println("User not found!");
+                rs.close();
+                st.close();
+                return false;
             }
-            rs.close();
-            st.close();
         }
         catch (SQLException e) {
             e.printStackTrace();
         }
-
+        return false;
     }
 
     /* Creates the classes array necessary to the creation of the Student or TA object */
-    public ArrayList<Class> classesStudent(Connection connection, int sid)
+    private ArrayList<Class> classesStudent(Connection connection, int sid)
     {
         try {
             PreparedStatement st = connection.prepareStatement("SELECT DISTINCT C.cid, C.cname, C.csection, C.cnum, C.cquarter, C.ctype, U2.uname FROM Class C, enrolls_in E, teaches T, Usr U, Usr U2 WHERE U.uid = ? AND U.uid = E.uid AND C.cid = E.cid AND T.cid = E.cid AND U2.uid = T.uid ORDER BY cnum ASC, csection ASC, U2.uname ASC");
@@ -174,7 +206,7 @@ public class Login {
     }
 
     /* Creates the classes (or taught) array necessary to the creation of the Instructor or TA object */
-    public ArrayList<Class> classesInstructor(Connection connection, int tid, String name)
+    private ArrayList<Class> classesInstructor(Connection connection, int tid, String name)
     {
         try
         {
@@ -227,14 +259,14 @@ public class Login {
     }
 
     /* Make sure that the list of the students is saved */
-    public void studentsList(ArrayList<ArrayList<Vector>> snames) {
+    private void studentsList(ArrayList<ArrayList<Vector>> snames) {
         this.snames = snames;
     }
 
 
     /* Checks if some classes are taught by several instructors. If so, "merge" all the lines
        corresponding to those classes to have one line per class with the names of all the instructors. */
-    public static void severalInstructors(ArrayList<Class> classes)
+    private static void severalInstructors(ArrayList<Class> classes)
     {
         for (int i = 0; i < classes.size() - 1; i++)
         {
@@ -252,8 +284,24 @@ public class Login {
         }
     }
 
+    private void writeUser(String name, String login, String password, String theme, int notifyH, int notifyM, int notifyL)
+    {
+        try{
+            PrintWriter file = new PrintWriter("user.json");
+            file.println("[");
+            file.println("{\"name\":\"" + name + "\", \"login\":\"" + login + "\", \"password\":\""
+                    + password + "\", \"theme\":\"" + theme + "\", \"notifyH\":\"" + notifyH + "\", \"notifyM\":\""
+                    + notifyM + "\", \"notifyL\":\"" + notifyL + "\"}");
+            file.println("]");
+            file.close();
+        }catch(Exception e) {
+            System.out.println("ERROR");
+            e.printStackTrace();
+        }
+    }
 
-    public static void main(String[] argv)
+    /* If the function returns an empty string, the authentication failed. If it returns a non-empty string, it worked and the string can be used to access the correct directory */
+    private static String login(String username, String password)
     {
         try {
             DriverManager.registerDriver(new org.postgresql.Driver());
@@ -262,7 +310,7 @@ public class Login {
         {
             System.out.println("Driver registration failed!");
             e.printStackTrace();
-            return;
+            return new String();
         }
         Connection connection = null;
         String dbURL = "jdbc:postgresql://dbmilearn.c8o8famsdyyy.us-west-2.rds.amazonaws.com:5432/dbmilearn";
@@ -274,29 +322,19 @@ public class Login {
 
             Statement st = connection.createStatement();
 
-            Login log = new Login("balle056", "iamtheflash");
-            log.checkCredentials(connection);
-
-            while (log.getUser() != null)
-            {
-                /*
-                The user is connected, do something
-                We go out of the while loop once the user has logged out
-                 */
-
-                /* At some point, the user logs out */
-                log = new Login();
+            Login log = new Login(username, password);
+            S3Manager s3 = new S3Manager();
+            if (log.checkCredentials(connection, s3)) {
+                login = log.getUsername();
+                return log.getUsername();
             }
-
-            /* Need to see how to get arguments and what to do once the first user logged out */
-            System.out.println("Logged out!");
-
-            st.close();
+            else
+                return new String();
         }
         catch (SQLException e)
         {
             e.printStackTrace();
-            return;
+            return new String();
         }
 
         finally
@@ -309,8 +347,25 @@ public class Login {
         }
     }
 
+    /* Might actually not be useful */
+    private void logout()
+    {
+        this.username = null;
+        this.password = null;
+        this.user = null;
+        this.snames = null;
+        login = null;
+    }
+
+
+    public static void main(String[] argv)
+    {
+        login("ckent038", "iamsuperman");
+    }
+
     private String username;
     private String password;
     private User user;
+    public static String login;
     private ArrayList<ArrayList<Vector>> snames;
 }
