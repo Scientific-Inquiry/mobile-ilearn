@@ -1,21 +1,5 @@
 /* Custom JavaScript functions */
 /* Global variables. */
-/*
-// Bruce Wayne (student info)
-var typeS = true;   // Indicates user is a student
-var typeI = false;  // Indicates user is an instructor
-var name = "Bruce Wayne";
-var login = "bwayn052"; 
-*/
-/*
-// Clark Kent (instructor info)
-var typeS = false;
-var typeI = true;
-var name = "Clark Kent";
-var login = "ckent038";
-*/
-
-
 /* User data information */
 var login;
 var name;
@@ -46,8 +30,10 @@ function init(user) {
     }
     url = "data/users/" + user + "/";
     getData(url + "user.json", jsonUser);
-    loadHome();
-    menu();
+    $(document).ready(function() {
+        loadHome();
+        menu();
+    });
 }
 
 /* Function for adding functions on to the menu. */
@@ -320,16 +306,25 @@ function changeContent(content) {
 function changeTheme(themeUse) {
     // Get the old theme
     var themeOld = $("#container").attr("data-theme");
-    alert(themeOld);
     $("#container").attr("data-theme", themeUse);
-    alert(themeUse);
     // Changes all of the CSS classes to match the current theme
-    // Array of themed classes
-    var arrTheme = ["ui-overlay-", "ui-page-theme-"];
-    for(var i = 0; i < arrTheme.length; i++) {
-        var currTheme = arrTheme[i] + themeOld;
-        $("." + currTheme).addClass(arrTheme[i] + themeUse);
-        $("." + currTheme).removeClass(currTheme);
+    if(themeOld !== themeUse) {
+        // Array of themed classes
+        var arrTheme = ["ui-overlay-", 
+                        "ui-page-theme-", 
+                        "ui-body-", 
+                        "ui-bar-", 
+                        "ui-group-theme-",
+                        "ui-panel-page-container-",
+                        "ui-btn-"];
+        for(var i = 0; i < arrTheme.length; i++) {
+            var currTheme = arrTheme[i] + themeOld;
+            $("." + currTheme).addClass(arrTheme[i] + themeUse);
+            $("." + currTheme).removeClass(currTheme);
+        }
+        // Sets the selection in the Select list.
+        $("#app-theme-select").val(themeUse).attr("selected", true).siblings("option").removeAttr("selected");
+        $("#app-theme-select").selectmenu("refresh");
     }
 }
 
@@ -409,6 +404,7 @@ function loadSets() {
     changeContent(title);
     
     // Loads the users settings.
+    // Sets up user theme changing
     $("#app-theme-a").click(function() {
        changeTheme("a");
     }); // Changes to Default theme
@@ -418,4 +414,10 @@ function loadSets() {
     $("#app-theme-c").click(function() {
         changeTheme("c");
     }); // Changes to Highlander theme
+    $("#app-theme-y").click(function() {
+        changeTheme("y");
+    }); // Changes to Go Blind! High Contrast theme
+    $("#app-theme-z").click(function() {
+        changeTheme("z");
+    }); // Changes to Super! Basic! theme
 }

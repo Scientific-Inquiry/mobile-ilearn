@@ -18,6 +18,7 @@
   <!-- Custom Attributes -->
   <!-- App stylesheet -->
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/theme.css">
   <!-- App JavaScript -->
   <script src="js/format.js"></script>
   <script>
@@ -126,10 +127,12 @@
         <p>The user will be able to change what their interface looks like here.</p>
         <div id="app-theme">
             <!-- Option to change theme goes here. -->
-            <select name="themeName">
-                <option id="app-theme-a" value="a">Default Theme</option>
-                <option id="app-theme-b" value="b">Dark Theme</option>
-                <option id="app-theme-c" value="c">Highlander Theme</option>
+            <select id="app-theme-select" name="themeName">
+                <option id="app-theme-a" value="a">Default</option>
+                <option id="app-theme-b" value="b">Dark</option>
+                <option id="app-theme-c" value="c">Highlander</option>
+                <option id="app-theme-y" value="y">Go Blind! (High Contrast)</option>
+                <option id="app-theme-z" value="z">Super! Basic!</option>
             </select>
         </div>
         <h3>Change Priority</h3>

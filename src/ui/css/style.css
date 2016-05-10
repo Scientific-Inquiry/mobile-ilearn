@@ -1,4 +1,8 @@
 /* Custom stylesheet for app */
+/* Applies across all themes. */
+.ui-bar-*, .ui-body-* { border-width: 1px; border-style: solid; }
+.ui-page-theme-* .ui-bar-inherit { font-weight: 700; }
+
 /* Styles for header area. */
 #app-title { overflow: visible; }
 
