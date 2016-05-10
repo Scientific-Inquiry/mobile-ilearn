@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- Meta Attributes -->
+  <title>Mobile iLearn Screen</title>
+  <meta charset="UTF-8" />
+  <!-- Viewport in order to ensure proper rendering and touch zooming -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- jQuery Mobile Attributes -->
+  <!-- jQuery Mobile stylesheet -->
+  <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+  <!-- jQuery library -->
+  <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+  <!-- jQuery Mobile library -->
+  <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+
+  <!-- Custom Attributes -->
+  <!-- App stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+  <!-- App JavaScript -->
+  <script src="js/format.js"></script>
+  <script>
+    $(document).ready(function(){
+      // Initially loads the Home screen
+      loadHome();
+      // Loads the menu
+      menu();
+    });
+  </script>
+</head>
+<body>
+  <!-- Container Page -->
+  <div data-role="page" id="container">
+    <!-- Header -->
+    <div data-role="header" class="app-header">
+      <!-- Screen title -->
+      <h1 id="app-title">Home Screen</h1>
+      
+      <!-- Logo, help, and logout -->
+      <div class="app-head" data-role="navbar" id="app-admin">
+        <ul>
+          <li><a href="#app-logo-link"><span id="app-logo">MiLearn</span></a></li>
+          <li><a href="#app-help" data-rel="popup" data-position-to="window" data-icon="info"><span class="app-small">Help</span></a></li>
+          <li><a href="#" data-icon="power"><span class="app-small">Logout</span></a></li>
+        </ul>
+      </div>
+      
+      <!-- Menu -->
+      <div data-role="navbar" id="app-menu">
+        <ul>
+          <li><a href="#home" data-icon="home" class="app-menu-link app-menu-active" id="app-menu-home"><span class="app-small">Home</span></a></li>
+          <li><a href="#course" data-icon="bars" class="app-menu-link" id="app-menu-course"><span class="app-small">Classes</span></a></li>
+          <li><a href="#assn" data-icon="edit" class="app-menu-link" id="app-menu-assn"><span class="app-small">Assignments</span></a></li>
+          <li><a href="#grade" data-icon="check" class="app-menu-link" id="app-menu-grade"><span class="app-small">Grades</span></a></li>
+          <li><a href="#setting" data-icon="gear" class="app-menu-link" id="app-menu-setting"><span class="app-small">Settings</span></a></li>
+        </ul>
+      </div>
+    </div>
+      
+    <!-- Home Screen -->
+    <div data-role="content" class="ui-content app-active" id="home">
+        <h2>Welcome <span class="app-user-name"></span></h2>
+        <div id="app-home">
+          <!-- A listview that shows different alerts in order of priority.
+          Currently we will have assignments as alerts.
+          Alerts are separated into high priority (red), medium priority (yellow), and low priority (green).
+          JavaScript is used to determine low, medium, and high priority as well as user settings. -->
+          <ul data-role="listview" id="app-alerts">
+              <!-- This is where the user's alerts go. -->
+          </ul>
+        </div>
+    </div>
+    
+    <!-- Classes Screen -->
+    <div data-role="content" class="ui-content" id="course">
+      <h2><span id="courseQuarter"></span></h2>
+      <div id="app-course">
+        <!-- A collapsible schedule of classes that display the course number and section as well as the full course name and instructor. -->
+        <h3><span class="app-label" id="app-enrolled">Classes enrolled in:</span></h3>
+        <div data-role="collapsibleset" class="schedule" id="courseS">
+          <!-- The student's class schedule goes here. -->
+        </div>
+        
+        <!-- A collapsible schedule of classes that displays the course number and section (possibly student list). -->
+        <h3><span class="app-label" id="app-teaching">Courses that you are teaching: </span></h3>
+        <div data-role="collapsibleset" class="schedule" id="courseI">
+            <!-- The instructor's class schedule goes here. -->
+        </div>
+      </div>
+    </div>
+    
+    <!-- Assignments Screen -->
+    <div data-role="content" class="ui-content" id="assn">
+      <div id="app-assn">
+        <h2>Assignments Due</h2>
+        <!-- A list of all assignments from all classes.
+              Later can click on the title to upload files. -->
+        <h3 class="app-label" id="assnS">To Turn In:</h3>
+        <div data-role="collapsibleset" class="assign" id="assignS">
+          <!-- Displays the student's assignments that are due. -->
+        </div>
+        <h3 class="app-label" id="assnI">To Grade:</h3>
+        <div data-role="collapsibleset" class="assign" id="assignI">
+            <!-- Displays the assignments that will be turned in. -->
+        </div>
+      </div>
+    </div>
+    
+    <!-- Grades Screen -->
+    <div data-role="content" class="ui-content" id="grade">
+      <h2>Grades</h2>
+      <div id="app-grade">
+        <div data-role="collapsibleset" class="grades" id="gradedS">
+            <!-- Displays the student's grades as a collapsible. -->
+        </div>
+        
+        <div data-role="collapsibleset" class="grades" id="gradedI">
+            <!-- Displays the assignments that the instructor can grade. -->
+        </div>
+      </div>
+    </div>
+    
+    <!-- Settings Screen -->
+    <div data-role="content" class="ui-content" id="setting">
+      <h2>Settings</h2>
+      <div id="app-setting">
+        <h3>Change Theme</h3>
+        <p>The user will be able to change what their interface looks like here.</p>
+        <h3>Change Priority</h3>
+        <p>The user will be able to change what their high, medium, and low priority settings are.</p>
+      </div>
+    </div>
+      
+    <!-- Help Popup -->
+    <div data-role="popup" id="app-help">
+        <h2>Help</h2>
+        <!-- Legend -->
+        <ul data-role="listview" data-inset="true">
+            <li data-icon="home"><a href="#">Home</a></li>
+            <li data-icon="bars"><a href="#">Classes</a></li>
+            <li data-icon="edit"><a href="#">Assignments</a></li>
+            <li data-icon="check"><a href="#">Grades</a></li>
+            <li data-icon="gear"><a href="#">Settings</a></li>
+            <li data-icon="info"><a href="#">Help</a></li>
+            <li data-icon="power"><a href="#">Logout</a></li>
+        </ul>
+    </div>
+
+    <!-- Footer -->
+    <div data-role="footer" class="app-footer">
+      <h1>Team 5X5<br />
+      <span id="app-time"></span></h1>
+    </div>
+  </div>
+</body>
+</html>
