@@ -1,6 +1,8 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.io.PrintWriter;
 import java.io.File;
+import java.util.Vector;
 
 public abstract class User implements UserInterface {
 	public void displayClasses()
@@ -51,19 +53,35 @@ public abstract class User implements UserInterface {
 	{
 		this.sid = sid;
 	}
+	public ArrayList<ArrayList<Vector>> getSnames()
+	{
+		return this.snames;
+	}
+	public void setSnames(ArrayList<ArrayList<Vector>> s)
+	{
+		this.snames = (ArrayList<ArrayList<Vector>>) s.clone();
+	}
 	
-	public void writeJson()
+	public void writeJson(String filename, Rank rank, ArrayList<ArrayList<Vector>> snames)
 	{
 		try{
-			PrintWriter file = new PrintWriter("classes.json");
+			PrintWriter file = new PrintWriter(filename);
 			file.println("[");
 			for (int i = 0; i < this.getClasses().size(); i++)
 			{
-				file.println(classes.get(i).toString());
+                for (int j = 0; j < snames.get(i).size(); j++)
+                {
+                    if (i != this.getClasses().size()-1)
+                        file.println(classes.get(i).toString(rank, snames.get(i).get(j)) + ",");
+                    else
+                        file.println(classes.get(i).toString(rank, snames.get(i).get(j)));
+                }
 			}
 			file.println("]");
 	        file.close();
-	    }catch(Exception e) {
+            File f = new File(filename);
+	    }
+		catch(Exception e) {
 	        System.out.println("ERROR");
 	        e.printStackTrace();
 	    }
@@ -76,4 +94,5 @@ public abstract class User implements UserInterface {
 	protected int sid;
 	protected Rank rank;
 	protected ArrayList<Class> classes;
+	protected ArrayList<ArrayList<Vector>> snames;
 }
