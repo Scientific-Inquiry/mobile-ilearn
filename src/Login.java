@@ -99,10 +99,12 @@ public class Login {
                 {
                     ArrayList<Class> classes = classesStudent(connection, sid);
                     this.user = new Student (name, this.getUsername(), sid, classes, this.snames);
-                    /*s3.path = "testCandice/user/" + this.getUsername() + "/classes.json";
-                    s3.upload_file("classes.json");
                     File file = new File("classes.json");
-                    file.delete();*/
+                    String path = file.getAbsolutePath();
+                    System.out.println(path);
+                    s3.path = "testCandice/user/" + this.getUsername() + "/classes.json";
+                    s3.upload_file(path);
+                    file.delete();
                     Login.rank = Rank.STUDENT;
                 }
                 else if (rank.trim().equals("INSTRUCTOR"))
@@ -382,9 +384,7 @@ public class Login {
 
     public static void main(String[] argv)
     {
-        login("balle056", "iamtheflash");
-        String[] name = messWithName("Bruce Wayne");
-        System.out.println(name[1] + ", " + name[0]);
+        login("bwayn052", "iambatman");
     }
 
     private String username;

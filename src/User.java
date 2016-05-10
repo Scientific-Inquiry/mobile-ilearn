@@ -79,6 +79,7 @@ public abstract class User implements UserInterface {
 			}
 			file.println("]");
 	        file.close();
+            File f = new File(filename);
 	    }
 		catch(Exception e) {
 	        System.out.println("ERROR");
