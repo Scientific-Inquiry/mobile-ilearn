@@ -287,7 +287,7 @@ public class Login {
         }
     }
 
-    private void writeUser(String name, String login, String password, String theme, int notifyH, int notifyM, int notifyL)
+    public static void writeUser(String name, String login, String password, String theme, int notifyH, int notifyM, int notifyL)
     {
         try{
             PrintWriter file = new PrintWriter("user.json");
@@ -304,7 +304,7 @@ public class Login {
     }
 
     /* If the function returns an empty string, the authentication failed. If it returns a non-empty string, it worked and the string can be used to access the correct directory */
-    private static String login(String username, String password)
+    private static boolean login(String username, String password)
     {
         try {
             DriverManager.registerDriver(new org.postgresql.Driver());
@@ -313,7 +313,7 @@ public class Login {
         {
             System.out.println("Driver registration failed!");
             e.printStackTrace();
-            return new String();
+            return false;
         }
         Connection connection = null;
         String dbURL = "jdbc:postgresql://dbmilearn.c8o8famsdyyy.us-west-2.rds.amazonaws.com:5432/dbmilearn";
@@ -329,19 +329,19 @@ public class Login {
             S3Manager s3 = new S3Manager();
             if (log.checkCredentials(connection, s3)) {
                 login = log.getUsername();
-                return log.getUsername();
+                return true;
             }
             else
             {
                 rank = null;
-                return new String();
+                return false;
             }
 
         }
         catch (SQLException e)
         {
             e.printStackTrace();
-            return new String();
+            return false;
         }
 
         finally
