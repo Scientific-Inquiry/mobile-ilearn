@@ -19,6 +19,7 @@
 #app-menu .app-menu-active { background-color: #38c; border-color: #38c; color: #ffffff; text-shadow: 0 1px 0 #059; }
 
 /* Alerts styles. */
+#app-alerts li { color: #000000; }
 #app-priority { background-color: #d9edf7; }
 .ui-listview > .priorityHigh { background-color: #f2dede; }
 .ui-listview > .priorityMed { background-color: #fcf8e3; }
@@ -37,6 +38,11 @@ ul.gradebook { list-style-type: none; list-style-position: inside; padding: 0; }
 .gradebook li { padding: 1em; margin: 0; border-top: 1px solid grey; }
 .gradebook li:first-child { padding-top: 0.5em; border-top: none; }
 .gradebook li:last-child { padding-bottom: 0.5em; }
+/* Gradebook styles */
+table.ui-responsive thead > tr { background-color: #aaffaa; }
+table.ui-responsive tbody > tr { background-color: #aaffff; }
+table.ui-responsive tbody > tr.grade-late { background-color: #ffaaaa; }
+
 
 /* Styles for footer area. */
 #app-time { text-align: center; }
