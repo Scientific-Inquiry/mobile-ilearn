@@ -21,10 +21,13 @@ public class TA extends User
                 file.println("[");
                 for (int i = 0; i < this.getTaught().size(); i++)
                 {
-                    if (i != this.getClasses().size()-1)
-                        file.println(getTaught().get(i).toString(rank, snames.get(i)) + ",");
-                    else
-                        file.println(getTaught().get(i).toString(rank, snames.get(i)));
+                    for (int j = 0; j < snames.get(i).size(); j++)
+                    {
+                        if (i != this.getClasses().size()-1)
+                            file.println(classes.get(i).toString(rank, snames.get(i).get(j)) + ",");
+                        else
+                            file.println(classes.get(i).toString(rank, snames.get(i).get(j)));
+                    }
                 }
                 file.println("]");
                 file.close();

@@ -3,7 +3,7 @@ import java.util.Vector;
 
 public abstract class Class implements ClassInterface
 {
-	public String toString(Rank rank, ArrayList<Vector> snames)
+	public String toString(Rank rank, Vector snames)
 	{
 		if (rank.toString().equals("STUDENT"))
 		    return "{\"courseName\":" + "\"" + this.getName() + "\", " + "\"courseNumber\":\"" + this.getNumber() +
@@ -11,7 +11,7 @@ public abstract class Class implements ClassInterface
 				"\", \"instructor\":\"" + this.getFaculty() + "\"}";
         else
         {
-			String s = ", \"sname\":\"";
+			/*String s = ", \"sname\":\"";
 			for (int i = 0; i < snames.size(); i++)
 			{
 				if (i != snames.size()-1)
@@ -27,9 +27,14 @@ public abstract class Class implements ClassInterface
 				else
 					s = s + snames.get(i).get(1);
 			}
-			s = s + "\"";
-            return "{\"courseName\":" + "\"" + this.getName() + "\", " + "\"courseNumber\":\"" + this.getNumber() +
-                    "\", \"quarter\":\"" + this.getQuarter() + "\"" + s + "}";
+			s = s + "\"";*/
+			String[] name = Login.messWithName((String) snames.get(0));
+            String firstName = name[0];
+            String lastName = name[1];
+
+            return "{\"courseName\":" + "\"" + this.getName() + "\", " + "\"courseNumber\":\"" + this.getNumber()
+                    + "\", \"quarter\":\"" + this.getQuarter() + "\", \"sname\":\"" + lastName + ", "
+                    + firstName + "\", \"slogin\":\"" + snames.get(1) + "\"}";
         }
 	}
 	

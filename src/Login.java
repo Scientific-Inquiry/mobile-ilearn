@@ -99,20 +99,20 @@ public class Login {
                 {
                     ArrayList<Class> classes = classesStudent(connection, sid);
                     this.user = new Student (name, this.getUsername(), sid, classes, this.snames);
-                    s3.path = "testCandice/user/" + this.getUsername() + "/classes.json";
+                    /*s3.path = "testCandice/user/" + this.getUsername() + "/classes.json";
                     s3.upload_file("classes.json");
                     File file = new File("classes.json");
-                    file.delete();
+                    file.delete();*/
                     Login.rank = Rank.STUDENT;
                 }
                 else if (rank.trim().equals("INSTRUCTOR"))
                 {
                     ArrayList<Class> classes = classesInstructor(connection, sid, name);
                     this.user = new Instructor(name, this.getUsername(), sid, classes, this.snames);
-                    s3.path = "testCandice/user/" + this.getUsername() + "/course.json";
+                    /*s3.path = "testCandice/user/" + this.getUsername() + "/course.json";
                     s3.upload_file("course.json");
                     File file = new File("course.json");
-                    file.delete();
+                    file.delete();*/
                     Login.rank = Rank.INSTRUCTOR;
                 }
                 else
@@ -120,21 +120,21 @@ public class Login {
                     ArrayList<Class> classes = classesStudent(connection, sid);
                     ArrayList<Class> taught = classesInstructor(connection, sid, name);
                     this.user = new TA(name, this.getUsername(), sid, classes, taught, this.snames);
-                    s3.path = "testCandice/user/" + this.getUsername() + "/classes.json";
+                    /*s3.path = "testCandice/user/" + this.getUsername() + "/classes.json";
                     s3.upload_file("classes.json");
                     File file = new File("classes.json");
                     file.delete();
                     s3.path = "testCandice/user/" + this.getUsername() + "/course.json";
                     s3.upload_file("course.json");
                     file = new File("course.json");
-                    file.delete();
+                    file.delete();*/
                     Login.rank = Rank.TA;
                 }
                 writeUser(name, login, password, theme, notifyH, notifyM, notifyL);
-                s3.path = "testCandice/user/" + this.getUsername() + "/user.json";
+                /*s3.path = "testCandice/user/" + this.getUsername() + "/user.json";
                 s3.upload_file("user.json");
                 File file = new File("user.json");
-                file.delete();
+                file.delete();*/
                 rs.close();
                 st.close();
                 return true;
@@ -199,7 +199,7 @@ public class Login {
             }
             studentsList(snames);
 
-            severalInstructors(classes);
+            //severalInstructors(classes);
             return classes;
         }
         catch(SQLException e){
@@ -261,6 +261,12 @@ public class Login {
         }
     }
 
+    public static String[] messWithName(String name)
+    {
+        String[] parts = name.split(" ");
+        return parts;
+    }
+
     /* Make sure that the list of the students is saved */
     private void studentsList(ArrayList<ArrayList<Vector>> snames) {
         this.snames = snames;
@@ -290,11 +296,19 @@ public class Login {
     public static void writeUser(String name, String login, String password, String theme, int notifyH, int notifyM, int notifyL)
     {
         try{
+            int rank;
+            if (Login.rank.toString().equals("STUDENT"))
+                rank = 0;
+            else if (Login.rank.toString().equals("INSTRUCTOR"))
+                rank = 1;
+            else
+                rank = 2; // TA
+
             PrintWriter file = new PrintWriter("user.json");
             file.println("[");
             file.println("{\"name\":\"" + name + "\", \"login\":\"" + login + "\", \"password\":\""
                     + password + "\", \"theme\":\"" + theme + "\", \"notifyH\":\"" + notifyH + "\", \"notifyM\":\""
-                    + notifyM + "\", \"notifyL\":\"" + notifyL + "\"}");
+                    + notifyM + "\", \"notifyL\":\"" + notifyL + "\", \"type\":\"" + rank + "\"}");
             file.println("]");
             file.close();
         }catch(Exception e) {
@@ -304,7 +318,7 @@ public class Login {
     }
 
     /* If the function returns an empty string, the authentication failed. If it returns a non-empty string, it worked and the string can be used to access the correct directory */
-    private static boolean login(String username, String password)
+    public static boolean login(String username, String password)
     {
         try {
             DriverManager.registerDriver(new org.postgresql.Driver());
@@ -355,7 +369,7 @@ public class Login {
     }
 
     /* Might actually not be useful */
-    private void logout()
+    public void logout()
     {
         this.username = null;
         this.password = null;
@@ -368,7 +382,9 @@ public class Login {
 
     public static void main(String[] argv)
     {
-        login("ckent038", "iamsuperman");
+        login("balle056", "iamtheflash");
+        String[] name = messWithName("Bruce Wayne");
+        System.out.println(name[1] + ", " + name[0]);
     }
 
     private String username;
