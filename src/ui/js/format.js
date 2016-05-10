@@ -1,24 +1,54 @@
 /* Custom JavaScript functions */
 /* Global variables. */
-/* // Bruce Wayne (student info)
+/*
+// Bruce Wayne (student info)
 var typeS = true;   // Indicates user is a student
 var typeI = false;  // Indicates user is an instructor
 var name = "Bruce Wayne";
 var login = "bwayn052"; 
 */
+/*
 // Clark Kent (instructor info)
 var typeS = false;
 var typeI = true;
 var name = "Clark Kent";
 var login = "ckent038";
+*/
 
-var quarter = "qyyyy";
-var url = "data/users/" + login + "/";
-var classURL = "data/classes/" + quarter + "/";
-var graded = false;
+
+/* User data information */
+var login;
+var name;
+var typeS = false;
+var typeI = false;
+var url;
+
 var priLow = 7;     // Low priority is by default 7 days (7-21 days)
 var priMed = 3;     // Medium priority is by default 3 days (3-6 days)
 var priHigh = 24;   // High priority is by default 24 hours (1-72 hours)
+
+function init(user) {
+    // Gets the user data
+    function jsonUser(arr) {
+        login = arr[0].login;
+        name = arr[0].name;
+        priHigh = arr[0].notifyH;
+        priMed = arr[0].notifyM;
+        priLow = arr[0].notifyL;
+        var utype = Number(arr[0].type);
+        if((utype == 0) || (utype == 2)) { typeS = true; }
+        if((utype == 1) || (utype == 2)) { typeI = true; }
+        else if((utype > 2) || (utype < 0)) { alert(name + " is not a user!"); }
+        
+        // Sets the user's theme
+        var themeUse = arr[0].theme;
+        changeTheme(themeUse);
+    }
+    url = "data/users/" + user + "/";
+    getData(url + "user.json", jsonUser);
+    loadHome();
+    menu();
+}
 
 /* Function for adding functions on to the menu. */
 function menu() {
@@ -111,7 +141,7 @@ function jsonClassList(arr) {
         out += '<div data-role="collapsible" class="graded" id="graded-' + className + '"><h3>' + className + '</h3><ul data-role="listview" data-inset="true" class="gradebook" id="gradebook-' + className + '"><li>No grades are available for this class!</li></ul></div>';
     }
     // Refreshes the grades collapsible set.
-    $(".grades").html(out).collapsibleset("refresh");
+    $("#gradedS").html(out).collapsibleset("refresh");
 }
 
 /* Function for getting a student's grades. */
@@ -203,17 +233,27 @@ function jsonAssigner(arr) {
     var out = "";
     var i;
     var idNum = 0;
+    var className = arr[0].courseNum + '-' + arr[0].courseSec;
+    var classes = [className];
     for(i = 0; i < arr.length; i++) {
         idNum++;
+        className = arr[i].courseNum + '-' + arr[i].courseSec;
+        if(className !== classes[classes.length - 1]) { classes.push(className); }
         // Generates a collapsible with the assignment.
-        out += '<div data-role="collapsible" id="assnNum' + idNum + '"><h3 class="assigned">' + arr[i].courseNum + '-' + arr[i].courseSec + ': ' + arr[i].title + '</h3><p>' + arr[i].desc + '</p><p>Due: ' + arr[i].due + '</p><p>Points: ' + arr[i].points + '</p></div>';
+        out += '<div data-role="collapsible" id="assnNum' + idNum + '"><h3 class="assigned">' + arr[i].courseNum + '-' + arr[i].courseSec + ': ' + arr[i].title + '</h3><form action="" method="post" target="_blank" accept-charset="UTF-8" enctype="application/x-www-form-urlencoded" autocomplete="off" novalidate><fieldset><p>Assignment Title: <input type="text" name="title" value="' + arr[i].title + '" maxlength="50"><br /><textarea name="description" rows="10" cols="15" maxlength="150">' + arr[i].desc + '</textarea></p><p>Due: ' + arr[i].due + '<br />New Due Date<br />(mm/dd/yyyy, hh:dd AM/PM):<br /><input type="datetime-local" name="dueDate"></p><p>Points: <input type="text" name="grade" value="' + arr[i].points + '" maxlength="4" size="3"></p><input type="submit" value="Submit"></fieldset></form></div>';
     }
+    /* New Assignment form */
+    out += '<div data-role="collapsible" id="assnNew"><h3 class="assigned">New Assignment</h3><form action="" method="post" target="_blank" accept-charset="UTF-8" enctype="application/x-www-form-urlencoded" autocomplete="off" novalidate><fieldset><p>Class: <select name="className">';
+    for(i = 0; i < classes.length; ++i) { 
+        out += '<option value="' + classes[i] + '">' + classes[i] + '</option>';
+    }
+    out += '</select></p><p>Assignment Title: <input type="text" name="title" value="New Assignment Title" maxlength="50"><br /><textarea name="description" rows="10" cols="15" maxlength="150">Put a description of the assignment here!</textarea></p><p>Due Date<br />(mm/dd/yyyy, hh:dd AM/PM):<br /><input type="datetime-local" name="dueDate"></p><p>Points: <input type="text" name="grade" value="0" maxlength="4" size="3"></p><input type="submit" value="Submit"></fieldset></form></div>';
     // Refreshes the assignments collapsible set.
     $("#assignI").html(out).collapsibleset("refresh");
 }
 
 /* Function for displaying the grades for a class. */
-function jsonGraded(arr) {
+function jsonGrader(arr) {
     var out = "";
     var i;
     var currAssn = "";
@@ -224,16 +264,18 @@ function jsonGraded(arr) {
         if(currAssn !== currGrade) {
             idNum++;
             currAssn = currGrade; 
-            out += '<div data-role="collapsible" id="gradeI' + idNum + '"><h3 class="grader">' + arr[i].courseNum + '-' + arr[i].courseSec + ': ' + currAssn + '</h3><p>Assignment Ttile: ' + arr[i].title + '<br />Total Points: ' + arr[i].total + '</p><table data-role="table" class="ui-responsive"><thead><tr><th>Student Login</th><th>Student Grade</th><th>Percent</tr></thead><tbody>';
+            out += '<div data-role="collapsible" id="gradeI' + idNum + '"><h3 class="grader">' + arr[i].courseNum + '-' + arr[i].courseSec + ': ' + currAssn + '</h3><p>Assignment Title: ' + arr[i].title + '<br />Total Points: ' + arr[i].total + '</p><form action="" method="post" target="_blank" accept-charset="UTF-8" enctype="application/x-www-form-urlencoded" autocomplete="off" novalidate><table data-role="table" class="ui-responsive"><thead><tr><th>Student<br /> Login</th><th>Student<br /> Grade</th><th>Percent</tr></thead><tbody>';
         }
         // Gets the students in the class.
-        var percent = Number(arr[i].grade / arr[i].total);
-        out += '<tr><td>' + arr[i].slogin + '</td><td>' + arr[i].grade + '</td><td>' + percent + '</td></tr>';
+        var percent = Number((arr[i].grade / arr[i].total) * 100);
+        out += '<tr';
+        if(arr[i].late === "true") { out += ' class="grade-late" '; }
+        out += '><td>' + arr[i].slogin + '</td><td><input type="text" name="grade-' + arr[i].slogin + '" maxlength="4" size="3" value="' + arr[i].grade + '"></td><td>' + percent + '%</td></tr>';
         var next = i + 1;
         if(next < arr.length) {
             currGrade = arr[next].title;
             // Closes the collapsible
-            if(currAssn !== currGrade) { out += '</tbody></table></div>'; }
+            if(currAssn !== currGrade) { out += '</tbody></table><input type="submit" value="Submit"></form></div>'; }
         }
     }
     $("#gradedI").html(out).collapsibleset("refresh");
@@ -272,6 +314,23 @@ function changeLink(link) {
 function changeContent(content) {
     $(".app-active").toggleClass("app-active");
     $("#"+content).toggleClass("app-active");
+}
+
+/* Function for changing the theme. */
+function changeTheme(themeUse) {
+    // Get the old theme
+    var themeOld = $("#container").attr("data-theme");
+    alert(themeOld);
+    $("#container").attr("data-theme", themeUse);
+    alert(themeUse);
+    // Changes all of the CSS classes to match the current theme
+    // Array of themed classes
+    var arrTheme = ["ui-overlay-", "ui-page-theme-"];
+    for(var i = 0; i < arrTheme.length; i++) {
+        var currTheme = arrTheme[i] + themeOld;
+        $("." + currTheme).addClass(arrTheme[i] + themeUse);
+        $("." + currTheme).removeClass(currTheme);
+    }
 }
 
 /* Function for loading the Home screen. */
@@ -337,7 +396,7 @@ function loadGrades() {
         getData(url + "grade.json", jsonGrades);
     }
     if(typeI) {
-        getData(url + "graded.json", jsonGraded);
+        getData(url + "graded.json", jsonGrader);
     }
 }
 
@@ -350,4 +409,13 @@ function loadSets() {
     changeContent(title);
     
     // Loads the users settings.
+    $("#app-theme-a").click(function() {
+       changeTheme("a");
+    }); // Changes to Default theme
+    $("#app-theme-b").click(function() {
+        changeTheme("b");
+    }); // Changes to Dark theme
+    $("#app-theme-c").click(function() {
+        changeTheme("c");
+    }); // Changes to Highlander theme
 }
