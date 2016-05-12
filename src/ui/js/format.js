@@ -315,8 +315,8 @@ function changeTheme(themeUse) {
                         "ui-body-", 
                         "ui-bar-", 
                         "ui-group-theme-",
-                        "ui-panel-page-container-",
-                        "ui-btn-"];
+                        "ui-btn-",
+                        "ui-panel-page-container-"];
         for(var i = 0; i < arrTheme.length; i++) {
             var currTheme = arrTheme[i] + themeOld;
             $("." + currTheme).addClass(arrTheme[i] + themeUse);
@@ -405,19 +405,7 @@ function loadSets() {
     
     // Loads the users settings.
     // Sets up user theme changing
-    $("#app-theme-a").click(function() {
-       changeTheme("a");
-    }); // Changes to Default theme
-    $("#app-theme-b").click(function() {
-        changeTheme("b");
-    }); // Changes to Dark theme
-    $("#app-theme-c").click(function() {
-        changeTheme("c");
-    }); // Changes to Highlander theme
-    $("#app-theme-y").click(function() {
-        changeTheme("y");
-    }); // Changes to Go Blind! High Contrast theme
-    $("#app-theme-z").click(function() {
-        changeTheme("z");
-    }); // Changes to Super! Basic! theme
+    $("#app-theme-select").change(function() {
+       changeTheme(this.value); 
+    });
 }
