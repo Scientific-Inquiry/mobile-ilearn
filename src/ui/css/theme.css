@@ -1,0 +1,90 @@
+/* Stylesheet for custom MiLearn themes. */
+/* Highlander theme (Theme c) */
+/* Modifies header and footer (ui-bars) */
+/* Header and footer are navy colored. */
+.ui-bar-c, .ui-page-theme-c .ui-bar-inherit, .ui-group-theme-c .ui-bar-inherit { 
+	background-color: #2a3fff;
+	border-color: #333333;
+	color: #3c3c3c;
+	text-shadow:0 1px 0 #666666;
+}
+
+/* Modifies the content area */
+/* Content area has a light gray/off-white background. */
+.ui-overlay-c, .ui-page-theme-c, .ui-page-theme-c .ui-panel-wrapper {
+	background-color: #ffdd3e;
+	border-color: #003066;
+	color: #333333;
+	text-shadow: 0 1px 0 #aaaaaa;
+}
+
+/* Collapsible Content */
+/* Collapsible content looks similar to the rest of the content area. */
+.ui-body-c, .ui-page-theme-c .ui-body-inherit, .ui-bar-c .ui-body-inherit {
+	background-color: #ffdd1c;
+	border-color: #003066;
+	color: #333333;
+	text-shadow: 0 1px 0 #aaaaaa;
+}
+
+/* Links */
+.ui-page-theme-c a, .ui-bar-c a, .ui-body-c a, .ui-group-theme-c a {
+	color: #f1ab00;
+	font-weight: 700;
+}
+/* Visited Links */
+.ui-page-theme-c a:visited, .ui-bar-c a:visited, .ui-body-c a:visited, .ui-group-theme-c a:visited {
+	color: #f1ab00;
+}
+/* Hover Links */
+.ui-page-theme-c a:hover, .ui-bar-c a:hover, .ui-body-c a:hover, .ui-group-theme-c a:hover {
+	color: #f1ab00;
+}
+/* Active Links */
+.ui-page-theme-c a:active, .ui-bar-c a:active, .ui-body-c a:active, .ui-group-theme-c a:active {
+	color: #f1ab00;
+}
+
+/* Buttons / Navbar */
+.ui-page-theme-c .ui-btn, .ui-bar-c .ui-btn, .ui-body-c .ui-btn, .ui-group-theme-c .ui-btn, .ui-btn.ui-btn-c, 
+.ui-page-theme-c .ui-btn:visited, .ui-bar-c .ui-btn:visited, .ui-body-c .ui-btn:visited, .ui-group-theme-c .ui-btn:visited, .ui-btn.ui-btn-c:visited {
+	background-color: #2d6cc0;
+	border-color: #003066;
+	color: #3c3c3c;
+	text-shadow:0 1px 0 #666666;
+}
+/* Button Hover */
+.ui-page-theme-c .ui-btn:hover, .ui-bar-c .ui-btn:hover, .ui-body-c .ui-btn:hover, .ui-group-theme-c .ui-btn:hover, .ui-btn.ui-btn-c:hover {
+	background-color: #3075ff;
+	border-color: #003066;
+	color: #3c3c3c;
+	text-shadow:0 1px 0 #666666;
+}
+/* Button Active */
+.ui-page-theme-c .ui-btn:active, .ui-bar-c .ui-btn:active, .ui-body-c .ui-btn:active, .ui-group-theme-c .ui-btn:active, .ui-btn.ui-btn-c:active {
+	background-color: #4583d3;
+	border-color: #003066;
+	color: #3c3c3c;
+	text-shadow:0 1px 0 #666666;
+}
+/* Button Active, Checkbox, Flipswitch, Slider Track */
+.ui-page-theme-c .ui-btn.ui-btn-active, .ui-bar-c .ui-btn.ui-btn-active, .ui-body-c .ui-btn.ui-btn-active, .ui-group-theme-c .ui-btn.ui-btn-active, .ui-btn.ui-btn-c.ui-btn-active, 
+.ui-page-theme-c .ui-checkbox-on:after,html .ui-bar-c .ui-checkbox-on:after,html .ui-body-c .ui-checkbox-on:after,html body .ui-group-theme-c .ui-checkbox-on:after,.ui-btn.ui-checkbox-on.ui-btn-c:after,
+.ui-page-theme-c .ui-flipswitch-active, .ui-bar-c .ui-flipswitch-active, .ui-body-c .ui-flipswitch-active, .ui-group-theme-c .ui-flipswitch-active, .ui-flipswitch.ui-bar-c.ui-flipswitch-active,
+.ui-page-theme-c .ui-slider-track .ui-btn-active, .ui-bar-c .ui-slider-track .ui-btn-active, .ui-body-c .ui-slider-track .ui-btn-active, .ui-group-theme-c .ui-slider-track .ui-btn-active, div.ui-slider-track.ui-body-c .ui-btn-active {
+	background-color: #4583d3;
+	border-color: #003066;
+	color: #3c3c3c;
+	text-shadow:0 1px 0 #666666;
+}
+/* Radio Buttons  */
+.ui-page-theme-c .ui-radio-on:after, .ui-bar-c .ui-radio-on:after, .ui-body-c .ui-radio-on:after, .ui-group-theme-c .ui-radio-on:after, .ui-btn.ui-radio-on.ui-btn-c:after {
+	border-color: #003066;
+}
+
+/* Button Focus */
+.ui-page-theme-c .ui-btn:focus, .ui-bar-c .ui-btn:focus, .ui-body-c .ui-btn:focus, .ui-group-theme-c .ui-btn:focus, .ui-btn.ui-btn-c:focus,
+.ui-page-theme-c .ui-focus, .ui-bar-c .ui-focus, .ui-body-c .ui-focus, .ui-group-theme-c .ui-focus, .ui-btn-c.ui-focus, .ui-body-c.ui-focus {
+	box-shadow:0 0 12px #003066;
+}
+

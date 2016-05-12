@@ -23,11 +23,12 @@
 #app-menu .app-menu-active { background-color: #38c; border-color: #38c; color: #ffffff; text-shadow: 0 1px 0 #059; }
 
 /* Alerts styles. */
-#app-alerts li { color: #000000; }
-#app-priority { background-color: #d9edf7; }
-.ui-listview > .priorityHigh { background-color: #f2dede; }
-.ui-listview > .priorityMed { background-color: #fcf8e3; }
-.ui-listview > .priorityLow { background-color: #dff0d8; }
+#app-alerts li { color: #ffffff; }
+/* Comes in safety blue, red, yellow, and green */
+#app-priority { background-color: #0067a7; }
+#app-alerts li.priorityHigh { background-color: #bd1e24; }
+#app-alerts li.priorityMed { background-color: #f6c700; }
+#app-alerts li.priorityLow { background-color: #007256; }
 
 /* Classes styles. */
 .scheduled .ui-btn { xbackground-color: #44eeff; }

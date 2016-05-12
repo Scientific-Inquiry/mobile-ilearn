@@ -1,0 +1,99 @@
+/* CSS stylesheet for template and blank. */
+/* To create a new theme, look at theme y, which should be the template.
+ * Copy the template onto theme.css
+ * Find and replace all instances of (-y ), (-y:), (-y.), (-y,)
+ * Modify the template for all of your needs.
+
+/* Go Blind! (High Contrast) theme (Theme y) [Template] */
+/* Modifies header and footer (ui-bars) */
+.ui-bar-y, .ui-page-theme-y .ui-bar-inherit, .ui-group-theme-y .ui-bar-inherit { 
+	background-color: #0000ff; 
+	border-color: #dd00dd;
+	color: #ff0033;
+	text-shadow: 0 1px 0 #00ff00;
+}
+
+/* Modifies the content area */
+.ui-overlay-y, .ui-page-theme-y, .ui-page-theme-y .ui-panel-wrapper {
+	background-color: #f000ff;
+	border-color: #bb00bb;
+	color: #ff0022;
+	text-shadow: 0 1px 0 #ff0000;
+}
+
+/* Collapsible Content */
+.ui-body-y, .ui-page-theme-y .ui-body-inherit, .ui-bar-y .ui-body-inherit {
+	background-color: #00ff00;
+	border-color: #dd00aa;
+	color: #ffff00;
+	text-shadow: 0 1px 0 #f3fa66;
+}
+
+/* Links */
+.ui-page-theme-y a, .ui-bar-y a, .ui-body-y a, .ui-group-theme-y a {
+	color: #ffff00;
+	font-weight: 700;
+}
+
+/* Visited Links */
+.ui-page-theme-y a:visited, .ui-bar-y a:visited, .ui-body-y a:visited, .ui-group-theme-y a:visited {
+	color: #00ffff;
+}
+
+/* Hover Links */
+.ui-page-theme-y a:hover, .ui-bar-y a:hover, .ui-body-y a:hover, .ui-group-theme-y a:hover {
+	color: #aaff33;
+}
+
+/* Active Links */
+.ui-page-theme-y a:active, .ui-bar-y a:active, .ui-body-y a:active, .ui-group-theme-y a:active {
+	color: #3322aa;
+}
+
+/* Buttons / Navbar */
+.ui-page-theme-y .ui-btn, .ui-bar-y .ui-btn, .ui-body-y .ui-btn, .ui-group-theme-y .ui-btn, .ui-btn.ui-btn-y, 
+.ui-page-theme-y .ui-btn:visited, .ui-bar-y .ui-btn:visited, .ui-body-y .ui-btn:visited, .ui-group-theme-y .ui-btn:visited, .ui-btn.ui-btn-y:visited {
+	background-color: #aa9922;
+	border-color: #dd11aa;
+	color: #fff000;
+	text-shadow:0 1px 0 #f94f11;
+}
+
+/* Button Hover */
+.ui-page-theme-y .ui-btn:hover, .ui-bar-y .ui-btn:hover, .ui-body-y .ui-btn:hover, .ui-group-theme-y .ui-btn:hover, .ui-btn.ui-btn-y:hover {
+	background-color: #44ff22;
+	border-color: #883311;
+	color: #30add1;
+	text-shadow:0 1px 0 #f388aa;
+}
+
+/* Button Active */
+.ui-page-theme-y .ui-btn:active, .ui-bar-y .ui-btn:active, .ui-body-y .ui-btn:active, .ui-group-theme-y .ui-btn:active, .ui-btn.ui-btn-y:active {
+	background-color: #e8e800;
+	border-color: #ddadf7;
+	color: #aa22ff;
+	text-shadow: 0 1px 0 #f81230;
+}
+
+/* Button Active, Checkbox, Flipswitch, Slider Track */
+.ui-page-theme-y .ui-btn.ui-btn-active, .ui-bar-y .ui-btn.ui-btn-active, .ui-body-y .ui-btn.ui-btn-active, .ui-group-theme-y .ui-btn.ui-btn-active, .ui-btn.ui-btn-y.ui-btn-active, 
+.ui-page-theme-y .ui-checkbox-on:after,html .ui-bar-y .ui-checkbox-on:after,html .ui-body-y .ui-checkbox-on:after,html body .ui-group-theme-y .ui-checkbox-on:after,.ui-btn.ui-checkbox-on.ui-btn-y:after,
+.ui-page-theme-y .ui-flipswitch-active, .ui-bar-y .ui-flipswitch-active, .ui-body-y .ui-flipswitch-active, .ui-group-theme-y .ui-flipswitch-active, .ui-flipswitch.ui-bar-y.ui-flipswitch-active,
+.ui-page-theme-y .ui-slider-track .ui-btn-active, .ui-bar-y .ui-slider-track .ui-btn-active, .ui-body-y .ui-slider-track .ui-btn-active, .ui-group-theme-y .ui-slider-track .ui-btn-active, div.ui-slider-track.ui-body-y .ui-btn-active {
+	background-color: #ffaadd;
+	border-color: #aacccc;
+	color: #f0faff;
+	text-shadow:0 1px 0 #059112;
+}
+/* Radio Buttons  */
+.ui-page-theme-y .ui-radio-on:after, .ui-bar-y .ui-radio-on:after, .ui-body-y .ui-radio-on:after, .ui-group-theme-y .ui-radio-on:after, .ui-btn.ui-radio-on.ui-btn-y:after {
+	border-color: #36313f;
+}
+
+/* Button Focus */
+.ui-page-theme-y .ui-btn:focus, .ui-bar-y .ui-btn:focus, .ui-body-y .ui-btn:focus, .ui-group-theme-y .ui-btn:focus, .ui-btn.ui-btn-y:focus,
+.ui-page-theme-y .ui-focus, .ui-bar-y .ui-focus, .ui-body-y .ui-focus, .ui-group-theme-y .ui-focus, .ui-btn-y.ui-focus, .ui-body-y.ui-focus {
+	box-shadow:0 0 12px #3813fe;
+}
+
+/* Super! Basic! theme (Theme z) [does nothing] */
