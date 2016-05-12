@@ -32,8 +32,10 @@ function init(user) {
     getData(url + "user.json", jsonUser);
     $(document).ready(function() {
         menu();
+        $("#app-wait-img").click(function() {
+            loadHome();
+        });
     });
-    loadHome();
 }
 
 /* Function for adding functions on to the menu. */

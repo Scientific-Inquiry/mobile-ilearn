@@ -31,6 +31,8 @@
 #app-alerts li.priorityHigh { background-color: #bd1e24; }
 #app-alerts li.priorityMed { background-color: #f6c700; }
 #app-alerts li.priorityLow { background-color: #007256; }
+/* Waiting image */
+#app-wait-img { width: 100%; height: auto; }
 
 /* Classes styles. */
 .scheduled .ui-btn { xbackground-color: #44eeff; }
