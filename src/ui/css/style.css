@@ -7,6 +7,8 @@
 #app-title { overflow: visible; }
 
 /* For displaying content. */
+.ui-header .ui-title, .ui-footer .ui-title, .ui-collapsible-heading, .ui-btn
+{ word-wrap: break-word; white-space: normal; }
 .ui-content { display: none; }
 .app-active { display: block; }
 .app-label { display: none; }
@@ -18,8 +20,8 @@
 #app-logo { font-size: 30px; }
 
 /* Changes the color of the menu buttons. */
-#app-menu .app-menu-link { xbackground-color: #aaaaff; }
-#app-menu .app-menu-link:hover { xbackground-color: #bbaaff; }
+/*#app-menu .app-menu-link { xbackground-color: #aaaaff; }
+#app-menu .app-menu-link:hover { xbackground-color: #bbaaff; }*/
 #app-menu .app-menu-active { background-color: #38c; border-color: #38c; color: #ffffff; text-shadow: 0 1px 0 #059; }
 
 /* Alerts styles. */

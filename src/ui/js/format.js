@@ -31,9 +31,9 @@ function init(user) {
     url = "data/users/" + user + "/";
     getData(url + "user.json", jsonUser);
     $(document).ready(function() {
-        loadHome();
         menu();
     });
+    loadHome();
 }
 
 /* Function for adding functions on to the menu. */
