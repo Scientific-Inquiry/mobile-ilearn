@@ -749,7 +749,8 @@ public class DBManager {
     {
         try
         {
-            PreparedStatement st = connection.prepareStatement("SELECT U.uname, U.unetid, U.uid, G.aid ,G.gpts, A.apts, A.cid FROM Usr U, Grades G, Assignments A WHERE A.aid = ? AND U.uid = G.uid AND G.aid = A.aid");
+            PreparedStatement st = connection.prepareStatement("SELECT U.uname, U.unetid, U.uid, G.aid ,G.gpts, A.apts," +
+                    " A.cid FROM Usr U, Grades G, Assignments A WHERE A.aid = ? AND U.uid = G.uid AND G.aid = A.aid");
             st.setInt(1, aid);
             ResultSet rs = st.executeQuery();
 
@@ -884,20 +885,25 @@ public class DBManager {
             st.setInt(3, id);
 
             st.executeUpdate();
-
-            st.executeUpdate();
+            rs.close();
+            st.close();
             //need to include student name with graded
             s3.generate_Path(cname_sect, "qyyyy" ,filename);
+            System.out.println(s3.path);
             File temp = null;
+            //File tempFile = File.createTempFile(filename,aid + "_" + id);
             try{
                 temp = new File(filename, aid + "_" + id);
-
             }catch(Exception e){
                 System.out.println("ERROR");
             }
-            s3.upload_file(temp.getName());
-            rs.close();
-            st.close();
+            //try {
+                s3.upload_file(temp.getName());
+            //}catch(Exception E){
+            //    System.out.println("UPLOADING FAILED!");
+            //}
+            temp.delete();
+
         }
         catch (SQLException e) {
             e.printStackTrace();
