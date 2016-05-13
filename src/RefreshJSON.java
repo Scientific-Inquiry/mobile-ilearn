@@ -61,6 +61,15 @@ public class RefreshJSON {
         }
     }
 
+    public static void refreshClasses()
+    {
+        if(Login.rank.toString().equals("STUDENT") || Login.rank.toString().equals("TA"))
+        {
+            String login = Login.login;
+            Connection c = RefreshJSON.connection;
+        }
+    }
+
     public static void main(String[] argv)
     {
         connectDB();

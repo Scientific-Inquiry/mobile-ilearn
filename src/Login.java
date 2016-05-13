@@ -20,7 +20,7 @@ public class Login {
     /* Constructor. user takes a value only once a user has logged in. */
     private Login(String username, String password, String dir)
     {
-        this.dir = new String(dir);
+        Login.dir = new String(dir);
         this.username = new String(username);
         this.password = new String(password);
         this.user = null;
@@ -367,6 +367,8 @@ public class Login {
     public static void main(String[] argv)
     {
         login("bwayn052", "iambatman", "dir");
+
+        logout();
     }
 
     private String username;
@@ -375,5 +377,5 @@ public class Login {
     public static String login;
     public static Rank rank; /* rank.toString().equals("BLAHBLAH"); */
     public static ArrayList<ArrayList<Vector>> snames; /* snames.get(x).get(0) = name & snames.get(x).get(1) = netid ; snames.get(x) is an array list of vectors that contains the list of all students for one class */
-    public String dir;
+    public static String dir;
 }
