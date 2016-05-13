@@ -25,12 +25,13 @@
 #app-menu .app-menu-active { background-color: #38c; border-color: #38c; color: #ffffff; text-shadow: 0 1px 0 #059; }
 
 /* Alerts styles. */
-#app-alerts li { color: #ffffff; }
+#app-alerts li, .priorityHigh, .priorityMed, .priorityLow 
+{ color: #ffffff; }
 /* Comes in safety blue, red, yellow, and green */
 #app-priority { background-color: #0067a7; }
-#app-alerts li.priorityHigh { background-color: #bd1e24; }
-#app-alerts li.priorityMed { background-color: #f6c700; }
-#app-alerts li.priorityLow { background-color: #007256; }
+#app-alerts li.priorityHigh, .priorityHigh { background-color: #bd1e24; }
+#app-alerts li.priorityMed, .priorityMed { background-color: #f6c700; }
+#app-alerts li.priorityLow, .priorityLow { background-color: #007256; }
 /* Waiting image */
 #app-wait-img { width: 100%; height: auto; }
 
