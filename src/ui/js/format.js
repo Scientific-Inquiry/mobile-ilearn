@@ -57,7 +57,9 @@ function menu() {
         loadSets();
     });
     $("#app-logout").click(function(){
-        showAndroidlogout();
+        alert("You will be logging out!");
+        showAndroidLogout();
+        //alert("You are now logged out!");
     });
     // Gets the current time.
     footer();
@@ -424,5 +426,6 @@ function loadSets() {
 /* Functions for setting up Android functions. */
 /* Function for logging out. */
 function showAndroidLogout() {
+    alert("You are logging out!");
     Android.logout();
 }
