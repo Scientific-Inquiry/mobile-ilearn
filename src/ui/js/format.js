@@ -56,7 +56,9 @@ function menu() {
     $("#app-menu-setting").click(function(){
         loadSets();
     });
-
+    $("#app-logout").click(function(){
+        showAndroidlogout();
+    });
     // Gets the current time.
     footer();
 }
@@ -228,10 +230,10 @@ function jsonAssigner(arr) {
         className = arr[i].courseNum + '-' + arr[i].courseSec;
         if(className !== classes[classes.length - 1]) { classes.push(className); }
         // Generates a collapsible with the assignment.
-        out += '<div data-role="collapsible" id="assnNum' + idNum + '"><h3 class="assigned">' + className + ': ' + arr[i].title + '</h3><form action="appForm-assnign" method="post" target="_blank" accept-charset="UTF-8" enctype="application/x-www-form-urlencoded" autocomplete="off" novalidate><fieldset><input type="text" name="aid" value="' + arr[i].aid + '" readonly class="app-form"><p>Assignment Title: <input type="text" name="title" value="' + arr[i].title + '" maxlength="50"><br /><textarea name="description" rows="10" cols="15" maxlength="150">' + arr[i].desc + '</textarea></p><p>Due: ' + arr[i].due + '<br />New Due Date<br />(mm/dd/yyyy, hh:dd AM/PM):<br /><input type="datetime-local" name="dueDate"></p><p>Points: <input type="text" name="grade" value="' + arr[i].points + '" maxlength="4" size="3"></p><input type="submit" value="Submit"></fieldset></form></div>';
+        out += '<div data-role="collapsible" id="assnNum' + idNum + '"><h3 class="assigned">' + className + ': ' + arr[i].title + '</h3><form action="appForm-assnign" method="post" accept-charset="UTF-8" enctype="application/x-www-form-urlencoded" autocomplete="off" novalidate><fieldset><input type="text" name="aid" value="' + arr[i].aid + '" readonly class="app-form"><p>Assignment Title: <input type="text" name="title" value="' + arr[i].title + '" maxlength="50"><br /><textarea name="description" rows="10" cols="15" maxlength="150">' + arr[i].desc + '</textarea></p><p>Due: ' + arr[i].due + '<br />New Due Date<br />(mm/dd/yyyy, hh:dd AM/PM):<br /><input type="datetime-local" name="dueDate"></p><p>Points: <input type="text" name="grade" value="' + arr[i].points + '" maxlength="4" size="3"></p><input type="submit" value="Submit"></fieldset></form></div>';
     }
     /* New Assignment form */
-    out += '<div data-role="collapsible" id="assnNew"><h3 class="assigned">New Assignment</h3><form action="appForm-assignNew" method="post" target="_blank" accept-charset="UTF-8" enctype="application/x-www-form-urlencoded" autocomplete="off" novalidate><fieldset><p>Class: <select name="className">';
+    out += '<div data-role="collapsible" id="assnNew"><h3 class="assigned">New Assignment</h3><form action="appForm-assignNew" method="post" accept-charset="UTF-8" enctype="application/x-www-form-urlencoded" autocomplete="off" novalidate><fieldset><p>Class: <select name="className">';
     for(i = 0; i < classes.length; ++i) { 
         out += '<option value="' + classes[i] + '">' + classes[i] + '</option>';
     }
@@ -253,7 +255,7 @@ function jsonGrader(arr) {
             idNum++;
             currAssn = currGrade;
             var className = arr[i].courseNum + '-' + arr[i].courseSec
-            out += '<div data-role="collapsible" id="gradeI' + idNum + '"><h3 class="grader">' + className + ': ' + currAssn + '</h3><p>Assignment Title: ' + arr[i].title + '<br />Total Points: ' + arr[i].total + '</p><form action="appForm-gradebook" method="post" target="_blank" accept-charset="UTF-8" enctype="application/x-www-form-urlencoded" autocomplete="off" novalidate><input type="text" name="aid" value="' + arr[i].aid + '" readonly class="app-form"><table data-role="table" class="ui-responsive"><thead><tr><th>Student<br /> Login</th><th>Student<br /> Grade</th><th>Percent</tr></thead><tbody>';
+            out += '<div data-role="collapsible" id="gradeI' + idNum + '"><h3 class="grader">' + className + ': ' + currAssn + '</h3><p>Assignment Title: ' + arr[i].title + '<br />Total Points: ' + arr[i].total + '</p><form action="appForm-gradebook" method="post" accept-charset="UTF-8" enctype="application/x-www-form-urlencoded" autocomplete="off" novalidate><input type="text" name="aid" value="' + arr[i].aid + '" readonly class="app-form"><table data-role="table" class="ui-responsive"><thead><tr><th>Student<br /> Login</th><th>Student<br /> Grade</th><th>Percent</tr></thead><tbody>';
         }
         // Gets the students in the class.
         var percent = Number((arr[i].grade / arr[i].total) * 100);
@@ -270,6 +272,7 @@ function jsonGrader(arr) {
     $("#gradedI").html(out).collapsibleset("refresh");
 }
 
+/* Functions for changing information on pages. */
 /* Function for getting the name of the quarter. */
 function changeQuarter() {
     // If quarter does not match the format such that the first letter of the quarter followed by the year, then output "Class Schedule".
@@ -331,6 +334,7 @@ function changeTheme(themeUse) {
     }
 }
 
+/* Functions for loading screens. */
 /* Function for loading the Home screen. */
 function loadHome() {
     var title = "home";
@@ -415,4 +419,10 @@ function loadSets() {
     $("#priHigh").attr("value", priHigh);
     $("#priMed").attr("value", priMed);
     $("#priLow").attr("value", priLow);
+}
+
+/* Functions for setting up Android functions. */
+/* Function for logging out. */
+function showAndroidLogout() {
+    Android.logout();
 }
