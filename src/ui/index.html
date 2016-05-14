@@ -24,7 +24,7 @@
   <script src="js/format.js"></script>
   <script>
     $(document).ready(function(){
-      init("bwayn052");
+      init("ckent038");
     });
   </script>
 </head>
@@ -147,15 +147,15 @@
             <form action="appForm-setPriority" method="post" target="_blank" accept-charset="UTF-8" enctype="application/x-www-form-urlencoded" autocomplete="off" novalidate>
                 <div class="ui-field-contain priorityHigh">
                     <label for="priHigh">High Priority (hours):</label> 
-                    <input type="number" name="priHigh" min="1" max="72">
+                    <input type="number" id="priHigh" name="priHigh" min="1" max="72" maxlength="3" size="3" value="24">
                 </div>
-                <div class="priorityMed">
+                <div class="ui-field-contain priorityMed">
                     <label for="priMed">Medium Priority (days):</label> 
-                    <input type="number" maxlength="3" name="priMed" min="3" max="7">
+                    <input type="number" maxlength="3" size="3" id="priMed" name="priMed" min="3" max="7" value="3">
                 </div>
-                <div class="priorityLow">
+                <div class="ui-field-contain priorityLow">
                     <label for="priLow">Low Priority (days):</label>
-                    <input type="number" maxlength="3" name="priLow" min="7" max="21">
+                    <input type="number" maxlength="3" size="3" id="priLow" name="priLow" min="7" max="21" value="7">
                 </div>
                 <input type="submit" value="New Priority Values">
             </form>
