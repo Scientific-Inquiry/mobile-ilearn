@@ -1,61 +1,118 @@
 /* Custom stylesheet for app */
 /* Applies across all themes. */
-.ui-bar-*, .ui-body-* { border-width: 1px; border-style: solid; }
-.ui-page-theme-* .ui-bar-inherit { font-weight: 700; }
+.ui-bar-*, .ui-body-* {
+    border-width: 1px; 
+    border-style: solid; 
+}
+.ui-page-theme-* .ui-bar-inherit {
+    font-weight: 700;
+}
 
 /* Styles for header area. */
 #app-title { overflow: visible; }
 
 /* For displaying content. */
-.ui-header .ui-title, .ui-footer .ui-title, .ui-collapsible-heading, .ui-btn
-{ word-wrap: break-word; white-space: normal; }
-.ui-content { display: none; }
-.app-active { display: block; }
-.app-label { display: none; }
+.ui-header .ui-title, .ui-footer .ui-title, .ui-collapsible-heading, .ui-btn {
+    word-wrap: break-word; 
+    white-space: normal; 
+}
+.ui-content {
+    display: none;
+}
+.app-active { 
+    display: block;
+}
+.app-label {
+    display: none; 
+}
+.app-form {
+    display: none;
+}
 
 /* Configures styles for the administration area. */
-#app-admin .ui-grid-b .ui-block-a { width: 60%; }
+#app-admin .ui-grid-b .ui-block-a {
+    width: 60%; 
+}
 #app-admin .ui-grid-b .ui-block-b, 
-#app-admin .ui-grid-b .ui-block-c { width: 20%; }
-#app-logo { font-size: 30px; }
+#app-admin .ui-grid-b .ui-block-c { 
+    width: 20%;
+}
+#app-logo {
+    font-size: 30px;
+}
 
 /* Changes the color of the menu buttons. */
-/*#app-menu .app-menu-link { xbackground-color: #aaaaff; }
-#app-menu .app-menu-link:hover { xbackground-color: #bbaaff; }*/
-#app-menu .app-menu-active { background-color: #38c; border-color: #38c; color: #ffffff; text-shadow: 0 1px 0 #059; }
+#app-menu .app-menu-active {
+    background-color: #38c; 
+    border-color: #38c; 
+    color: #ffffff; 
+    text-shadow: 0 1px 0 #059;
+}
 
 /* Alerts styles. */
 #app-alerts li, .priorityHigh, .priorityMed, .priorityLow 
-{ color: #ffffff; }
+{
+    color: #ffffff;
+    padding: 10px;
+}
 /* Comes in safety blue, red, yellow, and green */
-#app-priority { background-color: #0067a7; }
-#app-alerts li.priorityHigh, .priorityHigh { background-color: #bd1e24; }
-#app-alerts li.priorityMed, .priorityMed { background-color: #f6c700; }
-#app-alerts li.priorityLow, .priorityLow { background-color: #007256; }
+#app-priority { 
+    background-color: #0067a7;
+}
+#app-alerts li.priorityHigh, .priorityHigh {
+    background-color: #bd1e24; 
+}
+#app-alerts li.priorityMed, .priorityMed {
+    background-color: #f6c700;
+}
+#app-alerts li.priorityLow, .priorityLow { 
+    background-color: #007256; 
+}
 /* Waiting image */
-#app-wait-img { width: 100%; height: auto; }
+#app-wait-img { 
+    width: 100%; height: auto;
+}
 
 /* Classes styles. */
-.scheduled .ui-btn { xbackground-color: #44eeff; }
 
 /* Assignments styles. */
-.assigned .ui-btn { xbackground-color: #bbccff; }
 
 /* Grades styles. */
-.graded .ui-btn { xbackground-color: #cc33ff; }
-.ui-collapsible-content.ui-body-inherit ul { margin: 0 -1em; }
-ul.gradebook { list-style-type: none; list-style-position: inside; padding: 0; }
-.gradebook li { padding: 1em; margin: 0; border-top: 1px solid grey; }
-.gradebook li:first-child { padding-top: 0.5em; border-top: none; }
-.gradebook li:last-child { padding-bottom: 0.5em; }
+.ui-collapsible-content.ui-body-inherit ul { 
+    margin: 0 -1em; 
+}
+ul.gradebook { 
+    list-style-type: none; 
+    list-style-position: inside; 
+    padding: 0; 
+}
+.gradebook li { 
+    padding: 1em; 
+    margin: 0; 
+    border-top: 1px solid grey; 
+}
+.gradebook li:first-child { 
+    padding-top: 0.5em; 
+    border-top: none; 
+}
+.gradebook li:last-child { 
+    padding-bottom: 0.5em; 
+}
 /* Gradebook styles */
-table.ui-responsive thead > tr { background-color: #aaffaa; }
-table.ui-responsive tbody > tr { background-color: #aaffff; }
-table.ui-responsive tbody > tr.grade-late { background-color: #ffaaaa; }
-
+table.ui-responsive thead > tr { 
+    background-color: #aaffaa; 
+}
+table.ui-responsive tbody > tr { 
+    background-color: #aaffff; 
+}
+table.ui-responsive tbody > tr.grade-late { 
+    background-color: #ffaaaa; 
+}
 
 /* Styles for footer area. */
-#app-time { text-align: center; }
+#app-time { 
+    text-align: center; 
+}
 
 /* Minimum width for displaying all text is 495px.
  * If the screen is less than this width, then the words in the menu
@@ -63,6 +120,10 @@ table.ui-responsive tbody > tr.grade-late { background-color: #ffaaaa; }
  * The legend should also then display between the screen title and
  * the menu.*/
 @media only screen and (max-width: 495px) {
-    .app-small { display: none; }
-    #app-logo { font-size: 18px; }
+    .app-small { 
+        display: none;
+    }
+    #app-logo { 
+        font-size: 18px; 
+    }
 }
