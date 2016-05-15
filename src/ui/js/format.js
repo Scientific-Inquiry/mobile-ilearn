@@ -59,7 +59,6 @@ function menu() {
     $("#app-logout").click(function(){
         alert("You will be logging out!");
         showAndroidLogout();
-        //alert("You are now logged out!");
     });
     // Gets the current time.
     footer();
