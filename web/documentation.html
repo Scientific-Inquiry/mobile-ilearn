@@ -2,7 +2,7 @@
 <html>
 <head>
     <!-- Meta Attributes -->
-    <title>Team 5X5 - Documentation</title>
+    <title>Crumb Lords - Documentation</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
@@ -18,7 +18,7 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/local.css">
 </head>
-<body data-spy="scroll" data-target="#docScrollSpy">
+<body data-spy="scroll" data-target="#docScrollspy" data-offset="0">
     <div class="container-fluid">
         <!-- Navigation Bar -->
         <div class="row" id="menu">
@@ -26,7 +26,7 @@
                 <nav class="navbar">
                     <div class="container-fluid">
                         <div class="navbar-header">
-                            <a class="navbar-brand" href="index.html">Team 5X5</a>
+                            <a class="navbar-brand" href="index.html">Crumb Lords</a>
                         </div>
                         <ul class="nav navbar-nav">
                             <li><a href="index.html">Home</a></li>
@@ -48,24 +48,32 @@
         </div>
         <!-- Content -->
         <div class="row" id="content">
-            <nav class="col-xs-3" id="docScrollSpy">
-                <ul class="nav nav-pills nav-stacked">
-                    <li class="active"><a href="#section1">1&ndash;Overview</a></li>
-                    <ul>
-                        <li><a href="#section1-1">1.1&ndash;Requirements</a></li>
-                    </ul>
-                    <li><a href="#section2">2&ndash;User Manual</a></li>
-                    <ul>
-                        <li><a href="#section2-1">2.1&ndash;Logging In/Logging Out</a></li>
-                        <li><a href="#section2-2">2.2&ndash;Home Screen</a></li>
-                        <li><a href="#section2-3">2.3&ndash;Classes Screen</a></li>
-                        <li><a href="#section2-4">2.4&ndash;Assignments Screen</a></li>
-                        <li><a href="#section2-5">2.5&ndash;Grades Screen</a></li>
-                        <li><a href="#section2-6">2.6&ndash;Settings Screen</a></li>
-                    </ul>
+            <nav class="col-xs-3" id="docScrollspy">
+                <ul class="nav nav-pills nav-stacked" data-spy="affix" data-offset-top="100">
+                    <li>Table of Contents</li>
+                    <!-- Overview Section -->
+                    <li class="active"><a href="#section1">1&ndash; Overview</a>
+                        <ul class="nav nav-pills nav-stacked">
+                            <li><a href="#section1-1">1.1&ndash; Requirements</a></li>
+                            <li><a href="#section1-2">1.2&ndash; Development Process</a></li>
+                            <li><a href="#section1-3">1.3&ndash; Development Tools Used</a></li>
+                        </ul>
+                    </li>
+                    <!-- User Manual -->
+                    <li><a href="#section2">2 &ndash; User Manual</a>
+                        <ul class="nav nav-pills nav-stacked">
+                            <li><a href="#section2-1">2.1&ndash; Logging In/Logging Out</a></li>
+                            <li><a href="#section2-2">2.2&ndash; Home Screen</a></li>
+                            <li><a href="#section2-3">2.3&ndash; Classes Screen</a></li>
+                            <li><a href="#section2-4">2.4&ndash; Assignments Screen</a></li>
+                            <li><a href="#section2-5">2.5&ndash; Grades Screen</a></li>
+                            <li><a href="#section2-6">2.6&ndash; Settings Screen</a></li>
+                        </ul>
+                    </li>
+                    <!-- Other Sections -->
                 </ul>
             </nav>
-            <div class="col-xs-9">
+            <div class="col-xs-9" id="docManual">
                 <article id="section1">
                     <h2>1&ndash;Overview</h2>
                     <p>MiLearn is a streamlined, mobile version of Blackboard iLearn. It is currently available for Android devices.</p>
@@ -74,29 +82,138 @@
                         <h3>1.1&ndash;Requirements</h3>
                         <p>Have MiLearn app downloaded.</p>
                     </section>
+                    
+                    <section id="section1-2">
+                        <h3>1.2&ndash;Development Process</h3>
+                        <p>During development of MiLearn, we used a Scrum process of development. Our group would meet up at least once a week on Mondays for discussing our contributions towards the project, as well as planning on what part of the project to do next.</p>
+                        
+                        <p>In addition, we took a modular approach towards development. Each group member focused on a different component of the app. This boosted overall group efficiency as we were able to concentrate on one item to do per week instead of several. One problem was actually getting each component integrated properly each week.</p>
+                    </section>
+                    
+                    <section id="section1-3">
+                        <h3>1.3&ndash;Development Tools Used</h3>
+                        <p>In order to build MiLearn, the following languages, tools, and APIs were used.</p>
+                        <ul>
+                            <li>Languages
+                                <dl>
+                                    <dt>Java</dt>
+                                    <dd>Used for actual app developement.</dd>
+                                    <dt>XML</dt>
+                                    <dd>Used for app layout.</dd>
+                                    <dt>JavaScript</dt>
+                                    <dd>Used for displaying data on to screens.</dd>
+                                    <dt>HTML</dt>
+                                    <dd>Used for displaying the screens.</dd>
+                                    <dt>CSS</dt>
+                                    <dd>Used for styling the screens.</dd>
+                                </dl>
+                            </li>
+                            <li>Tools
+                                <dl>
+                                    <dt>Android Studio</dt>
+                                    <dd>IDE used for developing the Android app.</dd>
+                                </dl>
+                            </li>
+                            <li>APIs/Libraries/Frameworks
+                                <dl>
+                                    <dt>AWS API</dt>
+                                    <dd>Allows connection to Amazon Web Services</dd>
+                                    <dt>ButterKnife Library</dt>
+                                    <dd>Lets JavaScript functions call Java methods.</dd>
+                                    <dd>Simplifies creation of and mapping methods to buttons.</dd>
+                                    <dt>jQuery Mobile</dt>
+                                    <dd>Framework for mobile web app.</dd>
+                                </dl>
+                            </li>
+                        </ul>
+                    </section>
                 </article>
                 
                 <article id="section2">
                     <h2>2&ndash;User Manual</h2>
+                    <p>This is a quick reference for using the MiLearn app.</p>
                     
+                    <p>For those who wish to know how the MiLearn app, please look here first.</p>
                     <section id="section2-1">
                         <h3>2.1&ndash;Logging In/Logging Out</h3>
+                        <div class="row">
+                            <div class="col-xs-2 l_col-pic">
+                                <img src="" alt="Login screen">
+                            </div>
+                            <div class="col-xs-10">
+                                <p>When MiLearn is first opened, the Login screen is brought up. Here, the user will need to insert their username (i.e. UCR NetID) and password.</p>
+                            </div>
+                        </div>
                     </section>
                     
                     <section id="section2-2">
                         <h3>2.2&ndash;Home Screen</h3>
+                        <div class="row">
+                            <div class="col-xs-10">
+                                <p>Once the user has logged in, they are brought to the Home Screen. This will initially display the "Welcome to MiLearn" screen.</p>
+                            </div>
+                            <div class="col-xs-2 l_col-pic">
+                                <img src="" alt="Welcome screen">
+                            </div>
+                            <div class="col-xs-2 l_col-pic">
+                                <img src="" alt="Home screen">
+                            </div>
+                            <div class="col-xs-10">
+                                <p>The Home Screen should then display the user's name and any alerts that they may have.</p>
+                                
+                                <p>Alerts are coded such that high priority alerts are in red, medium priority in yellow, and low priority in green.</p>
+                                
+                                <p>The timing of each priority can be set in the <a href="#section2-6">Settings Screen</a>.</p>
+                            </div>
+                        </div>
                     </section>
                     
                     <section id="section2-3">
                         <h3>2.3&ndash;Classes Screen</h3>
+                        <div class="row">
+                            <div class="col-xs-10">
+                                <p>The Classes Screen displays an accordion for all of the user's classes for the current quarter. The header of each collapsible contains the course number followed by the course section. Inside of each collapsible is the full name of the course.</p>
+                                
+                                <p>If the user is a <strong>student</strong>, then they will see what class(es) that they are enrolled in. In addition the name(s) of the instructor(s) are displayed inside the collapsible.</p>
+                                
+                                <p>If the user is an <strong>instructor</strong>, then they will see what class(es) they are teaching. The collapsible content also includes a list of students that are enrolled in that course.</p>
+                            </div>
+                            <div class="col-xs-2">
+                                <img src="" alt="Classes screen">
+                            </div>
+                        </div>
                     </section>
                     
                     <section id="section2-4">
                         <h3>2.4&ndash;Assignments Screen</h3>
+                        <div class="row">
+                            <div class="col-xs-2">
+                                <img src="" alt="Assignments screen">
+                            </div>
+                            <div class="col-xs-10">
+                                <p>The Assignments Screen displays an accordion with the assignments ordered by due date (from sooner to later). Each collapsible header has the course that the assignment is for followed by the assignment title.</p>
+                                
+                                <p><strong>Students</strong> can view what assignments are due for all classes that they are enrolled in. They can also upload a file to turn in for an assignment. Assignment uploads can be done multiple times, but the instructor will only see the most recent submission. Currently, students can only upload one file at a time.</p>
+                                
+                                <p><strong>Instructors</strong> can create new assignments or edit assignments for any class they teach. This is respectively done through an already existing assignment collapsible or through the "New Assignment" collapsible at the bottom of the list. </p>
+                            </div>
+                        </div>
                     </section>
                     
                     <section id="section2-5">
                         <h3>2.5&ndash;Grades Screen</h3>
+                        <div class="row">
+                            <div class="col-xs-10">
+                                <p>The Grades Screen displays an accordion with the grades for each assignment in each class.</p>
+                                
+                                <p>For <strong>students</strong>, each collapsible is for a course that they are enrolled in. The collapsible heading indicates which course the student they will be looking in while the content displays (in chronological order), the grades for each assignment.</p>
+                                
+                                <p><strong>Instructors</strong> each collapsible is for an assignment that they have assigned and is ordered chronologically. Inside each collapsible is the name of the assignment as well as how many points that the assignment was worth. </p>
+                            </div>
+                            <div class="col-xs-2">
+                                <img src="" alt="Grades screen">
+                            </div>
+                        </div>
                     </section>
                     
                     <section id="section2-6">
@@ -109,7 +226,7 @@
         <div class="row" id="footer">
             <div class="col-sm-12">
                 <footer>
-                    <p>Team 5X5 &mdash; 2016-05-13</p>
+                    <p>Crumb Lords &mdash; 2016-05-13</p>
                 </footer>
             </div>
         </div>

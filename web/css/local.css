@@ -1,2 +1,20 @@
-/* Local CSS styles for Team 5X5 Website */
-.l_profile-pic img { width: 100%; height: auto }
+/* Local CSS styles for Crumb Lords Website */
+body { 
+    position: relative; 
+}
+.affix {
+    top: 20px;
+}
+#docScrollspy {
+    position: fixed;
+}
+#docManual {
+    float: right;
+}
+.l_col-pic img {
+    width: 100%; 
+    height: auto 
+}
+dd {
+    margin-left: 16px;
+}
