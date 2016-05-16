@@ -21,6 +21,7 @@ public class Grades {
     public void removeGrade(Assignment a){
         gradeList.removeElement(a);
     }
+
     public String toString(){
         String temp = "", begin = "{\"Grades\":[\n", end = "\n]}";
 
@@ -47,7 +48,7 @@ public class Grades {
         init_file();
     }
 
-    private void init_file(){
+    public void init_file(){
         json = new File("Grades.json");
     }
 }

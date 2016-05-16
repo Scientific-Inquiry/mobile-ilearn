@@ -14,7 +14,6 @@ import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.*;
@@ -30,12 +29,6 @@ public class Assignment {
     private String course_num;
     private String course_section;
     private String current_user;
-    private boolean instructor;
-
-    public int submission(File file) {
-
-        return 1; //success
-    }
 
     public Assignment()
     {
@@ -67,10 +60,36 @@ public class Assignment {
         late = false;
     }
 
+    public Assignment(String t, String d, Date due, int pts, String cnum, String csect, int id)
+    {
+        current_user = Login.login;
+        aid = id;
+        title = t;
+        course_num = cnum;
+        course_section = csect;
+        due_date = due;
+        description = d;
+        points = pts;
+        late = false;
+    }
+
+    public Assignment(String t, String d, Date due, int pts, String cnum, String csect, int id, String login)
+    {
+        current_user = Login.login;
+        aid = id;
+        title = t;
+        course_num = cnum;
+        course_section = csect;
+        due_date = due;
+        description = d;
+        points = pts;
+        late = false;
+    }
     public String toString(){
         return "{\"title\":" + "\"" + title + "\"" + ", " + "\"due\":" + "\"" + due_date + "\"" + ", "
                 + "\"desc\":" + "\"" + description + "\"" + ", " + "\"points\":" + "\"" + points + "\"" + ", "
-                + "\"courseNum\":" + "\"" + course_num + "\"" + "\"courseSec\":" + "\"" + course_section + "\"" + "}";
+                + "\"courseNum\":" + "\"" + course_num + "\"" + "\"courseSec\":" + "\"" + course_section + "\"" + ", "
+                + "\"aid\":" + "\"" + aid +"}";
     }
 
     public void createJSON_File(){

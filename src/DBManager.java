@@ -1,11 +1,10 @@
 import java.io.File;
+import java.io.PrintWriter;
 import java.sql.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.*;
 import java.util.Date;
-import java.util.Vector;
 import java.util.concurrent.ExecutionException;
 
 public class DBManager {
@@ -260,6 +259,59 @@ public class DBManager {
         }
     }
 
+    public static int get_course_index(Connection connection, String netid, String courseName){
+        ArrayList cids = new ArrayList();
+        try {
+            PreparedStatement st = connection.prepareStatement("SELECT U.uid FROM Usr U WHERE U.unetid = ?");
+            st.setString(1, netid);
+            ResultSet rs = st.executeQuery();
+            rs.next();
+            int uid = rs.getInt("uid");
+            System.out.println("UID IS " + uid);
+
+            st = connection.prepareStatement("SELECT T.cid FROM teaches T WHERE T.uid = ?");
+            st.setInt(1, uid);
+            rs = st.executeQuery();
+
+            int j = 0;
+            while (rs.next())
+            {
+                cids.add(rs.getInt("cid"));
+                //System.out.println("CID IS "+ cids.get(j));
+                j++;
+            }
+
+            System.out.println("cids are " + cids);
+            st = connection.prepareStatement("SELECT C.cnum FROM Class C WHERE C.cid = ?");
+            ArrayList<String> course = new ArrayList<String>();
+            for(int i = 0; i < cids.size() ; i++) {
+                st.setInt(1, (int)cids.get(i));
+                System.out.println("CID IS "+ cids.get(i));
+                rs = st.executeQuery();
+                while(rs.next()){
+                    course.add(rs.getString("cnum"));
+                    System.out.println("RS LOOP:  " + rs.getString("cnum"));
+                    //System.out.println(rs.getString("aname") + rs.getString("description") + rs.getInt("apts") + rs.getTimestamp("due"));
+                }
+            }
+
+            Collections.sort(course);
+            System.out.println("course: " + course);
+            System.out.println("course list: " + courseName);
+            System.out.println("CONTAINS : " + course.contains(courseName));
+            int index = course.indexOf(courseName);
+            System.out.println("INDEX IS " + index);
+
+            st.close();
+            rs.close();
+            return index;
+        }
+        catch (SQLException e) {
+            System.out.println("EXCEPTION");
+            return -1;
+        }
+
+    }
     //--------------------ASSIGNMENTS--------------------------------------------------------
 
     /* Add an assignment to the Assignments table */
@@ -271,7 +323,7 @@ public class DBManager {
         int aid = 0;
         try {
             PreparedStatement st = connection.prepareStatement("SELECT A.aid, A.aname, C.cnum" +
-                    " FROM Assignments A, Class C WHERE A.aname = ? AND cnum = ?");
+                    " FROM Assignments A, Class C WHERE A.aname = ? AND C.cnum = ?");
             st.setString(1, title);
             st.setString(2, cnum);
             ResultSet rs = st.executeQuery();
@@ -303,8 +355,18 @@ public class DBManager {
             st.setInt(5, points);
             st.executeUpdate();
 
-            init_Assignments(connection, Login.login);
-            //update json for professor
+            st = connection.prepareStatement("SELECT cname FROM Class where cid = ? ");
+            st.setInt(1, classid);
+            ResultSet rs = st.executeQuery();
+            rs.next();
+            String courseName = rs.getString("cname");
+
+            //Update and upload Json for Instructor first
+            init_TAssignments(connection, Login.login);
+            //Update and upload Json for Students
+            for(int i = 0; i < Login.snames.size(); i++)
+                init_SAssignments(connection, Login.snames.get(get_course_index(connection, Login.login, courseName)).get(i).get(1).toString());
+
             s3.generate_Path(Login.login, "assigner.json");
             System.out.println("username: " + Login.login);
             //s3.upload_file("Assignment");
@@ -314,10 +376,6 @@ public class DBManager {
             e.printStackTrace();
             return;
         }
-        //Update and upload Json for Instructor first
-        init_Assignments(connection, Login.login);
-        //Update and upload Json for Students
-        //stub until student list from course.json format is finalized
 
     }
 
@@ -330,21 +388,23 @@ public class DBManager {
             st.setInt(2, aid);
             st.executeUpdate();
 
-            init_Assignments(connection, Login.login);
-            //update json for professor
-            s3.generate_Path(Login.login, "assigner.json");
-            System.out.println("username: " + Login.login);
-            //s3.upload_file("Assignment");
+            st = connection.prepareStatement("SELECT C.cnum FROM Class C, Assignments A WHERE A.aid = ? AND " +
+                    "A.cid = C.cid");
+            st.setInt(1, aid);
+            ResultSet rs = st.executeQuery();
+            rs.next();
+
+            String courseName= rs.getString("cnum");
+            //String cid = rs.getString("aname");
+            init_Assignments(connection, aid, Login.login);
             st.close();
+            rs.close();
         }
         catch (SQLException e) {
             e.printStackTrace();
             return;
         }
         //Update and upload Json for Instructor first
-        init_Assignments(connection, Login.login);
-        //Update and upload Json for Students
-        //stub until student list from course.json format is finalized
 
     }
 
@@ -357,21 +417,22 @@ public class DBManager {
             st.setInt(2, aid);
             st.executeUpdate();
 
-            init_Assignments(connection, Login.login);
-            //update json for professor
-            s3.generate_Path(Login.login, "assigner.json");
-            System.out.println("username: " + Login.login);
-            //s3.upload_file("Assignment");
+
+            st = connection.prepareStatement("SELECT C.cnum FROM Class C, Assignments A WHERE A.aid = ? AND " +
+                    "A.cid = C.cid");
+            st.setInt(1, aid);
+            ResultSet rs = st.executeQuery();
+            rs.next();
+
+            String courseName= rs.getString("cnum");
+            //Update and upload Json for Instructor first
+            init_Assignments(connection, aid, Login.login);
             st.close();
         }
         catch (SQLException e) {
             e.printStackTrace();
             return;
         }
-        //Update and upload Json for Instructor first
-        init_Assignments(connection, Login.login);
-        //Update and upload Json for Students
-        //stub until student list from course.json format is finalized
 
     }
 
@@ -384,11 +445,7 @@ public class DBManager {
             st.setInt(2, aid);
             st.executeUpdate();
 
-            init_Assignments(connection, Login.login);
-            //update json for professor
-            s3.generate_Path(Login.login, "assigner.json");
-            System.out.println("username: " + Login.login);
-            //s3.upload_file("Assignment");
+            init_Assignments(connection, aid, Login.login);
             st.close();
         }
         catch (SQLException e) {
@@ -396,7 +453,7 @@ public class DBManager {
             return;
         }
         //Update and upload Json for Instructor first
-        init_Assignments(connection, Login.login);
+        init_SAssignments(connection, Login.login);
         //Update and upload Json for Students
         //stub until student list from course.json format is finalized
 
@@ -412,11 +469,7 @@ public class DBManager {
             st.setInt(2, aid);
             st.executeUpdate();
 
-            init_Assignments(connection, Login.login);
-            //update json for professor
-            s3.generate_Path(Login.login, "assigner.json");
-            System.out.println("username: " + Login.login);
-            //s3.upload_file("Assignment");
+            init_Assignments(connection, aid, Login.login);
             st.close();
         }
         catch (SQLException e) {
@@ -424,7 +477,7 @@ public class DBManager {
             return;
         }
         //Update and upload Json for Instructor first
-        init_Assignments(connection, Login.login);
+        init_SAssignments(connection, Login.login);
         //Update and upload Json for Students
         //stub until student list from course.json format is finalized
 
@@ -438,40 +491,32 @@ public class DBManager {
             st.setInt(1, aid);
             st.executeUpdate();
 
+            init_Assignments(connection, aid, Login.login);
             st.close();
         }
         catch (SQLException e) {
             e.printStackTrace();
             return;
         }
-        s3.generate_Path(Login.login, "assigner.json");
-        s3.upload_file("Assignments.json");
-
-        //now do students
-        Vector<String> sid = new Vector<String>();
-        for(int i = 0; i < sid.size(); i++) {
-            s3.generate_Path(sid.elementAt(i), "assign.json");
-            s3.upload_file("Assignments.json");
-        }
     }
 
     /* Add a grade for a given assignment and a given student */
-    public static void addGrade(Connection connection, int assignmentid, String netid, int points)
+    public static void addGrade(Connection connection, int aid, String netid, String gnetid, int points)
     {
         try {
             PreparedStatement st = connection.prepareStatement("SELECT uid FROM Usr WHERE unetid = ?");
-            st.setString(1, netid);
+            st.setString(1, gnetid);
             ResultSet rs = st.executeQuery();
             rs.next();
 
             int id = rs.getInt("uid");
 
             st = connection.prepareStatement("INSERT INTO Grades (aid, uid, gpts) VALUES (?, ?, ?);");
-            st.setInt(1, assignmentid);
+            st.setInt(1, aid);
             st.setInt(2, id);
             st.setInt(3, points);
             st.executeUpdate();
-
+            init_Grades(connection, aid, Login.login);
             rs.close();
             st.close();
         }
@@ -479,13 +524,6 @@ public class DBManager {
             e.printStackTrace();
             return;
         }
-
-        //need to include student name with graded
-        s3.generate_Path(Login.login, "graded.json");
-        s3.upload_file("Grades.json");
-
-        //now do students
-        s3.generate_Path(netid, "grade.json");
 
     }
 
@@ -497,25 +535,17 @@ public class DBManager {
             st.setInt(1, points);
             st.setInt(2, aid);
             st.executeUpdate();
-
+            init_Grades(connection, aid, Login.login);
             st.close();
         }
         catch (SQLException e) {
             e.printStackTrace();
             return;
         }
-
-        //need to include student name with graded
-        s3.generate_Path(Login.login, "graded.json");
-        s3.upload_file("Grades.json");
-
-        //now do students
-        s3.generate_Path(netid, "grade.json");
-
     }
 
     /* Delete a grade given an assignment and a student */
-    public static void deleteAssignment(Connection connection, int assignmentid, String netid)
+    public static void deleteAssignment(Connection connection, int aid, String netid)
     {
         try {
             PreparedStatement st = connection.prepareStatement("SELECT uid FROM Usr WHERE unetid = ?");
@@ -526,7 +556,7 @@ public class DBManager {
             int id = rs.getInt("uid");
 
             st = connection.prepareStatement("DELETE FROM Grades WHERE aid = ? AND uid = ?");
-            st.setInt(1, assignmentid);
+            st.setInt(1, aid);
             st.setInt(2, id);
             st.executeUpdate();
 
@@ -548,7 +578,7 @@ public class DBManager {
     }
 
     //deletes grade of student
-    public static void deleteGrade(Connection connection, int assignmentid, String netid)
+    public static void deleteGrade(Connection connection, int aid, String netid, String gnetid)
     {
         try {
             PreparedStatement st = connection.prepareStatement("SELECT uid FROM Usr WHERE unetid = ?");
@@ -558,10 +588,10 @@ public class DBManager {
 
             int id = rs.getInt("uid");
             st = connection.prepareStatement("DELETE FROM Grades WHERE aid = ? AND uid = ?");
-            st.setInt(1, assignmentid);
+            st.setInt(1, aid);
             st.setInt(2, id);
             st.executeUpdate();
-
+            init_Grades(connection, aid, Login.login);
             st.close();
         }
         catch (SQLException e) {
@@ -684,7 +714,39 @@ public class DBManager {
     }
 
     /* Initializes Assignments data structure with assignments for all users*/
-    public static void init_Assignments(Connection connection, String unetid){
+    public static void init_Assignments(Connection connection, int aid, String unetid){
+        ArrayList classes = new ArrayList();
+        Assignments a = new Assignments();
+        try
+        {
+            PreparedStatement st = connection.prepareStatement("SELECT C.cnum FROM Class C, Assignments A WHERE A.aid = ? AND " +
+                    "A.cid = C.cid");
+            st.setInt(1, aid);
+            ResultSet rs = st.executeQuery();
+            rs.next();
+
+            String courseName= rs.getString("cnum");
+            //String cid = rs.getString("aname");
+            init_TAssignments(connection, Login.login);
+
+            //Update and upload Json for Students
+            System.out.println("students  "+ Login.snames.get(0));
+            int index = get_course_index(connection, Login.login, courseName);
+            for(int i = 0; i < Login.snames.get(index).size(); i++) {
+                init_SAssignments(connection, Login.snames.get(index).get(i).get(1).toString());
+            }
+            rs.close();
+            st.close();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+            return;
+        }
+    }
+
+    /* Initializes Assignments data structure with assignments for Teacher users*/
+    public static void init_TAssignments(Connection connection, String unetid){
         ArrayList classes = new ArrayList();
         Assignments a = new Assignments();
         try
@@ -699,20 +761,12 @@ public class DBManager {
             ResultSet rs = st.executeQuery();
             rs.next();
             int uid = rs.getInt("uid");
-            System.out.println("UID IS " + uid);
 
-            if(Login.rank.toString() != "INSTRUCTOR") {//not instructor
-                s3.generate_Path(unetid, "assign.json");
-                st = connection.prepareStatement("SELECT E.cid FROM enrolls_in E WHERE E.uid = ?");
-                st.setInt(1, uid);
-                rs = st.executeQuery();
-            }
-            else {//instructor
-                s3.generate_Path(unetid, "assigner.json");
-                st = connection.prepareStatement("SELECT T.cid FROM teaches T WHERE T.uid = ?");
-                st.setInt(1, uid);
-                rs = st.executeQuery();
-            }
+            s3.generate_Path(unetid, "assigner.json");
+            st = connection.prepareStatement("SELECT T.cid FROM teaches T WHERE T.uid = ?");
+            st.setInt(1, uid);
+            rs = st.executeQuery();
+
             int i = 0;
             while (rs.next())
             {
@@ -720,6 +774,7 @@ public class DBManager {
                 System.out.println("CID IS "+ classes.get(i));
                 i++;
             }
+            System.out.print("INIT: CIDS are "+ classes);
 
             st = connection.prepareStatement("SELECT * FROM Assignments A, Class C WHERE C.cid = ? AND C.cid = A.cid");
             for(i = 0; i < classes.size() ; i++) {
@@ -727,7 +782,61 @@ public class DBManager {
                 rs = st.executeQuery();
                 while(rs.next()){
                     a.addAssign(new Assignment(rs.getString("aname"), rs.getString("description"), new Date(rs.getTimestamp("due").getTime()),
-                            rs.getInt("apts"), rs.getString("cnum"), rs.getString("csection")));
+                            rs.getInt("apts"), rs.getString("cnum"), rs.getString("csection"), rs.getInt("aid")));
+                    //System.out.println(rs.getString("aname") + rs.getString("description") + rs.getInt("apts") + rs.getTimestamp("due"));
+                }
+            }
+            System.out.println(a);
+            a.createJSON_File();
+            s3.upload_file("Assignments.json");
+            rs.close();
+            st.close();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+            return;
+        }
+    }
+
+    /* Initializes Assignments data structure with assignments for Student users*/
+    public static void init_SAssignments(Connection connection, String unetid){
+        ArrayList classes = new ArrayList();
+        Assignments a = new Assignments();
+        try
+        {
+            System.out.println("Unetid: " + unetid);
+            /*
+            PreparedStatement st = connection.prepareStatement("SELECT A.aname, A.description, A.due, A.apts " +
+                    "FROM Assignments A, Usr U, enrolls_in E WHERE U.unetid = ? AND E.uid = U.uid AND A.cid = E.cid");
+            */
+            PreparedStatement st = connection.prepareStatement("SELECT U.uid FROM Usr U WHERE U.unetid = ?");
+            st.setString(1, unetid);
+            ResultSet rs = st.executeQuery();
+            rs.next();
+            int uid = rs.getInt("uid");
+
+            s3.generate_Path(unetid, "assign.json");
+            st = connection.prepareStatement("SELECT E.cid FROM enrolls_in E WHERE E.uid = ?");
+            st.setInt(1, uid);
+            rs = st.executeQuery();
+
+            int i = 0;
+            while (rs.next())
+            {
+                classes.add(rs.getInt("cid"));
+                System.out.println("CID IS "+ classes.get(i));
+                i++;
+            }
+            System.out.print("INIT: CIDS are "+ classes);
+
+            st = connection.prepareStatement("SELECT * FROM Assignments A, Class C WHERE C.cid = ? AND C.cid = A.cid");
+            for(i = 0; i < classes.size() ; i++) {
+                st.setInt(1, (int)classes.get(i));
+                rs = st.executeQuery();
+                while(rs.next()){
+                    a.addAssign(new Assignment(rs.getString("aname"), rs.getString("description"), new Date(rs.getTimestamp("due").getTime()),
+                            rs.getInt("apts"), rs.getString("cnum"), rs.getString("csection"), rs.getInt("aid")));
                     //System.out.println(rs.getString("aname") + rs.getString("description") + rs.getInt("apts") + rs.getTimestamp("due"));
                 }
             }
@@ -772,7 +881,40 @@ public class DBManager {
     }
 
     /* Initializes Assignments data structure with grades for all users*/
-    public static void init_Grades(Connection connection, String unetid, int points){
+    public static void init_Grades(Connection connection, int aid, String unetid){
+        ArrayList classes = new ArrayList();
+        Grades g = new Grades();
+        try
+        {
+            System.out.println("Unetid: " + unetid);
+            PreparedStatement st = connection.prepareStatement("SELECT C.cnum FROM Class C, Assignments A WHERE A.aid = ? AND " +
+                    "A.cid = C.cid");
+            st.setInt(1, aid);
+            ResultSet rs = st.executeQuery();
+            rs.next();
+
+            String courseName= rs.getString("cnum");
+            //String cid = rs.getString("aname");
+            init_TGrades(connection, aid, Login.login);
+
+            //Update and upload Json for Students
+            System.out.println("students  "+ Login.snames.get(0));
+            int index = get_course_index(connection, Login.login, courseName);
+            for(int i = 0; i < Login.snames.get(index).size(); i++) {
+                init_SGrades(connection, aid,Login.snames.get(index).get(i).get(1).toString());
+            }
+            rs.close();
+            st.close();
+
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+            return;
+        }
+    }
+
+    public static void init_TGrades(Connection connection, int aid, String unetid){
         ArrayList classes = new ArrayList();
         Grades g = new Grades();
         try
@@ -789,18 +931,11 @@ public class DBManager {
             int uid = rs.getInt("uid");
             System.out.println("UID IS " + uid);
 
-            if(Login.rank.toString() != "INSTRUCTOR") {//not instructor
-                s3.generate_Path(unetid, "graded.json");
-                st = connection.prepareStatement("SELECT E.cid FROM enrolls_in E WHERE E.uid = ?");
-                st.setInt(1, uid);
-                rs = st.executeQuery();
-            }
-            else {//instructor
-                s3.generate_Path(unetid, "grade.json");
-                st = connection.prepareStatement("SELECT T.cid FROM teaches T WHERE T.uid = ?");
-                st.setInt(1, uid);
-                rs = st.executeQuery();
-            }
+            s3.generate_Path(unetid, "graded.json");
+            st = connection.prepareStatement("SELECT T.cid FROM teaches T WHERE T.uid = ?");
+            st.setInt(1, uid);
+            rs = st.executeQuery();
+
             int i = 0;
             while (rs.next())
             {
@@ -817,7 +952,63 @@ public class DBManager {
                 while(rs.next()){
                     g.addGrade(new Grade(new Assignment(rs.getString("aname"), rs.getString("description"),
                             new Date(rs.getTimestamp("due").getTime()), rs.getInt("apts"), rs.getString("cnum"),
-                            rs.getString("csection")), points));
+                            rs.getString("csection"), rs.getInt("aid")), rs.getInt("gpts"), rs.getString("unetid"),true));
+                    System.out.println("LOGIN INFO: " + g);
+                }
+            }
+
+            System.out.println(g);
+            g.createJSON_File();
+            s3.upload_file("Grades.json");
+            rs.close();
+            st.close();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+            return;
+        }
+    }
+
+    public static void init_SGrades(Connection connection, int aid, String unetid){
+        ArrayList classes = new ArrayList();
+        Grades g = new Grades();
+        try
+        {
+            System.out.println("Unetid: " + unetid);
+            /*
+            PreparedStatement st = connection.prepareStatement("SELECT A.aname, A.description, A.due, A.apts " +
+                    "FROM Assignments A, Usr U, enrolls_in E WHERE U.unetid = ? AND E.uid = U.uid AND A.cid = E.cid");
+            */
+            PreparedStatement st = connection.prepareStatement("SELECT U.uid FROM Usr U WHERE U.unetid = ?");
+            st.setString(1, unetid);
+            ResultSet rs = st.executeQuery();
+            rs.next();
+            int uid = rs.getInt("uid");
+            System.out.println("UID IS " + uid);
+
+            s3.generate_Path(unetid, "grade.json");
+            st = connection.prepareStatement("SELECT E.cid FROM enrolls_in E WHERE E.uid = ?");
+            st.setInt(1, uid);
+            rs = st.executeQuery();
+
+            int i = 0;
+            while (rs.next())
+            {
+                classes.add(rs.getInt("cid"));
+                System.out.println("CID IS "+ classes.get(i));
+                i++;
+            }
+            st = connection.prepareStatement("SELECT U.uname, U.unetid, U.uid, G.aid, G.gpts, A.aname, A.apts, A.cid, " +
+                    "A.description, A.due, C.cnum, C.csection FROM Usr U, " + "Grades G, Assignments A, Class C " +
+                    "WHERE A.cid = ? AND A.cid = C.cid AND U.uid = G.uid AND G.aid = A.aid");
+            for(i = 0; i < classes.size() ; i++) {
+                st.setInt(1, (int)classes.get(i));
+                rs = st.executeQuery();
+                while(rs.next()){
+                    g.addGrade(new Grade(new Assignment(rs.getString("aname"), rs.getString("description"),
+                            new Date(rs.getTimestamp("due").getTime()), rs.getInt("apts"), rs.getString("cnum"),
+                            rs.getString("csection"), rs.getInt("aid")), rs.getInt("gpts")));
                     System.out.println("aid is " + rs.getInt("aid"));
                 }
             }
@@ -835,31 +1026,33 @@ public class DBManager {
         }
     }
 
-    public void add_Submission(Connection connection, String netid, String cname ,int aid, String filename){
+    public void add_Submission(Connection connection, String netid, String cname ,int aid, File filename){
         try {
             PreparedStatement st = connection.prepareStatement("SELECT uid FROM Usr WHERE unetid = ?");
             st.setString(1, netid);
             ResultSet rs = st.executeQuery();
             rs.next();
-
             int id = rs.getInt("uid");
 
-            st = connection.prepareStatement("INSERT INTO Submissions (aid, uid, stime) VALUES (?, ?, ?);");
+            st = connection.prepareStatement("INSERT INTO Submissions (aid, uid, stime, attempts) VALUES (?, ?, ?, ?);");
             st.setInt(1, aid);
             st.setInt(2, id);
             Date date = new Date();
             st.setTimestamp(3, new java.sql.Timestamp(date.getTime()));
+            st.setInt(4, 1);
             st.executeUpdate();
 
             //need to include student name with graded
             File temp = null;
-            s3.generate_Path(cname, "qyyyy" ,filename);
+
             try{
-                temp = new File(filename, aid + "_" + id);
+                temp = File.createTempFile(aid + "_" + id + "_1" , s3.get_extension(filename.getName()));
             }catch(Exception e){
                 System.out.println("ERROR");
             }
+            s3.generate_Path(cname, "qyyyy" , temp.getName());
             s3.upload_file(temp.getPath());
+
             rs.close();
             st.close();
         }
@@ -869,47 +1062,270 @@ public class DBManager {
         }
     }
 
-    public void update_Submission(Connection connection, String netid, String cname_sect ,int aid, String filename){
+    public void update_Submission(Connection connection, String netid, String cname_sect ,int aid, File filename){
         try {
             PreparedStatement st = connection.prepareStatement("SELECT uid FROM Usr WHERE unetid = ?");
             st.setString(1, netid);
             ResultSet rs = st.executeQuery();
             rs.next();
-
             int id = rs.getInt("uid");
 
-            st = connection.prepareStatement("UPDATE Submissions SET stime = ? where aid = ? AND uid = ? ");
+            st = connection.prepareStatement("SELECT attempts FROM Submissions where aid = ? AND uid = ? ");
+            st.setInt(1, aid);
+            st.setInt(2, id);
+            rs = st.executeQuery();
+            rs.next();
+            int attempts = rs.getInt("attempts");
+
+            st = connection.prepareStatement("UPDATE Submissions SET stime = ?, attempts = ? where aid = ? AND uid = ? ");
             Date date = new Date();
             st.setTimestamp(1, new java.sql.Timestamp(date.getTime()));
-            st.setInt(2, aid);
-            st.setInt(3, id);
+            st.setInt(2, ++attempts);
+            st.setInt(3, aid);
+            st.setInt(4, id);
 
             st.executeUpdate();
             rs.close();
             st.close();
-            //need to include student name with graded
-            s3.generate_Path(cname_sect, "qyyyy" ,filename);
-            System.out.println(s3.path);
             File temp = null;
             //File tempFile = File.createTempFile(filename,aid + "_" + id);
+
             try{
-                temp = new File(filename, aid + "_" + id);
+                temp = File.createTempFile(aid + "_" + id, s3.get_extension(filename.getName()));
             }catch(Exception e){
                 System.out.println("ERROR");
             }
-            //try {
-                s3.upload_file(temp.getName());
-            //}catch(Exception E){
-            //    System.out.println("UPLOADING FAILED!");
-            //}
-            temp.delete();
+            //System.out.println("NAME OF FILE: " + temp.getName());
+            //System.out.println("PATH OF FILE: "+ temp.getAbsolutePath());
+            s3.copy_file(filename, temp);
 
+            s3.generate_Path(cname_sect, "qyyyy" , aid + "_" + id);
+            System.out.println("PATH ****" + s3.path);
+            try {
+                s3.upload_file(temp.getAbsolutePath());
+            }catch(Exception E){
+                System.out.println("UPLOADING FAILED!");
+            }
+            temp.delete();
         }
         catch (SQLException e) {
             e.printStackTrace();
             return;
         }
     }
+
+    //returns true if late
+    public boolean isLate(Connection connection, String netid, int aid){
+        try {
+            PreparedStatement st = connection.prepareStatement("SELECT uid FROM Usr WHERE unetid = ?");
+            st.setString(1, netid);
+            ResultSet rs = st.executeQuery();
+            rs.next();
+            int id = rs.getInt("uid");
+
+            st = connection.prepareStatement("SELECT stime FROM Submissions where aid = ? AND uid = ? ");
+            rs = st.executeQuery();
+            rs.next();
+            Date submitted = new Date(rs.getTimestamp("stime").getTime());
+
+            st = connection.prepareStatement("SELECT due FROM Assignments A WHERE aid = ?");
+            st.setInt(1, aid);
+            rs = st.executeQuery();
+            rs.next();
+            Date due = new Date(rs.getTimestamp("due").getTime());
+
+            if(submitted.after(due)){
+                return true;
+            }
+        }catch(Exception e){
+            System.out.println("Late query failed!");
+            return true;//means there was no subnission
+        }
+        return false;
+    }
+    public void managing_ADatabase() {
+        try {
+            DriverManager.registerDriver(new org.postgresql.Driver());
+        }
+        catch (SQLException e)
+        {
+            System.out.println("Driver registration failed!");
+            e.printStackTrace();
+            return;
+        }
+
+        System.out.println("PostgreSQL JDBC Driver Registered!");
+
+        Connection connection = null;
+
+        String dbURL = "jdbc:postgresql://dbmilearn.c8o8famsdyyy.us-west-2.rds.amazonaws.com:5432/dbmilearn";
+        String user = "group5";
+        String pass = "cs180group5";
+
+        try {
+            connection = DriverManager.getConnection(dbURL, user, pass);
+            System.out.println("Connected to the database!");
+
+            /* Do your cool stuff in this try block */
+        }
+        catch (SQLException e)
+        {
+            System.out.println("Connection Failed! Check output console");
+            e.printStackTrace();
+            return;
+        }
+
+        try {
+            Statement st = connection.createStatement();
+            //String sql = "DROP TABLE Assignments";
+
+            String sql = "CREATE TABLE Assignments (" +
+                    "aid SERIAL UNIQUE not NULL, " +
+                    "cid INT not NULL, " +
+                    "aname VARCHAR(50) not NULL, " +
+                    "description VARCHAR(150), " +
+                    "due TIMESTAMP not NULL, " +
+                    "apts INT not NULL, " +
+                    "PRIMARY KEY(aid))";
+
+
+            st.executeUpdate(sql);
+            System.out.println("Created Assignments Database");
+        }catch(Exception e)
+        {
+            System.out.println("Creating Assignments failed!");
+        }
+        finally
+        {
+            try{
+                connection.close();
+                System.out.println("Connection closed!");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void managing_SDatabase() {
+        try {
+            DriverManager.registerDriver(new org.postgresql.Driver());
+        }
+        catch (SQLException e)
+        {
+            System.out.println("Driver registration failed!");
+            e.printStackTrace();
+            return;
+        }
+
+        System.out.println("PostgreSQL JDBC Driver Registered!");
+
+        Connection connection = null;
+
+        String dbURL = "jdbc:postgresql://dbmilearn.c8o8famsdyyy.us-west-2.rds.amazonaws.com:5432/dbmilearn";
+        String user = "group5";
+        String pass = "cs180group5";
+
+        try {
+            connection = DriverManager.getConnection(dbURL, user, pass);
+            System.out.println("Connected to the database!");
+
+            /* Do your cool stuff in this try block */
+        }
+        catch (SQLException e)
+        {
+            System.out.println("Connection Failed! Check output console");
+            e.printStackTrace();
+            return;
+        }
+
+        try {
+            Statement st = connection.createStatement();
+            //String sql = "DROP TABLE Submissions";
+
+            String sql = "CREATE TABLE Submissions (" +
+                    "aid INT not NULL, " +
+                    "uid INT not NULL, " +
+                    "stime TIMESTAMP, " +
+                    "attempts INT, " +
+                    "PRIMARY KEY(aid))";
+
+            st.executeUpdate(sql);
+            System.out.println("Created Submissions Database");
+        }catch(Exception e)
+        {
+            System.out.println("Creating Submissions failed!");
+        }
+        finally
+        {
+            try{
+                connection.close();
+                System.out.println("Connection closed!");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void managing_GDatabase() {
+        try {
+            DriverManager.registerDriver(new org.postgresql.Driver());
+        }
+        catch (SQLException e)
+        {
+            System.out.println("Driver registration failed!");
+            e.printStackTrace();
+            return;
+        }
+
+        System.out.println("PostgreSQL JDBC Driver Registered!");
+
+        Connection connection = null;
+
+        String dbURL = "jdbc:postgresql://dbmilearn.c8o8famsdyyy.us-west-2.rds.amazonaws.com:5432/dbmilearn";
+        String user = "group5";
+        String pass = "cs180group5";
+
+        try {
+            connection = DriverManager.getConnection(dbURL, user, pass);
+            System.out.println("Connected to the database!");
+
+            /* Do your cool stuff in this try block */
+        }
+        catch (SQLException e)
+        {
+            System.out.println("Connection Failed! Check output console");
+            e.printStackTrace();
+            return;
+        }
+
+        try {
+            Statement st = connection.createStatement();
+            //String sql = "DROP TABLE Grades";
+
+            String sql = "CREATE TABLE Grades (" +
+                    "aid INT not NULL, " +
+                    "uid INT not NULL, " +
+                    "gpts INT, " +
+                    "late BOOLEAN,  " +
+                    "PRIMARY KEY(aid, uid))";
+
+            st.executeUpdate(sql);
+            System.out.println("Created Grades Database");
+        }catch(Exception e)
+        {
+            System.out.println("Creating Grades failed!");
+        }
+        finally
+        {
+            try{
+                connection.close();
+                System.out.println("Connection closed!");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public static void main(String[] argv){
         try {
             DriverManager.registerDriver(new org.postgresql.Driver());
