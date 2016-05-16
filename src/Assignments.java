@@ -1,9 +1,10 @@
+import java.io.File;
 import java.io.PrintWriter;
 import java.util.*;//vectors
 
 public class Assignments {
     private Vector<Assignment> assignList;
-
+    public File json;
     public Assignments() {
         assignList = new Vector<Assignment>();
     }
@@ -47,5 +48,10 @@ public class Assignments {
             System.out.println("ERROR");
             e.printStackTrace();
         }
+        init_file();
+    }
+
+    private void init_file(){
+        json = new File("Assignments.json");
     }
 }

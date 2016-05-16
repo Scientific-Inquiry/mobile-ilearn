@@ -1,8 +1,10 @@
+import java.io.File;
 import java.io.PrintWriter;
 import java.util.Vector;
 
 public class Grades {
     private Vector<Grade> gradeList;
+    public File json;
     public Grades() {
         gradeList = new Vector<Grade>();
     }
@@ -32,6 +34,7 @@ public class Grades {
         temp = temp.trim();
         return begin + temp + end;
     }
+
     public void createJSON_File(){
         try{
             PrintWriter file = new PrintWriter("Grades.json");
@@ -41,5 +44,10 @@ public class Grades {
             System.out.println("ERROR");
             e.printStackTrace();
         }
+        init_file();
+    }
+
+    private void init_file(){
+        json = new File("Grades.json");
     }
 }
