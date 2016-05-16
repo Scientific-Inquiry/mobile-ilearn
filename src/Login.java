@@ -20,7 +20,7 @@ public class Login {
     /* Constructor. user takes a value only once a user has logged in. */
     private Login(String username, String password, String dir)
     {
-        this.dir = new String(dir);
+        Login.dir = new String(dir);
         this.username = new String(username);
         this.password = new String(password);
         this.user = null;
@@ -328,31 +328,17 @@ public class Login {
     /* If the function returns an empty string, the authentication failed. If it returns a non-empty string, it worked and the string can be used to access the correct directory */
     public static boolean login(String username, String password, String dir)
     {
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-        try {
-            DriverManager.registerDriver(new org.postgresql.Driver());
-        }
-        catch (SQLException e)
-        {
-            System.out.println("Driver registration failed!");
-            e.printStackTrace();
-            return false;
-        }
-        Connection connection = null;
-        String dbURL = "jdbc:postgresql://dbmilearn.c8o8famsdyyy.us-west-2.rds.amazonaws.com:5432/dbmilearn";
-        String user = "group5";
-        String pass = "cs180group5";
-
-        try {
-            connection = DriverManager.getConnection(dbURL, user, pass);
-
+        //StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        //StrictMode.setThreadPolicy(policy);
+        try{
+            RefreshJSON.connectDB();
+            Connection connection = RefreshJSON.connection;
             Statement st = connection.createStatement();
 
             Login log = new Login(username, password, dir);
             S3Manager s3 = new S3Manager();
             if (log.checkCredentials(connection, s3)) {
-                login = log.getUsername();
+                Login.login = log.getUsername();
                 return true;
             }
             else
@@ -367,32 +353,22 @@ public class Login {
             e.printStackTrace();
             return false;
         }
-
-        finally
-        {
-            try{
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     /* Might actually not be useful */
-    public void logout()
+    public static void logout()
     {
-        this.username = null;
-        this.password = null;
-        this.user = null;
-        this.snames = null;
         login = null;
         rank = null;
+        RefreshJSON.closeDB();
     }
 
 
     public static void main(String[] argv)
     {
         login("bwayn052", "iambatman", "dir");
+
+        logout();
     }
 
     private String username;
@@ -401,5 +377,5 @@ public class Login {
     public static String login;
     public static Rank rank; /* rank.toString().equals("BLAHBLAH"); */
     public static ArrayList<ArrayList<Vector>> snames; /* snames.get(x).get(0) = name & snames.get(x).get(1) = netid ; snames.get(x) is an array list of vectors that contains the list of all students for one class */
-    public String dir;
+    public static String dir;
 }
