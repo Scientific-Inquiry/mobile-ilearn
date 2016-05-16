@@ -60,6 +60,10 @@ function menu() {
         alert("You will be logging out!");
         showAndroidLogout();
     });
+    $("#app-site").click(function(){
+        alert("You will now go to the Crumb Lords website!");
+        androidWebsite();
+    });
     // Gets the current time.
     footer();
 }
@@ -256,7 +260,7 @@ function jsonGrader(arr) {
             idNum++;
             currAssn = currGrade;
             var className = arr[i].courseNum + '-' + arr[i].courseSec
-            out += '<div data-role="collapsible" id="gradeI' + idNum + '"><h3 class="grader">' + className + ': ' + currAssn + '</h3><p>Assignment Title: ' + arr[i].title + '<br />Total Points: ' + arr[i].total + '</p><form action="appForm-gradebook" method="post" accept-charset="UTF-8" enctype="application/x-www-form-urlencoded" autocomplete="off" novalidate><input type="text" name="aid" value="' + arr[i].aid + '" readonly class="app-form"><table data-role="table" class="ui-responsive"><thead><tr><th>Student<br /> Login</th><th>Student<br /> Grade</th><th>Percent</tr></thead><tbody>';
+            out += '<div data-role="collapsible" id="gradeI' + idNum + '"><h3 class="grader">' + className + ': ' + currAssn + '</h3><p>Assignment Title: ' + arr[i].title + '<br /><form action="appForm-gradebook" method="post" accept-charset="UTF-8" enctype="application/x-www-form-urlencoded" autocomplete="off" novalidate>Total Points: ' + '<input type="text" name="points" value="' + arr[i].total + '" size="3"></p><input type="text" name="aid" value="' + arr[i].aid + '" readonly class="app-form"><table data-role="table" class="ui-responsive"><thead><tr><th>Student<br /> Login</th><th>Student<br /> Grade</th><th>Percent</tr></thead><tbody>';
         }
         // Gets the students in the class.
         var percent = Number((arr[i].grade / arr[i].total) * 100);
@@ -424,7 +428,13 @@ function loadSets() {
 
 /* Functions for setting up Android functions. */
 /* Function for logging out. */
-function showAndroidLogout() {
+function androidLogout() {
     alert("You are logging out!");
     Android.logout();
+}
+
+/* Function for going to Crumb Lords website in browser. */
+function androidWebsite() {
+    alert("You are now going to the Crumb Lords website!");
+    Android.openWebsite();
 }
