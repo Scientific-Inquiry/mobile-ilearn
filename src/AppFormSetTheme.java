@@ -17,14 +17,17 @@ public class AppFormSetTheme extends HttpServlet {
     protected void doPost(HttpServletRequest request,
                           HttpServletResponse response) throws ServletException, IOException {
 
+        /* Get the parameters that were given by the user in the form */
         String theme = request.getParameter("themeName");
         System.out.println("Theme: " + theme);
         String login = request.getParameter("slogin");
         System.out.println("Login: " + login);
 
+        /* Check validity of the value that the user has given to the attribute */
         if (theme.length() > 1)
-            theme = "a";
+            theme = "a"; /* If the parameter is longer than one, then the user has "cheated"
 
+        /* Register driver (absolutely needed for Tomcat) */
         try {
             DriverManager.registerDriver(new Driver());
         }
@@ -36,23 +39,30 @@ public class AppFormSetTheme extends HttpServlet {
         }
         Connection connection = null;
 
+        /* Connect to the database that is stored on AWS' RDS */
         String dbURL = "jdbc:postgresql://dbmilearn.c8o8famsdyyy.us-west-2.rds.amazonaws.com:5432/dbmilearn";
         String user = "group5";
         String pass = "cs180group5";
 
         try {
-            connection = DriverManager.getConnection(dbURL, user, pass);
+            connection = DriverManager.getConnection(dbURL, user, pass); /* Now connected! */
+
+            /* Select all the existing themes to check that the user didn't cheat and sent the id of
+            a theme that does not exist */
             PreparedStatement st = connection.prepareStatement("SELECT * FROM Theme");
             ResultSet rs = st.executeQuery();
             boolean b = false;
             while (rs.next())
             {
+                /* If the theme given by the user matches one that is in the database, everything
+                is fine */
                 if (theme.equals(rs.getString("id")))
                     b = true;
             }
-            if (!b)
+            if (!b) /* If no theme matched, set the parameter to the default theme */
                 theme = "a";
 
+            /* Process to the database update */
             st = connection.prepareStatement("UPDATE Usr U SET theme = ? WHERE U.unetid = ?;");
             st.setString(1, theme);
             st.setString(2, login);
@@ -74,6 +84,7 @@ public class AppFormSetTheme extends HttpServlet {
 
         finally
         {
+            /* Close connection with the database */
             try{
                 connection.close();
             } catch (SQLException e) {
