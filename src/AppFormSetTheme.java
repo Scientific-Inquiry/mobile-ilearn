@@ -53,7 +53,7 @@ public class AppFormSetTheme extends HttpServlet {
             if (!b)
                 theme = "a";
 
-            st = connection.prepareStatement("UPDATE Usr U SET theme = ? WHERE U.uid = ?;");
+            st = connection.prepareStatement("UPDATE Usr U SET theme = ? WHERE U.unetid = ?;");
             st.setString(1, theme);
             st.setString(2, login);
             st.executeUpdate();
