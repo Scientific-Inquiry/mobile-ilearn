@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,10 +21,23 @@ public class AppFormSetTheme extends HttpServlet {
         if (theme.length() > 1)
             theme = "a";
 
-        RefreshJSON.connectDB();
-        Connection connection = RefreshJSON.connection;
+        try {
+            DriverManager.registerDriver(new org.postgresql.Driver());
+        }
+        catch (SQLException e)
+        {
+            System.out.println("Driver registration failed!");
+            e.printStackTrace();
+            return;
+        }
+        Connection connection = null;
+
+        String dbURL = "jdbc:postgresql://dbmilearn.c8o8famsdyyy.us-west-2.rds.amazonaws.com:5432/dbmilearn";
+        String user = "group5";
+        String pass = "cs180group5";
 
         try {
+            connection = DriverManager.getConnection(dbURL, user, pass);
             PreparedStatement st = connection.prepareStatement("SELECT * FROM Theme");
             ResultSet rs = st.executeQuery();
             boolean b = false;
@@ -55,6 +69,14 @@ public class AppFormSetTheme extends HttpServlet {
             return;
         }
 
+        finally
+        {
+            try{
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }
