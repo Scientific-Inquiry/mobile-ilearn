@@ -266,7 +266,7 @@ function jsonGrader(arr) {
         var percent = Number((arr[i].grade / arr[i].total) * 100);
         out += '<tr';
         if(arr[i].late === "true") { out += ' class="grade-late" '; }
-        out += '><td>' + arr[i].slogin + '</td><td><input type="text" name="grade-' + arr[i].slogin + '" maxlength="4" size="3" value="' + arr[i].grade + '"></td><td>' + percent + '%</td></tr>';
+        out += '><td>' + arr[i].slogin + '</td><td><input type="text" name="' + arr[i].slogin + '" maxlength="4" size="3" value="' + arr[i].grade + '"></td><td>' + percent + '%</td></tr>';
         var next = i + 1;
         if(next < arr.length) {
             currGrade = arr[next].title;
@@ -437,4 +437,13 @@ function androidLogout() {
 function androidWebsite() {
     alert("You are now going to the Crumb Lords website!");
     Android.openWebsite();
+}
+
+
+/* Function for logging in the user. */
+function androidLogin() {
+    alert("Getting user!");
+    var user = Android.getUser();
+    alert("User is " + user);
+    return user;
 }
