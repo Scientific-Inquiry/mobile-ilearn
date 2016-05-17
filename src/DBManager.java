@@ -950,9 +950,11 @@ public class DBManager {
                 st.setInt(1, (int)classes.get(i));
                 rs = st.executeQuery();
                 while(rs.next()){
+                    //public Grade(Assignment a, int pts, String login, boolean tardy, boolean instr)
                     g.addGrade(new Grade(new Assignment(rs.getString("aname"), rs.getString("description"),
                             new Date(rs.getTimestamp("due").getTime()), rs.getInt("apts"), rs.getString("cnum"),
-                            rs.getString("csection"), rs.getInt("aid")), rs.getInt("gpts"), rs.getString("unetid"),true));
+                            rs.getString("csection"), rs.getInt("aid")), rs.getInt("gpts"), rs.getString("unetid"),
+                            isLate(connection, rs.getString("unetid"), 20),true));
                     System.out.println("LOGIN INFO: " + g);
                 }
             }
@@ -1006,14 +1008,15 @@ public class DBManager {
                 st.setInt(1, (int)classes.get(i));
                 rs = st.executeQuery();
                 while(rs.next()){
+                    //public Grade(Assignment a, int pts, String login, boolean tardy, boolean instr)
                     g.addGrade(new Grade(new Assignment(rs.getString("aname"), rs.getString("description"),
                             new Date(rs.getTimestamp("due").getTime()), rs.getInt("apts"), rs.getString("cnum"),
-                            rs.getString("csection"), rs.getInt("aid")), rs.getInt("gpts")));
+                            rs.getString("csection"), rs.getInt("aid")), rs.getInt("gpts"), unetid,isLate(connection, unetid, aid), false));
                     System.out.println("aid is " + rs.getInt("aid"));
                 }
             }
 
-            System.out.println(g);
+            System.out.println("SHOULD HAVE TRUE\n" + g);
             g.createJSON_File();
             s3.upload_file("Grades.json");
             rs.close();
@@ -1091,7 +1094,7 @@ public class DBManager {
             //File tempFile = File.createTempFile(filename,aid + "_" + id);
 
             try{
-                temp = File.createTempFile(aid + "_" + id, s3.get_extension(filename.getName()));
+                temp = File.createTempFile(aid + "_" + id + "_" + attempts, s3.get_extension(filename.getName()));
             }catch(Exception e){
                 System.out.println("ERROR");
             }
@@ -1099,7 +1102,7 @@ public class DBManager {
             //System.out.println("PATH OF FILE: "+ temp.getAbsolutePath());
             s3.copy_file(filename, temp);
 
-            s3.generate_Path(cname_sect, "qyyyy" , aid + "_" + id);
+            s3.generate_Path(cname_sect, "qyyyy" , aid + "_" + id + "_" + attempts);
             System.out.println("PATH ****" + s3.path);
             try {
                 s3.upload_file(temp.getAbsolutePath());
@@ -1115,34 +1118,44 @@ public class DBManager {
     }
 
     //returns true if late
-    public boolean isLate(Connection connection, String netid, int aid){
+    public static boolean isLate(Connection connection, String netid, int aid){
         try {
             PreparedStatement st = connection.prepareStatement("SELECT uid FROM Usr WHERE unetid = ?");
             st.setString(1, netid);
             ResultSet rs = st.executeQuery();
             rs.next();
             int id = rs.getInt("uid");
+            System.out.println("UID: " + id);
 
             st = connection.prepareStatement("SELECT stime FROM Submissions where aid = ? AND uid = ? ");
+            st.setInt(1, aid);
+            st.setInt(2, id);
             rs = st.executeQuery();
             rs.next();
             Date submitted = new Date(rs.getTimestamp("stime").getTime());
+            System.out.println("SUBMITTED TIME: " + submitted);
 
-            st = connection.prepareStatement("SELECT due FROM Assignments A WHERE aid = ?");
+            st = connection.prepareStatement("SELECT A.due FROM Assignments A WHERE A.aid = ? ");
             st.setInt(1, aid);
+            System.out.println("AID IS : " + aid);
             rs = st.executeQuery();
             rs.next();
             Date due = new Date(rs.getTimestamp("due").getTime());
+
+            System.out.println("ASSIGN TIMESTAMP: " + rs.getTimestamp("due"));
+            System.out.println("ASSIGN DUE: " + due);
 
             if(submitted.after(due)){
                 return true;
             }
         }catch(Exception e){
             System.out.println("Late query failed!");
+            e.printStackTrace();
             return true;//means there was no subnission
         }
         return false;
     }
+
     public void managing_ADatabase() {
         try {
             DriverManager.registerDriver(new org.postgresql.Driver());
