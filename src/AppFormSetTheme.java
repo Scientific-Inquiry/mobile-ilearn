@@ -1,3 +1,5 @@
+import org.postgresql.Driver;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -24,7 +26,7 @@ public class AppFormSetTheme extends HttpServlet {
             theme = "a";
 
         try {
-            DriverManager.registerDriver(new org.postgresql.Driver());
+            DriverManager.registerDriver(new Driver());
         }
         catch (SQLException e)
         {
