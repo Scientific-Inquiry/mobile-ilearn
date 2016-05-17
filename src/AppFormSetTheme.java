@@ -22,15 +22,6 @@ public class AppFormSetTheme extends HttpServlet {
         if (theme.length() > 1)
             theme = "a";
 
-        try {
-            DriverManager.registerDriver(new org.postgresql.Driver());
-        }
-        catch (SQLException e)
-        {
-            System.out.println("Driver registration failed!");
-            e.printStackTrace();
-            return;
-        }
         Connection connection = null;
 
         String dbURL = "jdbc:postgresql://dbmilearn.c8o8famsdyyy.us-west-2.rds.amazonaws.com:5432/dbmilearn";
