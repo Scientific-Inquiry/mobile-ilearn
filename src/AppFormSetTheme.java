@@ -17,6 +17,7 @@ public class AppFormSetTheme extends HttpServlet {
 
         String theme = request.getParameter("themeName");
         System.out.println("Theme: " + theme);
+        int uid = Integer.parseInt(request.getParameter("login"));
 
         if (theme.length() > 1)
             theme = "a";
@@ -49,9 +50,9 @@ public class AppFormSetTheme extends HttpServlet {
             if (b == false)
                 theme = "a";
 
-            st = connection.prepareStatement("UPDATE Usr SET theme = ? WHERE unetid = ?;");
+            st = connection.prepareStatement("UPDATE Usr U SET theme = ? WHERE U.uid = ?;");
             st.setString(1, theme);
-            st.setString(2, Login.login);
+            st.setInt(2, uid);
             st.executeUpdate();
 
             rs.close();
