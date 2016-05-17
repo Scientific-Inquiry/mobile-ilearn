@@ -10,7 +10,9 @@ var url;
 var priLow = 7;     // Low priority is by default 7 days (7-21 days)
 var priMed = 3;     // Medium priority is by default 3 days (3-6 days)
 var priHigh = 24;   // High priority is by default 24 hours (1-72 hours)
+var quarter;
 
+/* Initializes the user's data. */
 function init(user) {
     // Gets the user data
     function jsonUser(arr) {
@@ -28,6 +30,7 @@ function init(user) {
         var themeUse = arr[0].theme;
         changeTheme(themeUse);
     }
+    getQuarter();
     url = "data/users/" + user + "/";
     getData(url + "user.json", jsonUser);
     $(document).ready(function() {
@@ -58,7 +61,7 @@ function menu() {
     });
     $("#app-logout").click(function(){
         alert("You will be logging out!");
-        showAndroidLogout();
+        androidLogout();
     });
     $("#app-site").click(function(){
         alert("You will now go to the Crumb Lords website!");
@@ -75,6 +78,32 @@ function footer() {
     var now = new Date();
     document.getElementById("app-time").innerHTML = now.toString();
     var t = setTimeout(footer, 1000);
+}
+
+/* Function for getting the quarter. 
+ * Returns a five character string.*/
+function getQuarter() {
+    var now = new Date();
+    var q;
+    // Gets the month
+    if(now.getMonth() < 3) {
+        q = "w";    // Winter quarter (0-2)
+    }
+    else if(now.getMonth() < 6) {
+        q = "s";    // Spring quarter (3-5)
+    }
+    else if(now.getMonth() < 9) {
+        q = "u";    // Summer Session (6-8)
+    }
+    else if(now.getMonth() < 12) {
+        q = "f";
+    }
+    else {
+        q = "q";    // Quarter not recognized
+    }
+    // Gets the year.
+    q += now.getFullYear();
+    quarter = q;
 }
 
 /* Functions for getting data from JSON files and outputting into the proper array. */
@@ -118,7 +147,8 @@ function jsonAssigns(arr) {
     for(i = 0; i < arr.length; i++) {
         idNum++;
         // Generates a collapsible with the assignment.
-        out += '<div data-role="collapsible" id="assnNum' + idNum + '"><h3 class="assigned">' + arr[i].courseNum + '-' + arr[i].courseSec + ': ' + arr[i].title + '</h3><form action="http://ec2-52-37-165-140.us-west-2.compute.amazonaws.com:8080/AppFormAssignNew" method="post" accept-charset="UTF-8" enctype="application/x-www-form-urlencoded" autocomplete="off" novalidate><fieldset><input type="hidden" name="slogin" value="' + login + '" readonly><input type="file" name="file"><input type="submit" value="Turn in assignment"></fieldset></form><p>' + arr[i].desc + '</p><p>Due: ' + arr[i].due + '</p><p>Points: ' + arr[i].points + '</p></div>';
+        var className = arr[i].courseNum + '-' + arr[i].courseSec;
+        out += '<div data-role="collapsible" id="assnNum' + idNum + '"><h3 class="assigned">' + className + ': ' + arr[i].title + '</h3><form class="ui-form" action="https://s3-bucket.s3.amazonaws.com/" method="post" enctype="multipart/form-data"><fieldset><input type="hidden" name="key" value="data/' + quarter + '/' + className + '/' + arr[i].aid + '/${filename}"><input type="hidden" name="slogin" value="' + login + '" readonly><input type="file" name="file"><input type="submit" value="Turn in assignment"></fieldset></form><p>' + arr[i].desc + '</p><p>Due: ' + arr[i].due + '</p><p>Points: ' + arr[i].points + '</p></div>';
     }
     // Refreshes the assignments collapsible set.
     $("#assignS").html(out).collapsibleset("refresh");
@@ -415,6 +445,9 @@ function loadSets() {
     changeLink(title);
     changeContent(title);
     
+    // Sets up the forms with the user login.
+    $(".app-form-login").attr("value", login);
+    
     // Loads the users settings.
     // Sets up user theme changing
     $("#app-theme-select").change(function() {
@@ -439,11 +472,12 @@ function androidWebsite() {
     Android.openWebsite();
 }
 
-
 /* Function for logging in the user. */
 function androidLogin() {
-    alert("Getting user!");
+    //alert("Getting user!");
     //login = Android.getUser();
-    login = "bwayn052";
-    alert("Login is " + login);
+    //login = "bwayn052";
+    //alert("Login is " + login);
+    //return Android.getUser();
+    return "bwayn052";
 }
