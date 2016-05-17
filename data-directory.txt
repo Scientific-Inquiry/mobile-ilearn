@@ -14,24 +14,25 @@ Directory called: bwayn052/ (is generated/accessed)
 Files:
     classes.json (class information) [alphabetical by course number]
         courseName (Introduction to Software Engineering)
-        courseNumber (CS180)
-        courseSection (01)
+        courseNum (CS180)
+        courseSec (01)
         quarter (S16)
         instructor (Oben)
     assign.json (assignment information) [ordered from earliest to latest]
         title (Assignment 2)
-        dueDate (Mon May 31 18:30:00 PDT 2016)
-        description (This is a description string)
-        point (10)
+        due (Mon May 31 18:30:00 PDT 2016)
+        desc (This is a description string)
+        points (10)
         courseNumber (CS180)
+        idNum (45)
     grade.json (grades) [same order as assignments]
         grade (9)
         title (Assignment 2)
-        statusIn (on time) [when student turned in]
+        late (false) [whether the assignment was turned in late]
         total (10)
-        statusOut (graded) [when instructor finished grading]
-        courseNumber (CS180)
-        dueDate (Mon May 31 18:30:00 PDT 2016)
+        courseNum (CS180)
+        due (Mon May 31 18:30:00 PDT 2016)
+        idNum (43)
 
 Teacher user Clark Kent logs in
 Teacher can update assignments and grades
@@ -40,17 +41,20 @@ Directory (accessed): ckent038/
 Files:
     assigner.json (assignments for the class) [can change anything]
         title (Assignment 2)
-        dueDate (Mon May 31 18:30:00 PDT 2016)
-        description (This is a description string)
+        due (Mon May 31 18:30:00 PDT 2016)
+        desc (This is a description string)
         points (10)
+        courseNum (CS180)
+        courseSec (01)
     graded.json (grades for the class) [can change grade]
         grade (9) [can change grade]
         title (Assignment 2)
-        statusIn (on time) [when student turned in]
+        late (false) [whether the assignment was turned in late]
         total (10)
-        statusOut (graded) [when instructor finished grading]
-        due date (Mon May 31 18:30:00 PDT 2016)
+        due (Mon May 31 18:30:00 PDT 2016)
         slogin (jdoe035)
+        courseNum (CS180)
+        courseSec (01)
     course.json (course information) [courses they are teaching and students]
         courseName (Introduction to Software Engineering)
         courseNumber (CS180)
