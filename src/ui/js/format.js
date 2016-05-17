@@ -118,7 +118,7 @@ function jsonAssigns(arr) {
     for(i = 0; i < arr.length; i++) {
         idNum++;
         // Generates a collapsible with the assignment.
-        out += '<div data-role="collapsible" id="assnNum' + idNum + '"><h3 class="assigned">' + arr[i].courseNum + '-' + arr[i].courseSec + ': ' + arr[i].title + '</h3><p>' + arr[i].desc + '</p><p>Due: ' + arr[i].due + '</p><p>Points: ' + arr[i].points + '</p></div>';
+        out += '<div data-role="collapsible" id="assnNum' + idNum + '"><h3 class="assigned">' + arr[i].courseNum + '-' + arr[i].courseSec + ': ' + arr[i].title + '</h3><form action="http://ec2-52-37-165-140.us-west-2.compute.amazonaws.com:8080/AppFormAssignNew" method="post" accept-charset="UTF-8" enctype="application/x-www-form-urlencoded" autocomplete="off" novalidate><fieldset><input type="hidden" name="slogin" value="' + login + '" readonly><input type="file" name="file"><input type="submit" value="Turn in assignment"></fieldset></form><p>' + arr[i].desc + '</p><p>Due: ' + arr[i].due + '</p><p>Points: ' + arr[i].points + '</p></div>';
     }
     // Refreshes the assignments collapsible set.
     $("#assignS").html(out).collapsibleset("refresh");
@@ -235,7 +235,7 @@ function jsonAssigner(arr) {
         className = arr[i].courseNum + '-' + arr[i].courseSec;
         if(className !== classes[classes.length - 1]) { classes.push(className); }
         // Generates a collapsible with the assignment.
-        out += '<div data-role="collapsible" id="assnNum' + idNum + '"><h3 class="assigned">' + className + ': ' + arr[i].title + '</h3><form action="http://ec2-52-37-165-140.us-west-2.compute.amazonaws.com:8080/AppFormAssign" method="post" accept-charset="UTF-8" enctype="application/x-www-form-urlencoded" autocomplete="off" novalidate><fieldset><input type="text" name="aid" value="' + arr[i].aid + '" readonly class="app-form"><p>Assignment Title: <input type="text" name="title" value="' + arr[i].title + '" maxlength="50"><br /><textarea name="description" rows="10" cols="15" maxlength="150">' + arr[i].desc + '</textarea></p><p>Due: ' + arr[i].due + '<br />New Due Date<br />(mm/dd/yyyy, hh:dd AM/PM):<br /><input type="datetime-local" name="dueDate"></p><p>Points: <input type="text" name="grade" value="' + arr[i].points + '" maxlength="4" size="3"></p><input type="submit" value="Submit"></fieldset></form></div>';
+        out += '<div data-role="collapsible" id="assnNum' + idNum + '"><h3 class="assigned">' + className + ': ' + arr[i].title + '</h3><form action="http://ec2-52-37-165-140.us-west-2.compute.amazonaws.com:8080/AppFormAssign" method="post" accept-charset="UTF-8" enctype="application/x-www-form-urlencoded" autocomplete="off" novalidate><fieldset><input type="hidden" name="aid" value="' + arr[i].aid + '" readonly><p>Assignment Title: <input type="text" name="title" value="' + arr[i].title + '" maxlength="50"><br /><textarea name="description" rows="10" cols="15" maxlength="150">' + arr[i].desc + '</textarea></p><p>Due: ' + arr[i].due + '<br />New Due Date<br />(mm/dd/yyyy, hh:dd AM/PM):<br /><input type="datetime-local" name="dueDate"></p><p>Points: <input type="text" name="grade" value="' + arr[i].points + '" maxlength="4" size="3"></p><input type="submit" value="Submit"></fieldset></form></div>';
     }
     /* New Assignment form */
     out += '<div data-role="collapsible" id="assnNew"><h3 class="assigned">New Assignment</h3><form action="http://ec2-52-37-165-140.us-west-2.compute.amazonaws.com:8080/AppFormAssignNew" method="post" accept-charset="UTF-8" enctype="application/x-www-form-urlencoded" autocomplete="off" novalidate><fieldset><p>Class: <select name="className">';
@@ -260,7 +260,7 @@ function jsonGrader(arr) {
             idNum++;
             currAssn = currGrade;
             var className = arr[i].courseNum + '-' + arr[i].courseSec
-            out += '<div data-role="collapsible" id="gradeI' + idNum + '"><h3 class="grader">' + className + ': ' + currAssn + '</h3><p>Assignment Title: ' + arr[i].title + '<br /><form action="http://ec2-52-37-165-140.us-west-2.compute.amazonaws.com:8080/AppFormGradebook" method="post" accept-charset="UTF-8" enctype="application/x-www-form-urlencoded" autocomplete="off" novalidate>Total Points: ' + '<input type="text" name="points" value="' + arr[i].total + '" size="3"></p><input type="text" name="aid" value="' + arr[i].aid + '" readonly class="app-form"><table data-role="table" class="ui-responsive"><thead><tr><th>Student<br /> Login</th><th>Student<br /> Grade</th><th>Percent</tr></thead><tbody>';
+            out += '<div data-role="collapsible" id="gradeI' + idNum + '"><h3 class="grader">' + className + ': ' + currAssn + '</h3><p>Assignment Title: ' + arr[i].title + '<br /><form action="http://ec2-52-37-165-140.us-west-2.compute.amazonaws.com:8080/AppFormGradebook" method="post" accept-charset="UTF-8" enctype="application/x-www-form-urlencoded" autocomplete="off" novalidate>Total Points: ' + '<input type="text" name="points" value="' + arr[i].total + '" size="3"></p><input type="hidden" name="aid" value="' + arr[i].aid + '" readonly><table data-role="table" class="ui-responsive"><thead><tr><th>Student<br /> Login</th><th>Student<br /> Grade</th><th>Percent</tr></thead><tbody>';
         }
         // Gets the students in the class.
         var percent = Number((arr[i].grade / arr[i].total) * 100);
@@ -443,7 +443,7 @@ function androidWebsite() {
 /* Function for logging in the user. */
 function androidLogin() {
     alert("Getting user!");
-    var user = Android.getUser();
-    alert("User is " + user);
-    return user;
+    //login = Android.getUser();
+    login = "bwayn052";
+    alert("Login is " + login);
 }
