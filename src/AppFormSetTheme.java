@@ -56,7 +56,6 @@ public class AppFormSetTheme extends HttpServlet {
 
             rs.close();
             st.close();
-            RefreshJSON.closeDB();
 
             /* Redirect to the static website */
             String site = new String("http://milearn.s3-website-us-west-2.amazonaws.com/");
