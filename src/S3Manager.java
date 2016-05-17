@@ -4,6 +4,8 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.*;
+
+import java.nio.file.Files;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -14,6 +16,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 public class S3Manager {
     //data for curr_quarter
@@ -185,10 +189,23 @@ public class S3Manager {
 
     //delete objects/folder recursively
     //be careful~!
-    void delete_Object(String folderPath) {
+    public void delete_Object(String folderPath) {
         for (S3ObjectSummary file : s3Client.listObjects(bucketName, folderPath).getObjectSummaries()){
             s3Client.deleteObject(bucketName, file.getKey());
         }
     }
 
+    public void copy_file(File source, File dest){
+        try {
+            Files.copy(source.toPath(), dest.toPath(), REPLACE_EXISTING);
+        }catch(Exception e){
+            System.out.println("THE COPY CAT FAILED!");
+        }
+    }
+
+    public String get_extension(String ext){
+        ext = ext.substring(ext.indexOf(".", 0),ext.length());
+        System.out.println("EXTENSION: " + ext);
+        return ext;
+    }
 }

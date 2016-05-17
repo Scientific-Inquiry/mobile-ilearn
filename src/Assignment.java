@@ -88,8 +88,8 @@ public class Assignment {
     public String toString(){
         return "{\"title\":" + "\"" + title + "\"" + ", " + "\"due\":" + "\"" + due_date + "\"" + ", "
                 + "\"desc\":" + "\"" + description + "\"" + ", " + "\"points\":" + "\"" + points + "\"" + ", "
-                + "\"courseNum\":" + "\"" + course_num + "\"" + "\"courseSec\":" + "\"" + course_section + "\"" + ", "
-                + "\"aid\":" + "\"" + aid +"}";
+                + "\"courseNum\":" + "\"" + course_num.replace(" ", "") + "\"" + ", " + "\"courseSec\":" + "\"" + course_section + "\"" + ", "
+                + "\"aid\":" + "\"" + aid + "\"" + "}";
     }
 
     public void createJSON_File(){

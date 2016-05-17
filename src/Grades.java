@@ -23,7 +23,7 @@ public class Grades {
     }
 
     public String toString(){
-        String temp = "", begin = "{\"Grades\":[\n", end = "\n]}";
+        String temp = "", begin = "[\n", end = "\n]";
 
         for(int i = 0; i < gradeList.size(); i++) {
             if(i != 0)

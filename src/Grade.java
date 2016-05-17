@@ -86,20 +86,20 @@ public class Grade {
     //defining object string
     public String toString(){
         if(!instructor)
-            return "{" + "\"points\":" + "\"" + points + "\"" + ", "
-                + "\"total\":" + "\"" + getTotalpts() + "\"" + ", " + "\"course\":" + "\"" + courseNum + "\""
-                + ", " + "\"section\":" + "\"" + getSectionNum() + "\""
-                + ", " + "\"assignment\":" + "\"" + getTitle() + "\""
-                + ", " + "\"late\":" + "\"" + late + "\""
-                + ", " + "\"aid\":" + "\"" + assign.getAid() + "\"" +"}";
+            return "{" + "\"grade\":" + "\"" + points + "\""
+                    + ", " + "\"total\":" + "\"" + getTotalpts() + "\"" + ", " + "\"courseNum\":" + "\"" + courseNum.replace(" ", "") + "\""
+                    + ", " + "\"courseSec\":" + "\"" + getSectionNum() + "\""
+                    + ", " + "\"title\":" + "\"" + getTitle() + "\""
+                    + ", " + "\"late\":" + "\"" + late + "\""
+                    + ", " + "\"aid\":" + "\"" + assign.getAid() + "\"" +"}";
 
-        return "{" + "\"points\":" + "\"" + points + "\"" + ", "
-                + "\"total\":" + "\"" + getTotalpts() + "\"" + ", " + "\"course\":" + "\"" + courseNum + "\""
-                + ", " + "\"section\":" + "\"" + getSectionNum() + "\""
-                + ", " + "\"assignment\":" + "\"" + getTitle() + "\""
-                + ", "+ "\"slogin\":" + "\"" + slogin
+        return "{" + "\"grade\":" + "\"" + points + "\""
+                + ", " + "\"total\":" + "\"" + getTotalpts() + "\"" + ", " + "\"courseNum\":" + "\"" + courseNum.replace(" ", "") + "\""
+                + ", " + "\"courseSec\":" + "\"" + getSectionNum() + "\""
+                + ", " + "\"title\":" + "\"" + getTitle() + "\""
+                + ", "+ "\"slogin\":" + "\"" + slogin + "\""
                 + ", " + "\"late\":" + "\"" + late + "\""
-                + ", " + "\"aid\":" + "\"" + assign.getAid() + "\"" +"}";
+                + ", " + "\"aid\":" + "\"" + assign.getAid() + "\"" + "}";
     }
 
     //accessor functions

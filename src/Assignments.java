@@ -22,7 +22,7 @@ public class Assignments {
         assignList.removeElement(a);
     }
     public String toString(){
-        String temp = "", begin = "{\"Assignments\":[\n", end = "\n]}";
+        String temp = "", begin = "[\n", end = "\n]";
 
         for(int i = 0; i < assignList.size(); i++) {
             if(i != 0)
