@@ -21,14 +21,13 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
-@WebServlet(name = "UploadServlet", urlPatterns = {"/UploadServlet"})
 @MultipartConfig
 public class UploadServlet extends HttpServlet {
 
     private final static Logger LOGGER =
             Logger.getLogger(UploadServlet.class.getCanonicalName());
 
-    protected void processRequest(HttpServletRequest request,
+    protected void doPost(HttpServletRequest request,
                                   HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
