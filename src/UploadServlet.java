@@ -76,7 +76,8 @@ public class UploadServlet extends HttpServlet {
             AWSCredentials credentials = new BasicAWSCredentials("AKIAJWYCYKZJ3BZ5XEBA", "NGJuCS16bH3R6ywlJf7m2NSmdTPd0yA0qANIUDkM");
 
             new AmazonS3Client(credentials).putObject(new PutObjectRequest(bucketName, pathS3,
-                    f));
+                    new File(path + File.separator
+                            + newName)));
 
             /*File file = new File("classes.json");
             String path = file.getAbsolutePath();
