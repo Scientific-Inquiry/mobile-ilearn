@@ -60,13 +60,14 @@ public class UploadServlet extends HttpServlet {
             if (filecontent != null) {
                 filecontent.close();
             }
-            String extension = fileName.toString().substring(fileName.toString().indexOf(".") + 1, fileName.toString().length());
+            String extension = "." + fileName.toString().substring(fileName.toString().indexOf(".") + 1, fileName.toString().length());
+            String newName = "renamed_file" + extension;
             File f = null;
             File f1 = null;
             f = new File(path + File.separator
                     + fileName);
             f1 = new File(path + File.separator
-                    + "fichier_renomme" + extension);
+                    + newName);
             f.renameTo(f1);
 
             /*File file = new File("classes.json");
