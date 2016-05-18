@@ -86,8 +86,6 @@ public class UploadServlet extends HttpServlet {
                 st.setInt(2, Integer.parseInt(request.getParameter("aid")));
                 st.setString(3, request.getParameter("slogin"));
                 st.executeUpdate();
-                rs.close();
-                st.close();
             }
             else
             {
@@ -101,8 +99,6 @@ public class UploadServlet extends HttpServlet {
                 st.setInt(2, uid);
                 st.setTimestamp(3, new java.sql.Timestamp(new Date().getTime()));
                 st.executeUpdate();
-                rs.close();
-                st.close();
             }
             /* Wrote submission into the database */
 
@@ -147,6 +143,9 @@ public class UploadServlet extends HttpServlet {
             String site = new String("http://milearn.s3-website-us-west-2.amazonaws.com/");
             response.setStatus(response.SC_MOVED_TEMPORARILY);
             response.setHeader("Location", site);
+
+            rs.close();
+            st.close();
 
         } catch (Exception e) {
             e.getMessage();
