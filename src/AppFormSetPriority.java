@@ -1,5 +1,6 @@
 import org.postgresql.Driver;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -100,6 +101,7 @@ public class AppFormSetPriority extends HttpServlet {
                     + rs.getInt("notifyM") + "\", \"notifyL\":\"" + rs.getInt("notifyL") + "\", \"type\":\"" + rank + "\"}");
             file.println("]");
             file.close();
+            File f = new File("user.json");
             System.out.println("Wrote user.json!");
 
             /* Redirect to the static website */
