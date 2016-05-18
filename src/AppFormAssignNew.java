@@ -1,5 +1,11 @@
+import org.postgresql.Driver;
+
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -11,27 +17,56 @@ public class AppFormAssignNew extends HttpServlet {
     protected void doPost(HttpServletRequest request,
                           HttpServletResponse response) throws ServletException, IOException {
 
-        // read form fields
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
+        /* Get the parameters that were given by the user in the form */
+        String date = request.getParameter("dueDate");
+        System.out.println("Due date: " + date);
 
-        System.out.println("username: " + username);
-        System.out.println("password: " + password);
+        /* Register driver (absolutely needed for Tomcat) */
+        try
+        {
+            DriverManager.registerDriver(new Driver());
+        }
+        catch (SQLException e)
+        {
+            System.out.println("Driver registration failed!");
+            e.printStackTrace();
+            return;
+        }
+        Connection connection = null;
 
-        // do some processing here...
+        /* Connect to the database that is stored on AWS' RDS */
+        String dbURL = "jdbc:postgresql://dbmilearn.c8o8famsdyyy.us-west-2.rds.amazonaws.com:5432/dbmilearn";
+        String user = "group5";
+        String pass = "cs180group5";
 
-        // get response writer
-        PrintWriter writer = response.getWriter();
+        try {
+            connection = DriverManager.getConnection(dbURL, user, pass); /* Now connected! */
 
-        // build HTML code
-        String htmlRespone = "<html>";
-        htmlRespone += "<h2>Your username is: " + username + "<br/>";
-        htmlRespone += "Your password is: " + password + "</h2>";
-        htmlRespone += "</html>";
+            /* Select all the existing themes to check that the user didn't cheat and sent the id of
+            a theme that does not exist */
+            PreparedStatement st = connection.prepareStatement("SELECT * FROM Theme");
 
-        // return response
-        writer.println(htmlRespone);
+            st.close();
 
+            /* Redirect to the static website */
+            String site = new String("http://milearn.s3-website-us-west-2.amazonaws.com/");
+            response.setStatus(response.SC_MOVED_TEMPORARILY);
+            response.setHeader("Location", site);
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+            return;
+        }
+
+        finally
+        {
+            /* Close connection with the database */
+            try{
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
-
 }
