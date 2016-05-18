@@ -253,6 +253,21 @@ function jsonCourse(arr) {
     $("#courseI").html(out).collapsibleset("refresh");
 }
 
+/* Function for setting up new assignment options. */
+function jsonClassOption(arr) {
+    var i;
+    var className = arr[0].courseNum + '-' + arr[0].courseSec;
+    var out = '<option value=' + className + ' selected>' + className + '</option>';
+    for(i = 0; i < arr.length; i++) {
+        var curr = arr[i].courseNum + '-' + arr[i].courseSec;
+        if(curr != className) {
+            className = curr;
+            out += '<option value=' + className + '>' + className + '</option>';
+        }
+    }
+    $("#app-class-option").html(out).selectmenu("refresh");
+}
+
 /* Function for getting the assignments that an instructor assigned. */
 function jsonAssigner(arr) {
     var out = "";
@@ -265,14 +280,8 @@ function jsonAssigner(arr) {
         className = arr[i].courseNum + '-' + arr[i].courseSec;
         if(className !== classes[classes.length - 1]) { classes.push(className); }
         // Generates a collapsible with the assignment.
-        out += '<div data-role="collapsible" id="assnNum' + idNum + '"><h3 class="assigned">' + className + ': ' + arr[i].title + '</h3><form action="http://ec2-52-37-165-140.us-west-2.compute.amazonaws.com:8080/AppFormAssign" method="post" accept-charset="UTF-8" enctype="application/x-www-form-urlencoded" autocomplete="off" novalidate><fieldset><input type="hidden" name="aid" value="' + arr[i].aid + '" readonly><p>Assignment Title: <input type="text" name="title" value="' + arr[i].title + '" maxlength="50"><br /><textarea name="description" rows="10" cols="15" maxlength="150">' + arr[i].desc + '</textarea></p><p>Due: ' + arr[i].due + '<br />New Due Date<br />(mm/dd/yyyy, hh:dd AM/PM):<br /><input type="datetime-local" name="dueDate"></p><p>Points: <input type="text" name="grade" value="' + arr[i].points + '" maxlength="4" size="3"></p><input type="submit" value="Submit"></fieldset></form></div>';
+        out += '<div data-role="collapsible" id="assnNum' + idNum + '"><h3 class="assigned">' + className + ': ' + arr[i].title + '</h3><form action="http://ec2-52-37-165-140.us-west-2.compute.amazonaws.com:8080/AppFormAssign" method="post" accept-charset="UTF-8" enctype="application/x-www-form-urlencoded" autocomplete="off" novalidate><fieldset><div class="ui-field-contain"><input type="hidden" name="aid" value="' + arr[i].aid + '" readonly><p>Assignment Title: <input type="text" name="title" value="' + arr[i].title + '" maxlength="50"><br /><textarea name="description" rows="10" cols="15" maxlength="150">' + arr[i].desc + '</textarea></p><p>Due: ' + arr[i].due + '<br />New Due Date<br />(mm/dd/yyyy, hh:dd AM/PM):<br /><input type="datetime-local" name="dueDate"></p><p>Points: <input type="text" name="grade" value="' + arr[i].points + '" maxlength="4" size="3"></p><input type="submit" value="Submit"></div></fieldset></form></div>';
     }
-    /* New Assignment form */
-    out += '<div data-role="collapsible" id="assnNew"><h3 class="assigned">New Assignment</h3><form action="http://ec2-52-37-165-140.us-west-2.compute.amazonaws.com:8080/AppFormAssignNew" method="post" accept-charset="UTF-8" enctype="application/x-www-form-urlencoded" autocomplete="off" novalidate><fieldset><p>Class: <select name="className">';
-    for(i = 0; i < classes.length; ++i) { 
-        out += '<option value="' + classes[i] + '">' + classes[i] + '</option>';
-    }
-    out += '</select></p><p>Assignment Title: <input type="text" name="title" value="New Assignment Title" maxlength="50"><br /><textarea name="description" rows="10" cols="15" maxlength="150">Put a description of the assignment here!</textarea></p><p>Due Date<br />(mm/dd/yyyy, hh:dd AM/PM):<br /><input type="datetime-local" name="dueDate"></p><p>Points: <input type="text" name="grade" value="0" maxlength="4" size="3"></p><input type="submit" value="Submit"></fieldset></form></div>';
     // Refreshes the assignments collapsible set.
     $("#assignI").html(out).collapsibleset("refresh");
 }
@@ -290,18 +299,18 @@ function jsonGrader(arr) {
             idNum++;
             currAssn = currGrade;
             var className = arr[i].courseNum + '-' + arr[i].courseSec
-            out += '<div data-role="collapsible" id="gradeI' + idNum + '"><h3 class="grader">' + className + ': ' + currAssn + '</h3><p>Assignment Title: ' + arr[i].title + '<br /><form action="http://ec2-52-37-165-140.us-west-2.compute.amazonaws.com:8080/AppFormGradebook" method="post" accept-charset="UTF-8" enctype="application/x-www-form-urlencoded" autocomplete="off" novalidate>Total Points: ' + '<input type="text" name="points" value="' + arr[i].total + '" size="3"></p><input type="hidden" name="aid" value="' + arr[i].aid + '" readonly><table data-role="table" class="ui-responsive"><thead><tr><th>Student<br /> Login</th><th>Student<br /> Grade</th><th>Percent</tr></thead><tbody>';
+            out += '<div data-role="collapsible" id="gradeI' + idNum + '"><h3 class="grader">' + className + ': ' + currAssn + '</h3><p>Assignment Title: ' + arr[i].title + '<br /><form action="http://ec2-52-37-165-140.us-west-2.compute.amazonaws.com:8080/AppFormGradebook" method="post" accept-charset="UTF-8" enctype="application/x-www-form-urlencoded" autocomplete="off" novalidate>Total Points: ' + '<input type="text" name="points" value="' + arr[i].total + '" size="3"></p><input type="hidden" name="aid" value="' + arr[i].aid + '" readonly><fieldset><div class="ui-field-contain"><table data-role="table" class="ui-responsive"><thead><tr><th>Student<br /> Login</th><th>Student<br /> Grade</th><th>Percent</tr></thead><tbody>';
         }
         // Gets the students in the class.
         var percent = Number((arr[i].grade / arr[i].total) * 100);
         out += '<tr';
         if(arr[i].late === "true") { out += ' class="grade-late" '; }
-        out += '><td>' + arr[i].slogin + '</td><td><input type="text" name="' + arr[i].slogin + '" maxlength="4" size="3" value="' + arr[i].grade + '"></td><td>' + percent + '%</td></tr>';
+        out += '><td>' + arr[i].slogin + '</td><td><input type="number" name="' + arr[i].slogin + '" maxlength="4" size="3" value="' + arr[i].grade + '"></td><td>' + percent + '%</td></tr>';
         var next = i + 1;
         if(next < arr.length) {
             currGrade = arr[next].title;
             // Closes the collapsible
-            if(currAssn !== currGrade) { out += '</tbody></table><input type="submit" value="Submit"></form></div>'; }
+            if(currAssn !== currGrade) { out += '</tbody></table><input type="submit" value="Submit"></div></fieldset></form></div>'; }
         }
     }
     $("#gradedI").html(out).collapsibleset("refresh");
@@ -415,6 +424,7 @@ function loadAssigns() {
     }
     if(typeI) { 
         $("#assnI").removeClass("app-label");
+        getData(url + "course.json", jsonClassOption);
         getData(url + "assigner.json", jsonAssigner);
     }
 }
@@ -479,5 +489,5 @@ function androidLogin() {
     //login = "bwayn052";
     //alert("Login is " + login);
     //return Android.getUser();
-    return "bwayn052";
+    return "ckent038";
 }

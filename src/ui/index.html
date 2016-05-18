@@ -103,6 +103,33 @@
           <!-- Displays the student's assignments that are due. -->
         </div>
         <h3 class="app-label" id="assnI">To Grade:</h3>
+        <div data-role="collapsible" id="assnNew">
+            <h3 class="assigned">New Assignment</h3>
+            <form action="http://ec2-52-37-165-140.us-west-2.compute.amazonaws.com:8080/AppFormAssignNew" method="post" accept-charset="UTF-8" enctype="application/x-www-form-urlencoded" autocomplete="off" novalidate>
+                <fieldset>
+                    <div class="ui-field-contain">
+                        <p><label for="className">Class: </label>
+                        <select id="app-class-option" name="className">
+                        
+                        </select>
+                        </p>
+                        <p><label for="title">Assignment Title: </label>
+                        <input type="text" name="title" placeholder="New Assignment Title" maxlength="50">
+                        </p>
+                        <p><label for="description">Assignment Description: </label>
+                        <textarea name="description" rows="10" cols="15" maxlength="150" placeholder="Put a description of the assignment here."></textarea>
+                        </p>
+                        <p><label for="dueDate">Due Date<br />(mm/dd/yyyy, hh:dd AM/PM):</label>
+                        <input type="datetime-local" name="dueDate">
+                        </p>
+                        <p><label for="grade">Points: </label>
+                        <input type="text" name="grade" value="" placeholder="10" maxlength="4" size="3">
+                        </p>
+                        <input type="submit" value="Submit">
+                    </div>
+                </fieldset>
+            </form>
+        </div>
         <div data-role="collapsibleset" class="assign" id="assignI">
             <!-- Displays the assignments that will be turned in. -->
         </div>
