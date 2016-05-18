@@ -96,10 +96,11 @@ public class AppFormSetPriority extends HttpServlet {
             PrintWriter file = new PrintWriter("user.json");
             file.println("[");
             file.println("{\"name\":\"" + rs.getString("uname").trim() + "\", \"login\":\"" + login + "\", \"password\":\""
-                    + rs.getString("password").trim() + "\", \"theme\":\"" + rs.getString("theme") + "\", \"notifyH\":\"" + rs.getInt("notifyH") + "\", \"notifyM\":\""
+                    + rs.getString("upassword").trim() + "\", \"theme\":\"" + rs.getString("theme") + "\", \"notifyH\":\"" + rs.getInt("notifyH") + "\", \"notifyM\":\""
                     + rs.getInt("notifyM") + "\", \"notifyL\":\"" + rs.getInt("notifyL") + "\", \"type\":\"" + rank + "\"}");
             file.println("]");
             file.close();
+            System.out.println("Wrote user.json!");
 
             /* Redirect to the static website */
             String site = new String("http://milearn.s3-website-us-west-2.amazonaws.com/");
