@@ -64,7 +64,7 @@ public class AppFormAssignNew extends HttpServlet {
             timestamp.setTime(timestamp.getTime() + (long) 86400);
             if (!date.isEmpty()) {
                 date = date.substring(0, 10) + " " + date.substring(11) + ":00";
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 Date parsedDate = dateFormat.parse(date);
                 timestamp = new java.sql.Timestamp(parsedDate.getTime());
             }
