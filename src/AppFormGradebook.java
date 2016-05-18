@@ -50,6 +50,7 @@ public class AppFormGradebook extends HttpServlet {
             st.setInt(1, total_points);
             st.setInt(2, aid);
             st.executeUpdate();
+            System.out.println("Updated maximum grade for assignment ID" + aid + ": " + total_points);
 
             st = connection.prepareStatement("SELECT U.uid, U.unetid FROM Usr U, Class C, Assignments A, enrolls_in E WHERE A.aid = ? AND C.cid = A.cid AND E.cid = C.cid AND U.uid = E.uid ORDER BY unetid ASC");
             st.setInt(1, aid);
@@ -57,13 +58,17 @@ public class AppFormGradebook extends HttpServlet {
             while (rs.next())
             {
                 Integer grade = Integer.parseInt(request.getParameter(rs.getString("unetid").trim()));
+
                 if(grade != null) {
+                    System.out.println("Grade for " + rs.getString("unetid").trim() + ": " + grade );
                     PreparedStatement stmp = connection.prepareStatement("INSERT INTO Grade(aid, uid, gpts, late) VALUES (?, ?, ?, false)");
                     stmp.setInt(1, aid);
                     stmp.setInt(2, rs.getInt("uid"));
                     stmp.setInt(3, grade);
                     stmp.executeUpdate();
                 }
+                else
+                    System.out.println("No grade retrieved!");
             }
 
             rs.close();
