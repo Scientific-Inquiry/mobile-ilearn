@@ -1,15 +1,18 @@
 /* Local CSS styles for Crumb Lords Website */
-body { 
+body {
     position: relative; 
 }
 .affix {
-    top: 20px;
+    top:0;
+    width: 100%;
+    z-index: 9999 !important;
 }
-#docScrollspy {
-    position: fixed;
+.navbar {
+    margin-bottom: 0px;
 }
-#docManual {
-    float: right;
+.affix ~ .container-fluid {
+    position: relative;
+    top: 50px;
 }
 .l_col-pic img {
     width: 100%; 
@@ -17,4 +20,20 @@ body {
 }
 dd {
     margin-left: 16px;
+}
+.theme-a {
+    background-color: #ffffff;
+    color: #777777;
+}
+.theme-b {
+
+}
+.theme-c {
+
+}
+.theme-y {
+
+}
+.theme-z {
+
 }
