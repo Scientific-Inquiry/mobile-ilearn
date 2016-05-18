@@ -1,6 +1,13 @@
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+
 import org.postgresql.Driver;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -67,6 +74,41 @@ public class AppFormSetTheme extends HttpServlet {
             st.setString(1, theme);
             st.setString(2, login);
             st.executeUpdate();
+
+            rs.close();
+            st.close();
+
+            st = connection.prepareStatement("SELECT * FROM Usr WHERE unetid = ?;");
+            st.setString(1, login);
+            rs = st.executeQuery();
+            rs.next();
+
+            int rank;
+            if (rs.getString("urank").trim().equals("STUDENT"))
+                rank = 0;
+            else if (rs.getString("urank").trim().equals("INSTRUCTOR"))
+                rank = 1;
+            else
+                rank = 2; // TA
+
+            PrintWriter file = new PrintWriter("user.json");
+            file.println("[");
+            file.println("{\"name\":\"" + rs.getString("uname").trim() + "\", \"login\":\"" + login + "\", \"password\":\""
+                    + rs.getString("upassword").trim() + "\", \"theme\":\"" + rs.getString("theme") + "\", \"notifyH\":\"" + rs.getInt("notifyH") + "\", \"notifyM\":\""
+                    + rs.getInt("notifyM") + "\", \"notifyL\":\"" + rs.getInt("notifyL") + "\", \"type\":\"" + rank + "\"}");
+            file.println("]");
+            file.close();
+            File f = new File("user.json");
+            System.out.println("Wrote user.json!");
+
+            String pathS3 = "data/users/" + login + "/user.json";
+
+            String bucketName = "milearn";
+            AWSCredentials credentials = new BasicAWSCredentials("AKIAJWYCYKZJ3BZ5XEBA", "NGJuCS16bH3R6ywlJf7m2NSmdTPd0yA0qANIUDkM");
+
+            new AmazonS3Client(credentials).putObject(new PutObjectRequest(bucketName, pathS3,
+                    f));
+            f.delete();
 
             rs.close();
             st.close();
