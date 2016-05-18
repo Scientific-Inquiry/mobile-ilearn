@@ -55,6 +55,26 @@ public class UploadServlet extends HttpServlet {
             writer.println("New file " + fileName + " created at " + path);
             LOGGER.log(Level.INFO, "File{0}being uploaded to {1}",
                     new Object[]{fileName, path});
+
+            /* Rename file and upload to S3 */
+            if (filecontent != null) {
+                filecontent.close();
+            }
+            File f = null;
+            File f1 = null;
+            f = new File(path + File.separator
+                    + fileName);
+            f1 = new File(path + File.separator
+                    + "fichier_renomme");
+            f.renameTo(f1);
+
+            /*File file = new File("classes.json");
+            String path = file.getAbsolutePath();
+            System.out.println(path);
+            s3.path = "testCandice/user/" + this.getUsername() + "/classes.json";
+            s3.upload_file(path);
+            file.delete();*/
+
         } catch (FileNotFoundException fne) {
             writer.println("You either did not specify a file to upload or are "
                     + "trying to upload a file to a protected or nonexistent "
@@ -67,9 +87,7 @@ public class UploadServlet extends HttpServlet {
             if (out != null) {
                 out.close();
             }
-            if (filecontent != null) {
-                filecontent.close();
-            }
+
             if (writer != null) {
                 writer.close();
             }
