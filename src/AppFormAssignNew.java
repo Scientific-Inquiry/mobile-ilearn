@@ -7,7 +7,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -69,22 +68,18 @@ public class AppFormAssignNew extends HttpServlet {
                 timestamp = new java.sql.Timestamp(parsedDate.getTime());
             }
 
-            /* Select all the existing themes to check that the user didn't cheat and sent the id of
-            a theme that does not exist */
+            /* Retrieve the class number for the assignment that is being added */
             PreparedStatement st = connection.prepareStatement("SELECT C.cid, C.csection, C.cnum FROM teaches T, Usr U, Class C WHERE U.unetid = ? AND T.uid = U.uid AND C.cid = T.cid");
             st.setString(1, login);
             ResultSet rs = st.executeQuery();
             int idClass = 0;
             while (rs.next())
             {
-                System.out.println("Print cid: " + rs.getString("cid"));
                 String tmp = rs.getString("cnum").trim() + "-" + rs.getString("csection").trim();
-                System.out.println("tmp: " + tmp);
                 String r = request.getParameter("className");
-                System.out.println("Result request: " + r);
                 if (r.trim().equals(tmp)) {
                     idClass = Integer.parseInt(rs.getString("cid"));
-                    System.out.println("ID class: " + idClass);
+                    break;
                 }
             }
 

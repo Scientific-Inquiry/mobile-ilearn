@@ -23,8 +23,6 @@ public class AppFormGradebook extends HttpServlet {
         System.out.println("Total points: " + total_points);
         int aid = Integer.parseInt(request.getParameter("aid"));
         System.out.println("AID: " + aid);
-        String login = request.getParameter("slogin");
-        System.out.println("Login: " + login);
 
         /* Register driver (absolutely needed for Tomcat) */
         try
@@ -47,10 +45,28 @@ public class AppFormGradebook extends HttpServlet {
         try {
             connection = DriverManager.getConnection(dbURL, user, pass); /* Now connected! */
 
-            /* Select all the existing themes to check that the user didn't cheat and sent the id of
-            a theme that does not exist */
-            PreparedStatement st = connection.prepareStatement("SELECT * FROM Theme");
+            /* Update total points */
+            PreparedStatement st = connection.prepareStatement("UPDATE Assignments SET apts = ? WHERE aid = ?");
+            st.setInt(1, total_points);
+            st.setInt(2, aid);
+            st.executeUpdate();
 
+            st = connection.prepareStatement("SELECT U.uid, U.unetid FROM Usr U, Class C, Assignments A, enrolls_in E WHERE A.aid = ? AND C.cid = A.cid AND E.cid = C.cid AND U.uid = E.uid ORDER BY unetid ASC");
+            st.setInt(1, aid);
+            ResultSet rs = st.executeQuery();
+            while (rs.next())
+            {
+                Integer grade = Integer.parseInt(request.getParameter(rs.getString("unetid").trim()));
+                if(grade != null) {
+                    PreparedStatement stmp = connection.prepareStatement("INSERT INTO Grade(aid, uid, gpts, late) VALUES (?, ?, ?, false)");
+                    stmp.setInt(1, aid);
+                    stmp.setInt(2, rs.getInt("uid"));
+                    stmp.setInt(3, grade);
+                    stmp.executeUpdate();
+                }
+            }
+
+            rs.close();
             st.close();
 
             /* Redirect to the static website */
