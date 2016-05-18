@@ -1,107 +1,99 @@
-// Import required java libraries
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.io.output.*;
 
 public class UploadServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
 
-    private boolean isMultipart;
-    private String filePath;
-    private int maxFileSize = 5000 * 1024;
-    private int maxMemSize = 4000 * 1024;
-    private File file ;
+    // location to store file uploaded
+    private static final String UPLOAD_DIRECTORY = "data";
 
-    public void init( ){
-        // Get the file location where it would be stored.
-        filePath =
-                getServletContext().getInitParameter("file-upload");
-    }
-    public void doPost(HttpServletRequest request,
-                       HttpServletResponse response)
-            throws ServletException, java.io.IOException {
-        // Check that we have a file upload request
-        isMultipart = ServletFileUpload.isMultipartContent(request);
-        response.setContentType("text/html");
-        java.io.PrintWriter out = response.getWriter( );
-        if( !isMultipart ){
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet upload</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<p>No file uploaded</p>");
-            out.println("</body>");
-            out.println("</html>");
+    // upload settings
+    private static final int MEMORY_THRESHOLD   = 1024 * 1024 * 3;  // 3MB
+    private static final int MAX_FILE_SIZE      = 1024 * 1024 * 40; // 40MB
+    private static final int MAX_REQUEST_SIZE   = 1024 * 1024 * 50; // 50MB
+
+    /**
+     * Upon receiving file upload submission, parses the request to read
+     * upload data and saves the file on disk.
+     */
+    protected void doPost(HttpServletRequest request,
+                          HttpServletResponse response) throws ServletException, IOException {
+        // checks if the request actually contains upload file
+        if (!ServletFileUpload.isMultipartContent(request)) {
+            // if not, we stop here
+            PrintWriter writer = response.getWriter();
+            writer.println("Error: Form must has enctype=multipart/form-data.");
+            writer.flush();
             return;
         }
+
+        // configures upload settings
         DiskFileItemFactory factory = new DiskFileItemFactory();
-        // maximum size that will be stored in memory
-        factory.setSizeThreshold(maxMemSize);
-        // Location to save data that is larger than maxMemSize.
-        factory.setRepository(new File("/home/ec2-user"));
+        // sets memory threshold - beyond which files are stored in disk
+        factory.setSizeThreshold(MEMORY_THRESHOLD);
+        // sets temporary location to store files
+        factory.setRepository(new File(System.getProperty("java.io.tmpdir")));
 
-        // Create a new file upload handler
         ServletFileUpload upload = new ServletFileUpload(factory);
-        // maximum file size to be uploaded.
-        upload.setSizeMax( maxFileSize );
 
-        try{
-            // Parse the request to get file items.
-            List fileItems = upload.parseRequest(request);
+        // sets maximum size of upload file
+        upload.setFileSizeMax(MAX_FILE_SIZE);
 
-            // Process the uploaded file items
-            Iterator i = fileItems.iterator();
+        // sets maximum size of request (include file + form data)
+        upload.setSizeMax(MAX_REQUEST_SIZE);
 
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet upload</title>");
-            out.println("</head>");
-            out.println("<body>");
-            while ( i.hasNext () )
-            {
-                FileItem fi = (FileItem)i.next();
-                if ( !fi.isFormField () )
-                {
-                    // Get the uploaded file parameters
-                    String fieldName = fi.getFieldName();
-                    String fileName = fi.getName();
-                    String contentType = fi.getContentType();
-                    boolean isInMemory = fi.isInMemory();
-                    long sizeInBytes = fi.getSize();
-                    // Write the file
-                    if( fileName.lastIndexOf("\\") >= 0 ){
-                        file = new File( filePath +
-                                fileName.substring( fileName.lastIndexOf("\\"))) ;
-                    }else{
-                        file = new File( filePath +
-                                fileName.substring(fileName.lastIndexOf("\\")+1)) ;
+        // constructs the directory path to store upload file
+        // this path is relative to application's directory
+        String uploadPath = getServletContext().getRealPath("")
+                + File.separator + UPLOAD_DIRECTORY;
+
+        // creates the directory if it does not exist
+        File uploadDir = new File(uploadPath);
+        if (!uploadDir.exists()) {
+            uploadDir.mkdir();
+        }
+
+        try {
+            // parses the request's content to extract file data
+            @SuppressWarnings("unchecked")
+            List<FileItem> formItems = upload.parseRequest(request);
+
+            if (formItems != null && formItems.size() > 0) {
+                // iterates over form's fields
+                for (FileItem item : formItems) {
+                    // processes only fields that are not form fields
+                    if (!item.isFormField()) {
+                        String fileName = new File(item.getName()).getName();
+                        String filePath = uploadPath + File.separator + fileName;
+                        File storeFile = new File(filePath);
+
+                        // saves the file on disk
+                        item.write(storeFile);
+                        request.setAttribute("message",
+                                "Upload has been done successfully!");
                     }
-                    fi.write( file ) ;
-                    out.println("Uploaded Filename: " + fileName + "<br>");
                 }
             }
-            out.println("</body>");
-            out.println("</html>");
-        }catch(Exception ex) {
-            System.out.println(ex);
+        } catch (Exception ex) {
+            request.setAttribute("message",
+                    "There was an error: " + ex.getMessage());
         }
-    }
-    public void doGet(HttpServletRequest request,
-                      HttpServletResponse response)
-            throws ServletException, java.io.IOException {
-
-        throw new ServletException("GET method used with " +
-                getClass( ).getName( )+": POST method required.");
+        java.io.PrintWriter out = response.getWriter( );
+        out.println("<html>");
+        out.println("<head>");
+        out.println("<title>Servlet upload</title>");
+        out.println("</head>");
+        out.println("<body>");
     }
 }
