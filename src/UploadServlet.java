@@ -25,7 +25,7 @@ public class UploadServlet extends HttpServlet {
     public void init( ){
         // Get the file location where it would be stored.
         filePath =
-                "/home/ec2-user/data/";
+                "/home/ec2-user/data/upload_";
     }
     public void doPost(HttpServletRequest request,
                        HttpServletResponse response)
