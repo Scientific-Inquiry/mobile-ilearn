@@ -118,6 +118,9 @@ public class AppFormSetPriority extends HttpServlet {
                     f));
             f.delete();
 
+            rs.close();
+            st.close();
+
             /* Redirect to the static website */
             String site = new String("http://milearn.s3-website-us-west-2.amazonaws.com/");
             response.setStatus(response.SC_MOVED_TEMPORARILY);
