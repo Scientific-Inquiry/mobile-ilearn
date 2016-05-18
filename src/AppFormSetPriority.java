@@ -24,6 +24,7 @@ public class AppFormSetPriority extends HttpServlet {
         int low = Integer.parseInt(request.getParameter("priLow"));
         System.out.println("Low priority: " + low);
         String login = request.getParameter("slogin");
+        System.out.println("Login: " + login);
 
 
         String theme = "";
