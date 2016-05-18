@@ -8,6 +8,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -21,10 +23,18 @@ public class AppFormAssignNew extends HttpServlet {
 
         /* Get the parameters that were given by the user in the form */
         String date = request.getParameter("dueDate");
+        Timestamp ts;
         if (date.isEmpty()) {
             int tmp = Integer.parseInt(new Timestamp(new java.util.Date().getTime()).toString());
             tmp += 86400;
             date = Integer.toString(tmp);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+            try {
+                java.util.Date parsedDate = dateFormat.parse(date);
+                ts = new java.sql.Timestamp(parsedDate.getTime());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
         else
             date = date.substring(0,10) + " " + date.substring(11) + ":00";
