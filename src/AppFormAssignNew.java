@@ -77,13 +77,13 @@ public class AppFormAssignNew extends HttpServlet {
             int idClass = 0;
             while (rs.next())
             {
-                System.out.println("Print cid: " + rs.getInt("cid"));
+                System.out.println("Print cid: " + rs.getString("cid"));
                 String tmp = rs.getString("cnum").trim() + "-" + rs.getString("csection").trim();
                 System.out.println("tmp: " + tmp);
                 String r = request.getParameter("className");
                 System.out.println("Result request: " + r);
                 if (r.trim().equals(tmp)) {
-                    idClass = rs.getInt("cid");
+                    idClass = Integer.parseInt(rs.getString("cid"));
                     System.out.println(idClass);
                     break;
                 }
