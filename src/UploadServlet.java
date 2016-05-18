@@ -86,6 +86,8 @@ public class UploadServlet extends HttpServlet {
                 st.setInt(2, Integer.parseInt(request.getParameter("aid")));
                 st.setString(3, request.getParameter("slogin"));
                 st.executeUpdate();
+                rs.close();
+                st.close();
             }
             else
             {
@@ -99,6 +101,8 @@ public class UploadServlet extends HttpServlet {
                 st.setInt(2, uid);
                 st.setTimestamp(3, new java.sql.Timestamp(new Date().getTime()));
                 st.executeUpdate();
+                rs.close();
+                st.close();
             }
             /* Wrote submission into the database */
 
@@ -107,7 +111,18 @@ public class UploadServlet extends HttpServlet {
                 filecontent.close();
             }
             String extension = "." + fileName.toString().substring(fileName.toString().indexOf(".") + 1, fileName.toString().length());
-            String newName = "renamed_file" + extension;
+            PreparedStatement tmp = connection.prepareStatement("SELECT C.cnum, C.csection, S.attempts, S.uid FROM Submission S, Usr U, Class C, Assignments A WHERE S.aid = ? AND A.aid = S.aid AND C.cid = A.cid AND U.unetid = ? AND S.uid = U.uid");
+            st.setInt(1, Integer.parseInt(request.getParameter("aid")));
+            st.setString(2, request.getParameter("slogin"));
+            rs = st.executeQuery();
+            rs.next();
+            int attempts = rs.getInt("attempts");
+            int uid = rs.getInt("uid");
+            String classC = rs.getString("cnum").trim() + "-" + rs.getString("csection").trim();
+            rs.close();
+            st.close();
+
+            String newName = request.getParameter("aid") + "_" + uid + "_" + attempts + extension;
             File f = null;
             File f1 = null;
             f = new File(path + File.separator
@@ -118,7 +133,7 @@ public class UploadServlet extends HttpServlet {
             /* File renamed */
 
             /* Upload to S3 */
-            String pathS3 = "testUpload/Class/Assignment/" + newName;
+            String pathS3 = "data/classes/" + classC + "/" + newName;
 
             String bucketName = "milearn";
             AWSCredentials credentials = new BasicAWSCredentials("AKIAJWYCYKZJ3BZ5XEBA", "NGJuCS16bH3R6ywlJf7m2NSmdTPd0yA0qANIUDkM");
