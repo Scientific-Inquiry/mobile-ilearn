@@ -119,8 +119,7 @@ public class UploadServlet extends HttpServlet {
             int attempts = rs.getInt("attempts");
             int uid = rs.getInt("uid");
             String classC = rs.getString("cnum").trim() + "-" + rs.getString("csection").trim();
-            rs.close();
-            st.close();
+
 
             String newName = request.getParameter("aid") + "_" + uid + "_" + attempts + extension;
             File f = null;
@@ -133,7 +132,7 @@ public class UploadServlet extends HttpServlet {
             /* File renamed */
 
             /* Upload to S3 */
-            String pathS3 = "data/classes/" + classC + "/" + newName;
+            String pathS3 = "data/classes/qyyyy/" + classC + "/" + newName;
 
             String bucketName = "milearn";
             AWSCredentials credentials = new BasicAWSCredentials("AKIAJWYCYKZJ3BZ5XEBA", "NGJuCS16bH3R6ywlJf7m2NSmdTPd0yA0qANIUDkM");
