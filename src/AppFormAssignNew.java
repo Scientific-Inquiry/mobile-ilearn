@@ -71,7 +71,7 @@ public class AppFormAssignNew extends HttpServlet {
 
             /* Select all the existing themes to check that the user didn't cheat and sent the id of
             a theme that does not exist */
-            PreparedStatement st = connection.prepareStatement("SELECT T.cid, C.csection, C.cnum FROM teaches T, Usr U, Class C WHERE U.unetid = ? AND T.uid = U.uid");
+            PreparedStatement st = connection.prepareStatement("SELECT C.cid, C.csection, C.cnum FROM teaches T, Usr U, Class C WHERE U.unetid = ? AND T.uid = U.uid AND C.cid = T.cid");
             st.setString(1, login);
             ResultSet rs = st.executeQuery();
             int idClass = 0;
@@ -81,7 +81,7 @@ public class AppFormAssignNew extends HttpServlet {
                 System.out.println("tmp: " + tmp);
                 String r = request.getParameter("className");
                 System.out.println("Result request: " + r);
-                if (r.equals(tmp)) {
+                if (r.trim().equals(tmp)) {
                     idClass = rs.getInt("cid");
                     break;
                 }
