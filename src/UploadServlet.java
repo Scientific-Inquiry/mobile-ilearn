@@ -91,7 +91,7 @@ public class UploadServlet extends HttpServlet {
             {
                 st = connection.prepareStatement("INSERT INTO Submissions(aid, uid, stime, attempts) VALUES (?, ?, ?, 1)");
                 st.setInt(1, Integer.parseInt(request.getParameter("aid")));
-                PreparedStatement tmp = connection.prepareStatement("SELECT U.uid FROM Usr WHERE U.unetid = ?");
+                PreparedStatement tmp = connection.prepareStatement("SELECT U.uid FROM Usr U WHERE U.unetid = ?");
                 tmp.setString(1, request.getParameter("slogin"));
                 rs = tmp.executeQuery();
                 rs.next();
