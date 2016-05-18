@@ -101,6 +101,7 @@ public class UploadServlet extends HttpServlet {
                 st.executeUpdate();
             }
             /* Wrote submission into the database */
+            System.out.println("Wrote into the database!");
 
             /* Rename file */
             if (filecontent != null) {
@@ -108,9 +109,9 @@ public class UploadServlet extends HttpServlet {
             }
             String extension = "." + fileName.toString().substring(fileName.toString().indexOf(".") + 1, fileName.toString().length());
             PreparedStatement tmp = connection.prepareStatement("SELECT C.cnum, C.csection, S.attempts, S.uid FROM Submission S, Usr U, Class C, Assignments A WHERE S.aid = ? AND A.aid = S.aid AND C.cid = A.cid AND U.unetid = ? AND S.uid = U.uid");
-            st.setInt(1, Integer.parseInt(request.getParameter("aid")));
-            st.setString(2, request.getParameter("slogin"));
-            rs = st.executeQuery();
+            tmp.setInt(1, Integer.parseInt(request.getParameter("aid")));
+            tmp.setString(2, request.getParameter("slogin"));
+            rs = tmp.executeQuery();
             rs.next();
             int attempts = rs.getInt("attempts");
             int uid = rs.getInt("uid");
@@ -126,6 +127,7 @@ public class UploadServlet extends HttpServlet {
                     + newName);
             f.renameTo(f1);
             /* File renamed */
+            System.out.println("File renamed!");
 
             /* Upload to S3 */
             String pathS3 = "data/classes/qyyyy/" + classC + "/" + newName;
