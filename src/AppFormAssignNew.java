@@ -20,8 +20,11 @@ public class AppFormAssignNew extends HttpServlet {
                           HttpServletResponse response) throws ServletException, IOException {
 
         /* Get the parameters that were given by the user in the form */
-        int date = Integer.parseInt(request.getParameter("dueDate"));
+        String date = request.getParameter("dueDate");
         System.out.println("Due date: " + date);
+        date = date.substring(0,9) + date.substring(11);
+        System.out.println("Due date: " + date);
+
 
 
         /* Register driver (absolutely needed for Tomcat) */
