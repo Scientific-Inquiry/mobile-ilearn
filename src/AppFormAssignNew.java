@@ -2,7 +2,6 @@ import org.postgresql.Driver;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -23,7 +22,7 @@ public class AppFormAssignNew extends HttpServlet {
 
         /* Get the parameters that were given by the user in the form */
         String date = request.getParameter("dueDate");
-        Timestamp ts;
+        Timestamp ts = null;
         if (date.isEmpty()) {
             int tmp = Integer.parseInt(new Timestamp(new java.util.Date().getTime()).toString());
             tmp += 86400;
@@ -97,7 +96,7 @@ public class AppFormAssignNew extends HttpServlet {
             st.setInt(1, idClass);
             st.setString(2, title);
             st.setString(3, description);
-            st.setString(4, date);
+            st.setTimestamp(4, ts);
             st.setInt(5, grade);
             st.executeUpdate();
 
