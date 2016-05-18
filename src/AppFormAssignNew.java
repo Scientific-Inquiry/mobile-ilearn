@@ -3,6 +3,7 @@ import org.postgresql.Driver;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -19,9 +20,9 @@ public class AppFormAssignNew extends HttpServlet {
                           HttpServletResponse response) throws ServletException, IOException {
 
         /* Get the parameters that were given by the user in the form */
-        String date = request.getParameter("dueDate");
+        int date = Integer.parseInt(request.getParameter("dueDate"));
         System.out.println("Due date: " + date);
-        Timestamp ts = Timestamp.valueOf(date);
+
 
         /* Register driver (absolutely needed for Tomcat) */
         try
