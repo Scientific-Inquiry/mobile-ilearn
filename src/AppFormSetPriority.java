@@ -1,9 +1,11 @@
 import org.postgresql.Driver;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.servlet.ServletException;
@@ -27,9 +29,8 @@ public class AppFormSetPriority extends HttpServlet {
         System.out.println("Login: " + login);
 
 
-        String theme = "";
-        /* Check validity of the values that the user has given to the attribute */
 
+        /* Check validity of the values that the user has given to the attribute */
         /* High priority (hours): 1 - 72h */
         if (high > 72)
             high = 72;
@@ -77,6 +78,28 @@ public class AppFormSetPriority extends HttpServlet {
             System.out.println("Update effectué!");
 
             st.close();
+
+            /* Regenerate the user.json file */
+            st = connection.prepareStatement("SELECT * FROM Usr WHERE unetid = ?;");
+            st.setString(1, login);
+            ResultSet rs = st.executeQuery();
+            rs.next();
+
+            int rank;
+            if (rs.getString("urank").trim().equals("STUDENT"))
+                rank = 0;
+            else if (rs.getString("urank").trim().equals("INSTRUCTOR"))
+                rank = 1;
+            else
+                rank = 2; // TA
+
+            PrintWriter file = new PrintWriter("user.json");
+            file.println("[");
+            file.println("{\"name\":\"" + rs.getString("uname").trim() + "\", \"login\":\"" + login + "\", \"password\":\""
+                    + rs.getString("password").trim() + "\", \"theme\":\"" + rs.getString("theme") + "\", \"notifyH\":\"" + rs.getInt("notifyH") + "\", \"notifyM\":\""
+                    + rs.getInt("notifyM") + "\", \"notifyL\":\"" + rs.getInt("notifyL") + "\", \"type\":\"" + rank + "\"}");
+            file.println("]");
+            file.close();
 
             /* Redirect to the static website */
             String site = new String("http://milearn.s3-website-us-west-2.amazonaws.com/");
