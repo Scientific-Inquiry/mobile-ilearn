@@ -77,7 +77,7 @@ public class AppFormAssignNew extends HttpServlet {
             int idClass = 0;
             while (rs.next())
             {
-                String tmp = rs.getString("cnum") + "-" + rs.getString("csection");
+                String tmp = rs.getString("cnum").trim() + "-" + rs.getString("csection").trim();
                 System.out.println("tmp: " + tmp);
                 String r = request.getParameter(tmp);
                 System.out.println("Result request: " + r);
