@@ -18,14 +18,14 @@ public class UploadServlet extends HttpServlet {
 
     private boolean isMultipart;
     private String filePath;
-    private int maxFileSize = 50 * 1024;
-    private int maxMemSize = 4 * 1024;
+    private int maxFileSize = 5000 * 1024;
+    private int maxMemSize = 4000 * 1024;
     private File file ;
 
     public void init( ){
         // Get the file location where it would be stored.
         filePath =
-                "/var/lib/tomcat8/webapps/ROOT/WEB-INF/data";
+                "/home/ec2-user/data/";
     }
     public void doPost(HttpServletRequest request,
                        HttpServletResponse response)
