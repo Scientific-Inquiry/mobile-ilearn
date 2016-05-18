@@ -81,7 +81,7 @@ public class UploadServlet extends HttpServlet {
 
             if (count == 1) /* The user has already submitted a file */
             {
-                st = connection.prepareStatement("UPDATE Submissions SET stime = ?, attempts = attempts + 1 FROM Usr U WHERE aid = ? AND U.netid = ? AND uid = U.uid;");
+                st = connection.prepareStatement("UPDATE Submissions SET stime = ?, attempts = attempts + 1 FROM Usr U WHERE aid = ? AND U.unetid = ? AND uid = U.uid;");
                 st.setTimestamp(1, new java.sql.Timestamp(new Date().getTime()));
                 st.setInt(2, Integer.parseInt(request.getParameter("aid")));
                 st.setString(3, request.getParameter("slogin"));
