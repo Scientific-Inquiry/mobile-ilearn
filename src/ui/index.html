@@ -24,8 +24,6 @@
   <script src="js/format.js"></script>
   <script>
     $(document).ready(function(){
-      //androidLogin();
-      //init(login);
       init(androidLogin());
     });
   </script>
@@ -108,22 +106,23 @@
             <form action="http://ec2-52-37-165-140.us-west-2.compute.amazonaws.com:8080/AppFormAssignNew" method="post" accept-charset="UTF-8" enctype="application/x-www-form-urlencoded" autocomplete="off" novalidate>
                 <fieldset>
                     <div class="ui-field-contain">
-                        <p><label for="className">Class: </label>
+                        <input class="app-form-login" type="hidden" name="slogin" value="">
+                        <p><label for="className">Class*: </label>
                         <select id="app-class-option" name="className">
                         
                         </select>
                         </p>
-                        <p><label for="title">Assignment Title: </label>
-                        <input type="text" name="title" placeholder="New Assignment Title" maxlength="50">
+                        <p><label for="title">Assignment Title*: </label>
+                        <input type="text" name="title" placeholder="New Assignment Title" maxlength="50" required>
                         </p>
                         <p><label for="description">Assignment Description: </label>
-                        <textarea name="description" rows="10" cols="15" maxlength="150" placeholder="Put a description of the assignment here."></textarea>
+                        <textarea name="description" rows="10" cols="15" maxlength="150" placeholder="Put a description of the assignment here." required></textarea>
                         </p>
-                        <p><label for="dueDate">Due Date<br />(mm/dd/yyyy, hh:dd AM/PM):</label>
-                        <input type="datetime-local" name="dueDate">
+                        <p><label for="dueDate">Due Date*<br />(mm/dd/yyyy, hh:dd AM/PM):</label>
+                        <input type="datetime-local" name="dueDate" required>
                         </p>
-                        <p><label for="grade">Points: </label>
-                        <input type="text" name="grade" value="" placeholder="10" maxlength="4" size="3">
+                        <p><label for="grade">Points*: </label>
+                        <input type="text" name="grade" placeholder="10" maxlength="4" size="3" required>
                         </p>
                         <input type="submit" value="Submit">
                     </div>
@@ -208,7 +207,7 @@
             <li data-icon="power"><a href="#">Logout</a></li>
         </ul>-->
         <h2>Help Popup</h2>
-        <p>For more information, please go to the <a target="_blank" id="app-site" href="https://www.youtube.com/embed/GbhbCdXMzO4">Crumb Lords website</a>?</p>
+        <p>For more information, please go to the <a id="app-site" href="#">Crumb Lords website</a>?</p>
     </div>
 
     <!-- Footer -->

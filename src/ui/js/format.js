@@ -59,13 +59,11 @@ function menu() {
     $("#app-menu-setting").click(function(){
         loadSets();
     });
-    $("#app-logout").click(function(){
-        alert("You will be logging out!");
-        androidLogout();
-    });
     $("#app-site").click(function(){
-        alert("You will now go to the Crumb Lords website!");
         androidWebsite();
+    });
+    $("#app-logout").click(function(){
+        androidLogout();
     });
     // Gets the current time.
     footer();
@@ -280,7 +278,7 @@ function jsonAssigner(arr) {
         className = arr[i].courseNum + '-' + arr[i].courseSec;
         if(className !== classes[classes.length - 1]) { classes.push(className); }
         // Generates a collapsible with the assignment.
-        out += '<div data-role="collapsible" id="assnNum' + idNum + '"><h3 class="assigned">' + className + ': ' + arr[i].title + '</h3><form action="http://ec2-52-37-165-140.us-west-2.compute.amazonaws.com:8080/AppFormAssign" method="post" accept-charset="UTF-8" enctype="application/x-www-form-urlencoded" autocomplete="off" novalidate><fieldset><div class="ui-field-contain"><input type="hidden" name="aid" value="' + arr[i].aid + '" readonly><p>Assignment Title: <input type="text" name="title" value="' + arr[i].title + '" maxlength="50"><br /><textarea name="description" rows="10" cols="15" maxlength="150">' + arr[i].desc + '</textarea></p><p>Due: ' + arr[i].due + '<br />New Due Date<br />(mm/dd/yyyy, hh:dd AM/PM):<br /><input type="datetime-local" name="dueDate"></p><p>Points: <input type="text" name="grade" value="' + arr[i].points + '" maxlength="4" size="3"></p><input type="submit" value="Submit"></div></fieldset></form></div>';
+        out += '<div data-role="collapsible" id="assnNum' + idNum + '"><h3 class="assigned">' + className + ': ' + arr[i].title + '</h3><form action="http://ec2-52-37-165-140.us-west-2.compute.amazonaws.com:8080/AppFormAssign" method="post" accept-charset="UTF-8" enctype="application/x-www-form-urlencoded" autocomplete="off" novalidate><fieldset><div class="ui-field-contain"><input type="hidden" name="aid" value="' + arr[i].aid + '" readonly><p>Assignment Title: <input type="text" name="title" value="' + arr[i].title + '" maxlength="50" required><br /><textarea name="description" rows="10" cols="15" maxlength="150">' + arr[i].desc + '</textarea></p><p>Due: ' + arr[i].due + '<br />New Due Date<br />(mm/dd/yyyy, hh:dd AM/PM):<br /><input type="datetime-local" name="dueDate" required></p><p>Points: <input type="text" name="grade" value="' + arr[i].points + '" maxlength="4" size="3" required></p><input type="submit" value="Submit"></div></fieldset></form></div>';
     }
     // Refreshes the assignments collapsible set.
     $("#assignI").html(out).collapsibleset("refresh");
@@ -313,6 +311,7 @@ function jsonGrader(arr) {
             if(currAssn !== currGrade) { out += '</tbody></table><input type="submit" value="Submit"></div></fieldset></form></div>'; }
         }
     }
+    out += '</tbody></table><input type="submit" value="Submit"></div></fieldset></form></div>';
     $("#gradedI").html(out).collapsibleset("refresh");
 }
 
@@ -424,6 +423,7 @@ function loadAssigns() {
     }
     if(typeI) { 
         $("#assnI").removeClass("app-label");
+        $(".app-form-login").attr("value", login);
         getData(url + "course.json", jsonClassOption);
         getData(url + "assigner.json", jsonAssigner);
     }
@@ -478,7 +478,6 @@ function androidLogout() {
 
 /* Function for going to Crumb Lords website in browser. */
 function androidWebsite() {
-    alert("You are now going to the Crumb Lords website!");
     Android.openWebsite();
 }
 
