@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -20,6 +21,7 @@ public class AppFormAssignNew extends HttpServlet {
         /* Get the parameters that were given by the user in the form */
         String date = request.getParameter("dueDate");
         System.out.println("Due date: " + date);
+        Timestamp ts = Timestamp.valueOf(date);
 
         /* Register driver (absolutely needed for Tomcat) */
         try
