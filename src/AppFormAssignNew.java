@@ -21,12 +21,14 @@ public class AppFormAssignNew extends HttpServlet {
 
         /* Get the parameters that were given by the user in the form */
         String date = request.getParameter("dueDate");
-        System.out.println("Due date: " + date);
         date = date.substring(0,10) + " " + date.substring(11) + ":00";
         System.out.println("Due date: " + date);
-        Timestamp ts = Timestamp.valueOf(date);
-        System.out.println(ts);
-
+        String title = request.getParameter("title");
+        System.out.println("Title: " + title);
+        String description = request.getParameter("description");
+        System.out.println("Description: " + description);
+        int grade = Integer.parseInt(request.getParameter("grade"));
+        System.out.println("Grade: " + grade);
 
         /* Register driver (absolutely needed for Tomcat) */
         try
