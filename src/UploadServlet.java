@@ -33,7 +33,7 @@ public class UploadServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
 
         // Create path components to save the file
-        final String path = request.getParameter("destination");
+        final String path = "/home/ec2-user/data/";//request.getParameter("destination");
         final Part filePart = request.getPart("file");
         final String fileName = getFileName(filePart);
 
