@@ -1,15 +1,20 @@
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 
+import org.postgresql.Driver;
+
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -54,6 +59,49 @@ public class UploadServlet extends HttpServlet {
 
             /* File has been uploaded on the Tomcat server */
 
+            /* Write submission into the database (and get the number of submissions) */
+            DriverManager.registerDriver(new Driver());
+            Connection connection = null;
+
+            /* Connect to the database that is stored on AWS' RDS */
+            String dbURL = "jdbc:postgresql://dbmilearn.c8o8famsdyyy.us-west-2.rds.amazonaws.com:5432/dbmilearn";
+            String user = "group5";
+            String pass = "cs180group5";
+
+            connection = DriverManager.getConnection(dbURL, user, pass); /* Now connected! */
+
+            PreparedStatement st = connection.prepareStatement("SELECT COUNT(*) FROM Submissions S, Usr U WHERE S.aid = ? AND U.unetid = ? AND S.uid = U.uid");
+            st.setInt(1, Integer.parseInt(request.getParameter("aid")));
+            st.setString(2, request.getParameter("slogin"));
+
+            ResultSet rs = st.executeQuery();
+            rs.next();
+            int count = rs.getInt(1);
+            rs.close();
+
+            if (count == 1) /* The user has already submitted a file */
+            {
+                st = connection.prepareStatement("UPDATE Submissions SET stime = ?, attempts = attempts + 1 FROM Usr U WHERE aid = ? AND U.netid = ? AND uid = U.uid;");
+                st.setTimestamp(1, new java.sql.Timestamp(new Date().getTime()));
+                st.setInt(2, Integer.parseInt(request.getParameter("aid")));
+                st.setString(3, request.getParameter("slogin"));
+                st.executeUpdate();
+            }
+            else
+            {
+                st = connection.prepareStatement("INSERT INTO Submissions(aid, uid, stime, attempts) VALUES (?, ?, ?, 1)");
+                st.setInt(1, Integer.parseInt(request.getParameter("aid")));
+                PreparedStatement tmp = connection.prepareStatement("SELECT U.uid FROM Usr WHERE U.unetid = ?");
+                tmp.setString(1, request.getParameter("slogin"));
+                rs = tmp.executeQuery();
+                rs.next();
+                int uid = rs.getInt("uid");
+                st.setInt(2, uid);
+                st.setTimestamp(3, new java.sql.Timestamp(new Date().getTime()));
+                st.executeUpdate();
+            }
+            /* Wrote submission into the database */
+
             /* Rename file */
             if (filecontent != null) {
                 filecontent.close();
@@ -79,23 +127,18 @@ public class UploadServlet extends HttpServlet {
                     new File(path + File.separator
                             + newName)));
 
-            /*File file = new File("classes.json");
-            String path = file.getAbsolutePath();
-            System.out.println(path);
-            s3.path = "testCandice/user/" + this.getUsername() + "/classes.json";
-            s3.upload_file(path);
-            file.delete();*/
-            /* Uploaded to S3 */
 
-            /* Write submission into the database */
 
-            /* Wrote submission into the database */
+            /* Redirect to the static website */
+            String site = new String("http://milearn.s3-website-us-west-2.amazonaws.com/");
+            response.setStatus(response.SC_MOVED_TEMPORARILY);
+            response.setHeader("Location", site);
 
-        } catch (FileNotFoundException fne) {
-            fne.getMessage();
+        } catch (Exception e) {
+            e.getMessage();
 
             LOGGER.log(Level.SEVERE, "Problems during file upload. Error: {0}",
-                    new Object[]{fne.getMessage()});
+                    new Object[]{e.getMessage()});
         } finally {
             if (out != null) {
                 out.close();
