@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -21,23 +22,6 @@ public class AppFormAssignNew extends HttpServlet {
                           HttpServletResponse response) throws ServletException, IOException {
 
         /* Get the parameters that were given by the user in the form */
-        String date = request.getParameter("dueDate");
-        Timestamp ts = null;
-        if (date.isEmpty()) {
-            int tmp = Integer.parseInt(new Timestamp(new java.util.Date().getTime()).toString());
-            tmp += 86400;
-            date = Integer.toString(tmp);
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
-            try {
-                java.util.Date parsedDate = dateFormat.parse(date);
-                ts = new java.sql.Timestamp(parsedDate.getTime());
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
-        else
-            date = date.substring(0,10) + " " + date.substring(11) + ":00";
-        System.out.println("Due date: " + date);
         String title = request.getParameter("title");
         if (title.isEmpty())
             title = "Assignment";
@@ -75,6 +59,12 @@ public class AppFormAssignNew extends HttpServlet {
         try {
             connection = DriverManager.getConnection(dbURL, user, pass); /* Now connected! */
 
+            String date = request.getParameter("dueDate");
+            date = date.substring(0,10) + " " + date.substring(11) + ":00";
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+            Date parsedDate = dateFormat.parse(date);
+            Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
+
             /* Select all the existing themes to check that the user didn't cheat and sent the id of
             a theme that does not exist */
             PreparedStatement st = connection.prepareStatement("SELECT T.cid, C.csection, C.cnum FROM teaches T, Usr U, Class C WHERE U.unetid = ? AND T.uid = U.uid");
@@ -96,7 +86,7 @@ public class AppFormAssignNew extends HttpServlet {
             st.setInt(1, idClass);
             st.setString(2, title);
             st.setString(3, description);
-            st.setTimestamp(4, ts);
+            st.setTimestamp(4, timestamp);
             st.setInt(5, grade);
             st.executeUpdate();
 
@@ -107,7 +97,7 @@ public class AppFormAssignNew extends HttpServlet {
             response.setStatus(response.SC_MOVED_TEMPORARILY);
             response.setHeader("Location", site);
         }
-        catch (SQLException e)
+        catch (Exception e)
         {
             e.printStackTrace();
             return;
