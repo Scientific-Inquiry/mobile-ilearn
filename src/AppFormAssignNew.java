@@ -22,9 +22,10 @@ public class AppFormAssignNew extends HttpServlet {
         /* Get the parameters that were given by the user in the form */
         String date = request.getParameter("dueDate");
         System.out.println("Due date: " + date);
-        date = date.substring(0,9) + " " + date.substring(11);
+        date = date.substring(0,10) + " " + date.substring(11);
         System.out.println("Due date: " + date);
-
+        Timestamp ts = Timestamp.valueOf(date);
+        System.out.println(ts);
 
 
         /* Register driver (absolutely needed for Tomcat) */
