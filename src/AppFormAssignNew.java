@@ -79,9 +79,9 @@ public class AppFormAssignNew extends HttpServlet {
             {
                 String tmp = rs.getString("cnum").trim() + "-" + rs.getString("csection").trim();
                 System.out.println("tmp: " + tmp);
-                String r = request.getParameter(tmp);
+                String r = request.getParameter("className");
                 System.out.println("Result request: " + r);
-                if (r.isEmpty() || r == null) {
+                if (r.equals(tmp)) {
                     idClass = rs.getInt("cid");
                     break;
                 }
