@@ -30,10 +30,10 @@ public class AppFormAssignNew extends HttpServlet {
         if (description.isEmpty())
             description = "There is no description for this assignment.";
         System.out.println("Description: " + description);
-        Integer g = Integer.parseInt(request.getParameter("grade"));
-        if (g == null)
-            g = 10;
-        int grade = g;
+        String g = request.getParameter("grade");
+        if (g.isEmpty())
+            g = "10";
+        int grade = Integer.parseInt(g);
         System.out.println("Grade: " + grade);
         String login = request.getParameter("slogin");
         System.out.println("Login: " + login);
