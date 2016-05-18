@@ -60,10 +60,14 @@ public class AppFormAssignNew extends HttpServlet {
             connection = DriverManager.getConnection(dbURL, user, pass); /* Now connected! */
 
             String date = request.getParameter("dueDate");
-            date = date.substring(0,10) + " " + date.substring(11) + ":00";
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
-            Date parsedDate = dateFormat.parse(date);
-            Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
+            Timestamp timestamp = new java.sql.Timestamp(new Date().getTime());
+            timestamp.setTime(timestamp.getTime() + (long) 86400);
+            if (!date.isEmpty()) {
+                date = date.substring(0, 10) + " " + date.substring(11) + ":00";
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+                Date parsedDate = dateFormat.parse(date);
+                timestamp = new java.sql.Timestamp(parsedDate.getTime());
+            }
 
             /* Select all the existing themes to check that the user didn't cheat and sent the id of
             a theme that does not exist */
