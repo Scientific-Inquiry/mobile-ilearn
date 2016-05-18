@@ -1,4 +1,5 @@
 package teamfive.milearn;
+
 public class Lecture extends Class {
     public Lecture(String number, String section, String name, String quarter, String faculty)
     {

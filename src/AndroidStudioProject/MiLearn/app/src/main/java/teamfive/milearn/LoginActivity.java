@@ -3,6 +3,7 @@ package teamfive.milearn;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
@@ -16,6 +17,10 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.Reader;
+import java.io.File;
+import java.nio.charset.StandardCharsets;
 
 import butterknife.ButterKnife;
 import butterknife.BindView;
@@ -46,30 +51,11 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        /*
-        _signupLink.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // Start the Signup activity
-                Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
-                startActivityForResult(intent, REQUEST_SIGNUP);
-            }
-        });*/
     }
-
-    /*@OnClick(R.id.btn_login)
-    public void login_check(){
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-    }*/
-
-
 
     public void login() {
         Log.d(TAG, "Login");
 
-        //btn_login.setEnabled(false);
 
         final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this,
                 R.style.AppTheme_Dark_Dialog);
@@ -83,11 +69,13 @@ public class LoginActivity extends AppCompatActivity {
         String email = emailText.getText().toString();
         String password = passwordText.getText().toString();
         //Using Candice's Login class here
-
-        boolean validUser = Login.login(email,password);
-
+        File filesDirectory = getFilesDir();
+        String dir = filesDirectory.getAbsolutePath();
+        //boolean validUser = Login.login(email, password, dir);
+        boolean validUser = Login.login(email, password);
 
         if(validUser) {
+            MainActivity.setUser(email);
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }
@@ -124,6 +112,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onLoginFailed() {
         Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
+
     }
 
     public boolean validate() {

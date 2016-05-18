@@ -1,16 +1,23 @@
 package teamfive.milearn;
+
 import com.amazonaws.auth.AWSCredentials;
+
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.*;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.io.*;
+import java.sql.DriverManager;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
 
 public class S3Manager {
     //data for curr_quarter
@@ -22,6 +29,10 @@ public class S3Manager {
     public static String bucketName;
     public static String curr_quarter;
     public static String path;
+    private String dbURL = "jdbc:postgresql://dbmilearn.c8o8famsdyyy.us-west-2.rds.amazonaws.com:5432/dbmilearn";
+    private String user = "group5";
+    private String pass = "cs180group5";
+    public Connection connection;
 
     S3Manager(){
         DateFormat dateFormat = new SimpleDateFormat("dyyyy");
@@ -41,7 +52,11 @@ public class S3Manager {
 
         else
             date.setDate(4);
-
+        try {
+            connection = DriverManager.getConnection(dbURL, user, pass);
+        }catch(Exception e){
+            System.out.println("Connection Failed!");
+        }
         bucketName = "milearn";
         credentials = new BasicAWSCredentials("AKIAJWYCYKZJ3BZ5XEBA", "NGJuCS16bH3R6ywlJf7m2NSmdTPd0yA0qANIUDkM");
         s3Client = new AmazonS3Client(credentials);
@@ -130,7 +145,7 @@ public class S3Manager {
         InputStream emptyContent = new ByteArrayInputStream(new byte[0]);
         // create a PutObjectRequest passing the folder name suffixed by /
         PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName,
-               path + "/" + folderName + "/", emptyContent, metadata);
+                path + "/" + folderName + "/", emptyContent, metadata);
         // send request to S3 to create folder
         s3Client.putObject(putObjectRequest);
     }
@@ -174,10 +189,23 @@ public class S3Manager {
 
     //delete objects/folder recursively
     //be careful~!
-    void delete_Object(String folderPath) {
+    public void delete_Object(String folderPath) {
         for (S3ObjectSummary file : s3Client.listObjects(bucketName, folderPath).getObjectSummaries()){
             s3Client.deleteObject(bucketName, file.getKey());
         }
     }
 
+    public void copy_file(File source, File dest){
+        try {
+            //Files.copy(source.toPath(), dest.toPath(), REPLACE_EXISTING);
+        }catch(Exception e){
+            System.out.println("THE COPY CAT FAILED!");
+        }
+    }
+
+    public String get_extension(String ext){
+        ext = ext.substring(ext.indexOf(".", 0),ext.length());
+        System.out.println("EXTENSION: " + ext);
+        return ext;
+    }
 }

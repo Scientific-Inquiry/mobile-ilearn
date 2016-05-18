@@ -15,3 +15,15 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+-keepclassmembers class * {
+    @android.webkit.JavascriptInterface <methods>;
+}
+
+-keepattributes JavascriptInterface
+-keep public class com.mypackage.MyClass$MyJavaScriptInterface
+-keep public class * implements com.mypackage.MyClass$MyJavaScriptInterface
+-keepclassmembers class com.mypackage.MyClass$MyJavaScriptInterface {
+    <methods>;
+}
+-keepattributes *Annotation*

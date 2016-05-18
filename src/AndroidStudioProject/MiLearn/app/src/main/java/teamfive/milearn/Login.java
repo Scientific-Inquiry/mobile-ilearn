@@ -1,5 +1,8 @@
 package teamfive.milearn;
+
+import android.content.Context;
 import android.os.StrictMode;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.PrintWriter;
@@ -19,10 +22,14 @@ public class Login {
     /* Constructor. user takes a value only once a user has logged in. */
     private Login(String username, String password)
     {
+        //this.dir = new String(dir);
         this.username = new String(username);
         this.password = new String(password);
         this.user = null;
     }
+
+
+    public static void set_uid(){login("ckent038", "iamsuperman");};
 
     private String getUsername()
     {
@@ -101,43 +108,47 @@ public class Login {
                 if (rank.trim().equals("STUDENT"))
                 {
                     ArrayList<Class> classes = classesStudent(connection, sid);
-                    this.user = new Student (name, this.getUsername(), sid, classes, this.snames);
+                    this.user = new Student (name, this.getUsername(), sid, classes, Login.snames);
+                    //File file = new File(dir + "/bool/classes.json");
+                    File file = new File("/data/data/teamfive.milearn/files/classes.json");
+                    //File file = new File("classes.json");
+                    String path = file.getAbsolutePath();
+                    System.out.println(path);
                     s3.path = "testCandice/user/" + this.getUsername() + "/classes.json";
-                    //s3.upload_file("classes.json");
-                    File file = new File("classes.json");
-                    file.delete();
+                    //s3.upload_file(path);
+                    //file.delete();
                     Login.rank = Rank.STUDENT;
                 }
                 else if (rank.trim().equals("INSTRUCTOR"))
                 {
                     ArrayList<Class> classes = classesInstructor(connection, sid, name);
-                    this.user = new Instructor(name, this.getUsername(), sid, classes, this.snames);
-                    s3.path = "testCandice/user/" + this.getUsername() + "/course.json";
+                    this.user = new Instructor(name, this.getUsername(), sid, classes, Login.snames);
+                    /*s3.path = "testCandice/user/" + this.getUsername() + "/course.json";
                     s3.upload_file("course.json");
                     File file = new File("course.json");
-                    file.delete();
+                    file.delete();*/
                     Login.rank = Rank.INSTRUCTOR;
                 }
                 else
                 {
                     ArrayList<Class> classes = classesStudent(connection, sid);
                     ArrayList<Class> taught = classesInstructor(connection, sid, name);
-                    this.user = new TA(name, this.getUsername(), sid, classes, taught, this.snames);
-                    s3.path = "testCandice/user/" + this.getUsername() + "/classes.json";
+                    this.user = new TA(name, this.getUsername(), sid, classes, taught, Login.snames);
+                    /*s3.path = "testCandice/user/" + this.getUsername() + "/classes.json";
                     s3.upload_file("classes.json");
                     File file = new File("classes.json");
                     file.delete();
                     s3.path = "testCandice/user/" + this.getUsername() + "/course.json";
                     s3.upload_file("course.json");
                     file = new File("course.json");
-                    file.delete();
+                    file.delete();*/
                     Login.rank = Rank.TA;
                 }
                 writeUser(name, login, password, theme, notifyH, notifyM, notifyL);
-                s3.path = "testCandice/user/" + this.getUsername() + "/user.json";
-                //s3.upload_file("user.json");
+                /*s3.path = "testCandice/user/" + this.getUsername() + "/user.json";
+                s3.upload_file("user.json");
                 File file = new File("user.json");
-                file.delete();
+                file.delete();*/
                 rs.close();
                 st.close();
                 return true;
@@ -202,7 +213,7 @@ public class Login {
             }
             studentsList(snames);
 
-            severalInstructors(classes);
+            //severalInstructors(classes);
             return classes;
         }
         catch(SQLException e){
@@ -264,6 +275,12 @@ public class Login {
         }
     }
 
+    public static String[] messWithName(String name)
+    {
+        String[] parts = name.split(" ");
+        return parts;
+    }
+
     /* Make sure that the list of the students is saved */
     private void studentsList(ArrayList<ArrayList<Vector>> snames) {
         this.snames = snames;
@@ -293,11 +310,19 @@ public class Login {
     public static void writeUser(String name, String login, String password, String theme, int notifyH, int notifyM, int notifyL)
     {
         try{
+            int rank;
+            if (Login.rank.toString().equals("STUDENT"))
+                rank = 0;
+            else if (Login.rank.toString().equals("INSTRUCTOR"))
+                rank = 1;
+            else
+                rank = 2; // TA
+
             PrintWriter file = new PrintWriter("user.json");
             file.println("[");
             file.println("{\"name\":\"" + name + "\", \"login\":\"" + login + "\", \"password\":\""
                     + password + "\", \"theme\":\"" + theme + "\", \"notifyH\":\"" + notifyH + "\", \"notifyM\":\""
-                    + notifyM + "\", \"notifyL\":\"" + notifyL + "\"}");
+                    + notifyM + "\", \"notifyL\":\"" + notifyL + "\", \"type\":\"" + rank + "\"}");
             file.println("]");
             file.close();
         }catch(Exception e) {
@@ -360,12 +385,9 @@ public class Login {
     }
 
     /* Might actually not be useful */
-    private void logout()
+    public static void logout()
     {
-        this.username = null;
-        this.password = null;
-        this.user = null;
-        this.snames = null;
+        snames = null;
         login = null;
         rank = null;
     }
@@ -373,7 +395,7 @@ public class Login {
 
     public static void main(String[] argv)
     {
-        login("ckent038", "iamsuperman");
+        login("bwayn052", "iambatman");
     }
 
     private String username;
@@ -381,5 +403,6 @@ public class Login {
     private User user;
     public static String login;
     public static Rank rank; /* rank.toString().equals("BLAHBLAH"); */
-    private ArrayList<ArrayList<Vector>> snames;
+    public static ArrayList<ArrayList<Vector>> snames; /* snames.get(x).get(0) = name & snames.get(x).get(1) = netid ; snames.get(x) is an array list of vectors that contains the list of all students for one class */
+    public String dir;
 }

@@ -1,10 +1,9 @@
 package teamfive.milearn;
-import java.util.ArrayList;
 import java.util.Vector;
 
 public abstract class Class implements ClassInterface
 {
-	public String toString(Rank rank, ArrayList<Vector> snames)
+	public String toString(Rank rank, Vector snames)
 	{
 		if (rank.toString().equals("STUDENT"))
 		    return "{\"courseName\":" + "\"" + this.getName() + "\", " + "\"courseNumber\":\"" + this.getNumber() +
@@ -12,25 +11,13 @@ public abstract class Class implements ClassInterface
 				"\", \"instructor\":\"" + this.getFaculty() + "\"}";
         else
         {
-			String s = ", \"sname\":\"";
-			for (int i = 0; i < snames.size(); i++)
-			{
-				if (i != snames.size()-1)
-					s = s + snames.get(i).get(0) + ", ";
-				else
-					s = s + snames.get(i).get(0);
-			}
-			s = s + "\", \"slogin\":\"";
-			for (int i = 0; i < snames.size(); i++)
-			{
-				if (i != snames.size()-1)
-					s = s + snames.get(i).get(1) + ", ";
-				else
-					s = s + snames.get(i).get(1);
-			}
-			s = s + "\"";
-            return "{\"courseName\":" + "\"" + this.getName() + "\", " + "\"courseNumber\":\"" + this.getNumber() +
-                    "\", \"quarter\":\"" + this.getQuarter() + "\"" + s + "}";
+			String[] name = Login.messWithName((String) snames.get(0));
+            String firstName = name[0];
+            String lastName = name[1];
+
+            return "{\"courseName\":" + "\"" + this.getName() + "\", " + "\"courseNumber\":\"" + this.getNumber()
+                    + "\", \"quarter\":\"" + this.getQuarter() + "\", \"sname\":\"" + lastName + ", "
+                    + firstName + "\", \"slogin\":\"" + snames.get(1) + "\"}";
         }
 	}
 	
