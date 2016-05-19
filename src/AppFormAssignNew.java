@@ -123,8 +123,6 @@ public class AppFormAssignNew extends HttpServlet {
             int cpt = 1;
             while (rs.next())
             {
-                if (rs.getString("unetid").trim().equals("bwayn052"))
-                    System.out.println("!!!!!!!!!!!!!!!!!!");
                 if (cpt < nbRows)
                     file.println("{\"title\":\"" + rs.getString("aname").trim() + "\", \"due\":\"" + new Date(rs.getTimestamp("due").getTime()) + "\", \"desc\":\""
                         + rs.getString("description").trim() + "\", \"points\":\"" + rs.getInt("apts") + "\", \"courseNum\":\"" + cnum + "\", \"courseSec\":\""
@@ -175,6 +173,8 @@ public class AppFormAssignNew extends HttpServlet {
                 cpt = 1;
                 while (rtmp.next())
                 {
+                    if (rtmp.getString("unetid").trim().equals("bwayn052"))
+                        System.out.println("!!!!!!!!!!!!!!!!!!");
                     if (cpt < nbRows)
                         file.println("{\"title\":\"" + rtmp.getString("aname").trim() + "\", \"due\":\"" + new Date(rtmp.getTimestamp("due").getTime()) + "\", \"desc\":\""
                                 + rtmp.getString("description").trim() + "\", \"points\":\"" + rtmp.getInt("apts") + "\", \"courseNum\":\"" + cnum + "\", \"courseSec\":\""
