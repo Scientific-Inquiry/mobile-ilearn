@@ -126,11 +126,11 @@ public class AppFormAssignNew extends HttpServlet {
                 if (cpt < nbRows)
                     file.println("{\"title\":\"" + rs.getString("aname").trim() + "\", \"due\":\"" + new Date(rs.getTimestamp("due").getTime()) + "\", \"desc\":\""
                         + rs.getString("description").trim() + "\", \"points\":\"" + rs.getInt("apts") + "\", \"courseNum\":\"" + cnum + "\", \"courseSec\":\""
-                        + csection + "\"},");
+                        + csection + "\", \"aid\":\"" + rs.getInt("aid") + "\"},");
                 else
                     file.println("{\"title\":\"" + rs.getString("aname").trim() + "\", \"due\":\"" + new Date(rs.getTimestamp("due").getTime()) + "\", \"desc\":\""
                             + rs.getString("description").trim() + "\", \"points\":\"" + rs.getInt("apts") + "\", \"courseNum\":\"" + cnum + "\", \"courseSec\":\""
-                            + csection + "\"}");
+                            + csection + "\", \"aid\":\"" + rs.getInt("aid") + "\"}");
                 cpt++;
             }
             file.println("]");
