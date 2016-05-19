@@ -74,7 +74,7 @@ public class AppFormGradebook extends HttpServlet {
 
                 if(grade != null) {
                     System.out.println("Grade for " + rs.getString("unetid").trim() + ": " + grade );
-                    PreparedStatement stmp = connection.prepareStatement("INSERT INTO Grade(aid, uid, gpts, late) VALUES (?, ?, ?, false)");
+                    PreparedStatement stmp = connection.prepareStatement("INSERT INTO Grades(aid, uid, gpts, late) VALUES (?, ?, ?, false)");
                     stmp.setInt(1, aid);
                     stmp.setInt(2, rs.getInt("uid"));
                     stmp.setInt(3, grade);
@@ -90,18 +90,19 @@ public class AppFormGradebook extends HttpServlet {
             /* Write graded.json */
             PrintWriter file = new PrintWriter("graded.json");
             file.println("[");
-            st = connection.prepareStatement("SELECT COUNT(*) FROM Grade G, Assignments A, Class C WHERE A.aid = ? AND C.cid = A.cid AND G.aid = A.aid");
+            st = connection.prepareStatement("SELECT COUNT(*) FROM Grades G, Assignments A, Class C WHERE A.aid = ? AND C.cid = A.cid AND G.aid = A.aid");
             st.setInt(1, Integer.parseInt(request.getParameter("aid")));
             rs = st.executeQuery();
             rs.next();
             int count = rs.getInt(1);
-            st = connection.prepareStatement("SELECT G.*, A.apts, A.aname, C.cnum, C.csection, U.unetid FROM Grade G, Assignments A, Class C, Usr U WHERE G.aid = ? AND G.aid = A.aid AND C.cid = A.cid AND U.uid = G.uid");
+            st = connection.prepareStatement("SELECT G.*, A.apts, A.aname, C.cnum, C.csection, U.unetid FROM Grades G, Assignments A, Class C, Usr U WHERE G.aid = ? AND G.aid = A.aid AND C.cid = A.cid AND U.uid = G.uid");
             st.setInt(1, Integer.parseInt(request.getParameter("aid")));
             rs = st.executeQuery();
 
             int cpt = 1;
             while (rs.next()) {
                 if (cpt < count)
+
                     file.println(grade_Student_Format(rs.getInt("gpts"), rs.getInt("apts"), rs.getString("cnum").trim(), rs.getString("csection").trim(),
                         rs.getString("aname").trim(), isLate(connection, rs.getString("unetid").trim(), aid), aid) + ",");
                 else
