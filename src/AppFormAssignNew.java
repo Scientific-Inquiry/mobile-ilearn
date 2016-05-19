@@ -91,8 +91,6 @@ public class AppFormAssignNew extends HttpServlet {
                 }
             }
 
-            rs.close();
-
             st = connection.prepareStatement("INSERT INTO Assignments(cid, aname, description, due, apts) VALUES (?, ?, ?, ?, ?)");
             st.setInt(1, idClass);
             st.setString(2, title);
@@ -100,8 +98,6 @@ public class AppFormAssignNew extends HttpServlet {
             st.setTimestamp(4, timestamp);
             st.setInt(5, grade);
             st.executeUpdate();
-
-            st.close();
 
             /* Writes assign */
             PrintWriter file = new PrintWriter("assigner.json");
