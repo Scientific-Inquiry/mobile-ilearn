@@ -484,11 +484,7 @@ function androidWebsite() {
 
 /* Function for logging in the user. */
 function androidLogin() {
-    //alert("Getting user!");
-    login = Android.getUser();
-    //login = "ckent038";
-    //alert("Login is " + login);
-    //return Android.getUser();
-    //return "ckent038";
+    //login = Android.getUser();
+    login = "ckent038";
     return login;
 }
