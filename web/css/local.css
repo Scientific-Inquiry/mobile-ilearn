@@ -3,6 +3,12 @@ body {
     position: relative; 
     font-size: 16px;
 }
+
+/* For video. */
+video {
+    width: 100% !important;
+    height: auto !important;
+}
 /* For affixed scrollspy. */
 .affix {
     top:0;
