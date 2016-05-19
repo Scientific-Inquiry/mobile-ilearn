@@ -110,9 +110,10 @@ public class AppFormAssignNew extends HttpServlet {
             rs = st.executeQuery();
             while (rs.next())
             {
-                PreparedStatement tmp = connection.prepareStatement("INSERT INTO Grades(aid, uid, gpts, late) VALUES(?, ?, 0, false)");
+                PreparedStatement tmp = connection.prepareStatement("INSERT INTO Grades(aid, uid, gpts, late) VALUES(?, ?, ?, false)");
                 tmp.setInt(1, aid);
                 tmp.setInt(2, rs.getInt("uid"));
+                tmp.setString(3, null);
                 tmp.executeUpdate();
                 tmp.close();
             }
