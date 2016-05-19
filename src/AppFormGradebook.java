@@ -14,6 +14,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -74,10 +75,10 @@ public class AppFormGradebook extends HttpServlet {
 
                 if(grade != null) {
                     System.out.println("Grade for " + rs.getString("unetid").trim() + ": " + grade );
-                    PreparedStatement stmp = connection.prepareStatement("INSERT INTO Grades(aid, uid, gpts, late) VALUES (?, ?, ?, false)");
-                    stmp.setInt(1, aid);
-                    stmp.setInt(2, rs.getInt("uid"));
-                    stmp.setInt(3, grade);
+                    PreparedStatement stmp = connection.prepareStatement("UPDATE Grades SET gpts = ? WHERE aid = ? AND uid = ?");
+                    stmp.setInt(1, grade);
+                    stmp.setInt(2, aid);
+                    stmp.setInt(3, rs.getInt("uid"));
                     stmp.executeUpdate();
                 }
                 else

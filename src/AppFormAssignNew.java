@@ -104,7 +104,7 @@ public class AppFormAssignNew extends HttpServlet {
             rs.next();
             int aid = rs.getInt("aid");
 
-            /* Insert 0 as a grade for that assignment for all the students in that class */
+            /* Insert null as a grade for that assignment for all the students in that class */
             st = connection.prepareStatement("SELECT U.uid FROM Usr U, Assignments A, Class C, enrolls_in E WHERE A.aid = ? AND C.cid = ? AND E.cid = C.cid AND U.uid = E.uid");
             st.setInt(1, aid);
             st.setInt(2, idClass);
