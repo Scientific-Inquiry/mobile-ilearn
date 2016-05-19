@@ -146,10 +146,11 @@ function jsonAssigns(arr) {
         idNum++;
         // Generates a collapsible with the assignment.
         var className = arr[i].courseNum + '-' + arr[i].courseSec;
-        out += '<div data-role="collapsible" id="assnNum' + idNum + '"><h3 class="assigned">' + className + ': ' + arr[i].title + '</h3><form class="ui-form" action="http://ec2-52-37-165-140.us-west-2.compute.amazonaws.com:8080/UploadServlet" method="post" enctype="multipart/form-data"><fieldset><input type="hidden" name="aid" value="' + arr[i].aid + '"><input type="hidden" name="slogin" value="' + login + '" readonly><input type="file" name="file"><input type="submit" value="Turn in assignment"></fieldset></form><p>' + arr[i].desc + '</p><p>Due: ' + arr[i].due + '</p><p>Points: ' + arr[i].points + '</p></div>';
+        out += '<div data-role="collapsible" id="assnNum' + idNum + '"><h3 class="assigned">' + className + ': ' + arr[i].title + '</h3><form class="ui-form" action="http://ec2-52-37-165-140.us-west-2.compute.amazonaws.com:8080/UploadServlet" method="post" enctype="multipart/form-data"><fieldset data-role="fieldcontain" id="assnField' + idNum + '"><input type="hidden" name="aid" value="' + arr[i].aid + '"><input type="hidden" name="slogin" value="' + login + '" readonly><input type="file" name="file"><input type="submit" value="Turn in assignment"></fieldset></form><p>' + arr[i].desc + '</p><p>Due: ' + arr[i].due + '</p><p>Points: ' + arr[i].points + '</p></div>';
     }
     // Refreshes the assignments collapsible set.
     $("#assignS").html(out).collapsibleset("refresh");
+    $("#assn").trigger("create");
 }
 
 /* Function for generating a student's class list. */
@@ -272,16 +273,15 @@ function jsonAssigner(arr) {
     var i;
     var idNum = 0;
     var className = arr[0].courseNum + '-' + arr[0].courseSec;
-    var classes = [className];
     for(i = 0; i < arr.length; i++) {
         idNum++;
         className = arr[i].courseNum + '-' + arr[i].courseSec;
-        if(className !== classes[classes.length - 1]) { classes.push(className); }
         // Generates a collapsible with the assignment.
-        out += '<div data-role="collapsible" id="assnNum' + idNum + '"><h3 class="assigned">' + className + ': ' + arr[i].title + '</h3><form action="http://ec2-52-37-165-140.us-west-2.compute.amazonaws.com:8080/AppFormAssign" method="post" accept-charset="UTF-8" enctype="application/x-www-form-urlencoded" autocomplete="off" novalidate><fieldset><div class="ui-field-contain"><input type="hidden" name="aid" value="' + arr[i].aid + '" readonly><p>Assignment Title: <input type="text" name="title" value="' + arr[i].title + '" maxlength="50" required><br /><textarea name="description" rows="10" cols="15" maxlength="150">' + arr[i].desc + '</textarea></p><p>Due: ' + arr[i].due + '<br />New Due Date<br />(mm/dd/yyyy, hh:dd AM/PM):<br /><input type="datetime-local" name="dueDate" required></p><p>Points: <input type="text" name="grade" value="' + arr[i].points + '" maxlength="4" size="3" required></p><input type="submit" value="Submit"></div></fieldset></form></div>';
+        out += '<div data-role="collapsible" id="assnNum' + idNum + '"><h3 class="assigned">' + className + ': ' + arr[i].title + '</h3><form action="http://ec2-52-37-165-140.us-west-2.compute.amazonaws.com:8080/AppFormAssign" method="post" accept-charset="UTF-8" enctype="application/x-www-form-urlencoded" autocomplete="off" novalidate><fieldset data-role="fieldcontain" id="assnField' + idNum + '"><div class="ui-field-contain"><input type="hidden" name="aid" value="' + arr[i].aid + '" readonly><p>Assignment Title: <input type="text" name="title" value="' + arr[i].title + '" maxlength="50" required><br /><label for="description">Description: </label><textarea name="description" rows="10" cols="15" maxlength="150">' + arr[i].desc + '</textarea></p><p>Due: ' + arr[i].due + '<br />New Due Date<br />(mm/dd/yyyy, hh:dd AM/PM):<br /><input type="datetime-local" name="dueDate" required></p><p>Points: <input type="text" name="grade" value="' + arr[i].points + '" maxlength="4" size="3" required></p><input type="submit" value="Submit"></div></fieldset></form></div>';
     }
     // Refreshes the assignments collapsible set.
     $("#assignI").html(out).collapsibleset("refresh");
+    $("#assn").trigger("create");
 }
 
 /* Function for displaying the grades for a class. */
@@ -303,7 +303,7 @@ function jsonGrader(arr) {
         var percent = Number((arr[i].grade / arr[i].total) * 100);
         out += '<tr';
         if(arr[i].late === "true") { out += ' class="grade-late" '; }
-        out += '><td>' + arr[i].slogin + '</td><td><input type="number" name="' + arr[i].slogin + '" maxlength="4" size="3" value="' + arr[i].grade + '"></td><td>' + percent + '%</td></tr>';
+        out += '><td>' + arr[i].slogin + '</td><td><input type="text" name="' + arr[i].slogin + '" maxlength="4" size="3" value="' + arr[i].grade + '"></td><td>' + percent + '%</td></tr>';
         var next = i + 1;
         if(next < arr.length) {
             currGrade = arr[next].title;
@@ -485,9 +485,10 @@ function androidWebsite() {
 /* Function for logging in the user. */
 function androidLogin() {
     //alert("Getting user!");
-    //login = Android.getUser();
-    //login = "bwayn052";
+    login = Android.getUser();
+    //login = "ckent038";
     //alert("Login is " + login);
     //return Android.getUser();
-    return "ckent038";
+    //return "ckent038";
+    return login;
 }
