@@ -107,25 +107,26 @@ public class AppFormAssign extends HttpServlet {
             }
 
             /* Write assigner.json */
-            PreparedStatement st = connection.prepareStatement("SELECT C.cquarter, C.cnum, C.csection FROM Class C, Assignments A WHERE A.aid = ? AND C.cid = A.cid");
+            PreparedStatement st = connection.prepareStatement("SELECT C.cquarter, C.cnum, C.csection, C.cid FROM Class C, Assignments A WHERE A.aid = ? AND C.cid = A.cid");
             st.setInt(1, assignId);
             ResultSet rs = st.executeQuery();
             rs.next();
             String cnum = rs.getString("cnum").trim();
             String csection = rs.getString("csection").trim();
             String cquarter = rs.getString("cquarter").trim();
+            int cid = rs.getInt("cid");
 
 
             PrintWriter file = new PrintWriter("assigner.json");
             file.println("[");
-            st = connection.prepareStatement("SELECT COUNT(*) FROM Assignments A, Class C WHERE A.aid = ? AND C.cid = A.cid");
-            st.setInt(1, assignId);
+            st = connection.prepareStatement("SELECT COUNT(*) FROM Assignments A, Class C WHERE C.cid = ? AND A.cid = C.cid");
+            st.setInt(1, cid);
             rs = st.executeQuery();
             rs.next();
             int nbRows = rs.getInt(1);
 
-            st = connection.prepareStatement("SELECT A.* FROM Assignments A, Class C WHERE A.aid = ? AND C.cid = A.cid");
-            st.setInt(1, assignId);
+            st = connection.prepareStatement("SELECT A.* FROM Assignments A, Class C WHERE C.cid = ? AND A.cid = C.cid");
+            st.setInt(1, cid);
             rs = st.executeQuery();
 
             int cpt = 1;
