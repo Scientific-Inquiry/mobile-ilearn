@@ -164,13 +164,15 @@ public class AppFormAssignNew extends HttpServlet {
                 rtmp.next();
                 nbRows = rtmp.getInt(1);
 
-                tmp = connection.prepareStatement("SELECT A.* FROM Assignments A, Class C, enrolls_in E, Usr U WHERE U.unetid = ? AND E.uid = U.uid AND C.cid = E.cid AND A.cid = C.cid ORDER BY due ASC");
+                tmp = connection.prepareStatement("SELECT A.*, C.* FROM Assignments A, Class C, enrolls_in E, Usr U WHERE U.unetid = ? AND E.uid = U.uid AND C.cid = E.cid AND A.cid = C.cid ORDER BY due ASC");
                 tmp.setString(1, rs.getString("unetid").trim());
                 rtmp = tmp.executeQuery();
 
                 cpt = 1;
                 while (rtmp.next())
                 {
+                    cnum = rs.getString("cnum").trim();
+                    csection = rs.getString("csection").trim();
                     if (cpt < nbRows)
                         file.println("{\"title\":\"" + rtmp.getString("aname").trim() + "\", \"due\":\"" + new Date(rtmp.getTimestamp("due").getTime()) + "\", \"desc\":\""
                                 + rtmp.getString("description").trim() + "\", \"points\":\"" + rtmp.getInt("apts") + "\", \"courseNum\":\"" + cnum + "\", \"courseSec\":\""
