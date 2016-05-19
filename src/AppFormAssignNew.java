@@ -235,7 +235,7 @@ public class AppFormAssignNew extends HttpServlet {
             {
                 cpt = 1;
                 //grade, title, late, total, due, slogin, courseNum, courseSec, aid
-                PreparedStatement tmp = connection.prepareStatement("SELECT G.*, U.unetid FROM Grades G, Usr U WHERE G.aid = ? AND U.uid = G.uid");
+                PreparedStatement tmp = connection.prepareStatement("SELECT COUNT(*) FROM Grades G, Usr U WHERE G.aid = ? AND U.uid = G.uid");
                 tmp.setInt(1, rs.getInt("aid"));
                 ResultSet rtmp = tmp.executeQuery();
                 rtmp.next();
