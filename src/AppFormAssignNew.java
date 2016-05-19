@@ -161,7 +161,7 @@ public class AppFormAssignNew extends HttpServlet {
                 file.println("[");
 
                 PreparedStatement tmp = connection.prepareStatement("SELECT COUNT(*) FROM Assignments A, Class C WHERE C.cid = ? AND A.cid = C.cid");
-                st.setInt(1, idClass);
+                tmp.setInt(1, idClass);
                 ResultSet rtmp = tmp.executeQuery();
                 rs.next();
                 nbRows = rtmp.getInt(1);
