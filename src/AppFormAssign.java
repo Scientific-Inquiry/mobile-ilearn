@@ -125,7 +125,7 @@ public class AppFormAssign extends HttpServlet {
             rs.next();
             int nbRows = rs.getInt(1);
 
-            st = connection.prepareStatement("SELECT A.* FROM Assignments A, Class C WHERE C.cid = ? AND A.cid = C.cid");
+            st = connection.prepareStatement("SELECT A.* FROM Assignments A, Class C WHERE C.cid = ? AND A.cid = C.cid ORDER BY due ASC");
             st.setInt(1, cid);
             rs = st.executeQuery();
 
@@ -156,6 +156,52 @@ public class AppFormAssign extends HttpServlet {
 
             new AmazonS3Client(credentials).putObject(new PutObjectRequest(bucketName, pathS3, f));
             f.delete();
+
+            /* Write assign.json */
+            st = connection.prepareStatement("SELECT U.unetid FROM Usr U, enrolls_in E, Class C WHERE C.cid = ? AND E.cid = C.cid AND U.uid = E.uid");
+            st.setInt(1, cid);
+            rs = st.executeQuery();
+            while (rs.next()) /* For each student of this class, update assignments */
+            {
+                file = new PrintWriter("assign.json");
+                file.println("[");
+
+                PreparedStatement tmp = connection.prepareStatement("SELECT COUNT(*) FROM Assignments A, Class C, enrolls_in E, Usr U WHERE U.unetid = ? AND E.uid = U.uid AND C.cid = E.cid AND A.cid = C.cid");
+                tmp.setString(1, rs.getString("unetid").trim());
+                ResultSet rtmp = tmp.executeQuery();
+                rtmp.next();
+                nbRows = rtmp.getInt(1);
+
+                tmp = connection.prepareStatement("SELECT A.* FROM Assignments A, Class C, enrolls_in E, Usr U WHERE U.unetid = ? AND E.uid = U.uid AND C.cid = E.cid AND A.cid = C.cid ORDER BY due ASC");
+                tmp.setString(1, rs.getString("unetid").trim());
+                rtmp = tmp.executeQuery();
+
+                cpt = 1;
+                while (rtmp.next())
+                {
+                    if (cpt < nbRows)
+                        file.println("{\"title\":\"" + rtmp.getString("aname").trim() + "\", \"due\":\"" + new Date(rtmp.getTimestamp("due").getTime()) + "\", \"desc\":\""
+                                + rtmp.getString("description").trim() + "\", \"points\":\"" + rtmp.getInt("apts") + "\", \"courseNum\":\"" + cnum + "\", \"courseSec\":\""
+                                + csection + "\", \"aid\":\"" + rtmp.getInt("aid") + "\"},");
+                    else
+                        file.println("{\"title\":\"" + rtmp.getString("aname").trim() + "\", \"due\":\"" + new Date(rtmp.getTimestamp("due").getTime()) + "\", \"desc\":\""
+                                + rtmp.getString("description").trim() + "\", \"points\":\"" + rtmp.getInt("apts") + "\", \"courseNum\":\"" + cnum + "\", \"courseSec\":\""
+                                + csection + "\", \"aid\":\"" + rtmp.getInt("aid") + "\"}");
+                    cpt++;
+                }
+                file.println("]");
+                file.close();
+                System.out.println("Reached file.close()!");
+                f = new File("assign.json");
+                System.out.println("Wrote assign.json!");
+
+                /* Send assign.json to S3 */
+                pathS3 = "data/users/" + rs.getString("unetid").trim() + "/assign.json";
+                System.out.println(pathS3);
+
+                new AmazonS3Client(credentials).putObject(new PutObjectRequest(bucketName, pathS3, f));
+                f.delete();
+            }
 
 
             /* Redirect to the static website */
