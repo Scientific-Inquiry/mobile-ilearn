@@ -106,7 +106,7 @@ public class AppFormAssignNew extends HttpServlet {
             /* Writes assign */
             PrintWriter file = new PrintWriter("assigner.json");
             file.println("\"assignment\":[");
-            st = connection.prepareStatement("SELECT A.*, C.cnum, C.csection FROM Assignments A, Class C WHERE C.cid = ? AND A.cid = C.cid");
+            st = connection.prepareStatement("SELECT A.*, C.cquarter, C.cnum, C.csection FROM Assignments A, Class C WHERE C.cid = ? AND A.cid = C.cid");
             st.setInt(1, idClass);
             rs = st.executeQuery();
             file.println("{\"title\":\"" + rs.getString("aname").trim() + "\", \"due\":\"" + new Date(rs.getTimestamp("due").getTime() + "\", \"desc\":\""
