@@ -1,4 +1,7 @@
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 
 import org.postgresql.Driver;
@@ -116,6 +119,10 @@ public class AppFormGradebook extends HttpServlet {
                 /* Send assign.json to S3 */
             String pathS3 = "data/users/" + login + "/graded.json";
             System.out.println(pathS3);
+            AWSCredentials credentials = new BasicAWSCredentials("AKIAJWYCYKZJ3BZ5XEBA", "NGJuCS16bH3R6ywlJf7m2NSmdTPd0yA0qANIUDkM");
+            String bucketName = "milearn";
+            new AmazonS3Client(credentials).putObject(new PutObjectRequest(bucketName, pathS3, f));
+            f.delete();
 
             /* Redirect to the static website */
             String site = new String("http://milearn.s3-website-us-west-2.amazonaws.com/");
