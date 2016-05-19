@@ -98,6 +98,26 @@ public class AppFormAssignNew extends HttpServlet {
             st.setInt(5, grade);
             st.executeUpdate();
 
+            /* Select the id of the assignment that has just been added */
+            st = connection.prepareStatement("SELECT aid FROM Assignments ORDER BY aid DESC LIMIT 1");
+            rs = st.executeQuery();
+            int aid = rs.getInt("aid");
+
+            /* Insert 0 as a grade for that assignment for all the students in that class */
+            st = connection.prepareStatement("SELECT U.uid FROM Usr U, Assignments A, Class C, enrolls_in E WHERE A.aid = ? AND C.cid = ? AND E.cid = C.cid AND U.uid = E.uid");
+            st.setInt(1, aid);
+            st.setInt(2, idClass);
+            rs = st.executeQuery();
+            while (rs.next())
+            {
+                PreparedStatement tmp = connection.prepareStatement("INSERT INTO Grades(aid, uid, gpts, late) VALUES(?, ?, 0, false)");
+                tmp.setInt(1, aid);
+                tmp.setInt(2, rs.getInt("uid"));
+                tmp.executeUpdate();
+                tmp.close();
+            }
+
+
             /* Write assigner.json */
             st = connection.prepareStatement("SELECT C.cquarter, C.cnum, C.csection FROM Class C WHERE C.cid = ?");
             st.setInt(1, idClass);
