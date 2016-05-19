@@ -101,7 +101,7 @@
           <!-- Displays the student's assignments that are due. -->
         </div>
         <h3 class="app-label" id="assnI">To Grade:</h3>
-        <div data-role="collapsible" id="assnNew">
+        <div class="app-label" data-role="collapsible" id="assnNew">
             <h3 class="assigned">New Assignment</h3>
             <form action="http://ec2-52-37-165-140.us-west-2.compute.amazonaws.com:8080/AppFormAssignNew" method="post" accept-charset="UTF-8" enctype="application/x-www-form-urlencoded" autocomplete="off" novalidate>
                 <fieldset>
@@ -156,7 +156,7 @@
         <h3>Change Theme</h3>
         <div id="app-theme">
             <!-- Option to change theme goes here. -->
-            <form action="http://ec2-52-37-165-140.us-west-2.compute.amazonaws.com:8080/AppFormSetTheme" method="post" target="_blank" accept-charset="UTF-8" enctype="application/x-www-form-urlencoded" autocomplete="off" novalidate>
+            <form action="http://ec2-52-37-165-140.us-west-2.compute.amazonaws.com:8080/AppFormSetTheme" method="post" accept-charset="UTF-8" enctype="application/x-www-form-urlencoded" autocomplete="off" novalidate>
                 <input class="app-form-login" type="hidden" name="slogin" value="">
                 <label>Select a new theme to use:</label>
                 <select id="app-theme-select" name="themeName" xdata-native-menu="false">

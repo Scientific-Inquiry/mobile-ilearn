@@ -146,7 +146,7 @@ function jsonAssigns(arr) {
         idNum++;
         // Generates a collapsible with the assignment.
         var className = arr[i].courseNum + '-' + arr[i].courseSec;
-        out += '<div data-role="collapsible" id="assnNum' + idNum + '"><h3 class="assigned">' + className + ': ' + arr[i].title + '</h3><form class="ui-form" action="https://s3-bucket.s3.amazonaws.com/" method="post" enctype="multipart/form-data"><fieldset><input type="hidden" name="key" value="data/' + quarter + '/' + className + '/' + arr[i].aid + '/${filename}"><input type="hidden" name="slogin" value="' + login + '" readonly><input type="file" name="file"><input type="submit" value="Turn in assignment"></fieldset></form><p>' + arr[i].desc + '</p><p>Due: ' + arr[i].due + '</p><p>Points: ' + arr[i].points + '</p></div>';
+        out += '<div data-role="collapsible" id="assnNum' + idNum + '"><h3 class="assigned">' + className + ': ' + arr[i].title + '</h3><form class="ui-form" action="http://ec2-52-37-165-140.us-west-2.compute.amazonaws.com:8080/UploadServlet" method="post" enctype="multipart/form-data"><fieldset><input type="hidden" name="aid" value="' + arr[i].aid + '"><input type="hidden" name="slogin" value="' + login + '" readonly><input type="file" name="file"><input type="submit" value="Turn in assignment"></fieldset></form><p>' + arr[i].desc + '</p><p>Due: ' + arr[i].due + '</p><p>Points: ' + arr[i].points + '</p></div>';
     }
     // Refreshes the assignments collapsible set.
     $("#assignS").html(out).collapsibleset("refresh");
@@ -423,6 +423,7 @@ function loadAssigns() {
     }
     if(typeI) { 
         $("#assnI").removeClass("app-label");
+        $("#assnNew").removeClass("app-label");
         $(".app-form-login").attr("value", login);
         getData(url + "course.json", jsonClassOption);
         getData(url + "assigner.json", jsonAssigner);
