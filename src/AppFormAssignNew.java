@@ -150,7 +150,7 @@ public class AppFormAssignNew extends HttpServlet {
 
 
             /* Write assign.json */
-            st = connection.prepareStatement("SELECT U.unetid FROM Usr U, enrolls_in E, Class C WHERE C.cid = ? E.cid = C.cid AND U.uid = E.uid");
+            st = connection.prepareStatement("SELECT U.unetid FROM Usr U, enrolls_in E, Class C WHERE C.cid = ? AND E.cid = C.cid AND U.uid = E.uid");
             st.setInt(1, idClass);
             rs = st.executeQuery();
             while (rs.next()) /* For each student of this class, update assignments */
