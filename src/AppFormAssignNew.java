@@ -123,6 +123,8 @@ public class AppFormAssignNew extends HttpServlet {
             int cpt = 1;
             while (rs.next())
             {
+                if (rs.getString("unetid").trim().equals("bwayn052"))
+                    System.out.println("!!!!!!!!!!!!!!!!!!");
                 if (cpt < nbRows)
                     file.println("{\"title\":\"" + rs.getString("aname").trim() + "\", \"due\":\"" + new Date(rs.getTimestamp("due").getTime()) + "\", \"desc\":\""
                         + rs.getString("description").trim() + "\", \"points\":\"" + rs.getInt("apts") + "\", \"courseNum\":\"" + cnum + "\", \"courseSec\":\""
