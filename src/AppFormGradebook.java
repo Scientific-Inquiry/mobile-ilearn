@@ -158,7 +158,7 @@ public class AppFormGradebook extends HttpServlet {
                 + ", " + "\"aid\":" + "\"" + aid + "\"" + "}";
     }
 
-    public static ArrayList<ArrayList<Vector>> fill_snames(Connection connection, int tid, String netid) {
+    /*public static ArrayList<ArrayList<Vector>> fill_snames(Connection connection, int tid, String netid) {
         ArrayList<ArrayList<Vector>> snames = new ArrayList<ArrayList<Vector>>();
         try{
             PreparedStatement st = connection.prepareStatement("SELECT C.cid, C.cname, C.csection, C.cnum, C.cquarter, C.ctype FROM Class C, teaches T, Usr U WHERE U.uid = ? AND T.uid = U.uid AND C.cid = T.cid ORDER BY cnum ASC, csection ASC");
@@ -329,10 +329,10 @@ public class AppFormGradebook extends HttpServlet {
         try
         {
             System.out.println("Unetid: " + unetid);
-        /*
+        *//*
         PreparedStatement st = s3.connection.prepareStatement("SELECT A.aname, A.description, A.due, A.apts " +
                 "FROM Assignments A, Usr U, enrolls_in E WHERE U.unetid = ? AND E.uid = U.uid AND A.cid = E.cid");
-        */
+        *//*
             PreparedStatement st = connection.prepareStatement("SELECT U.uid FROM Usr U WHERE U.unetid = ?");
             st.setString(1, unetid);
             ResultSet rs = st.executeQuery();
@@ -381,7 +381,7 @@ public class AppFormGradebook extends HttpServlet {
             return;
         }
     }
-
+*/
     public static boolean isLate(Connection connection, String netid, int aid){
         try {
             PreparedStatement st = connection.prepareStatement("SELECT uid FROM Usr WHERE unetid = ?");
@@ -420,7 +420,7 @@ public class AppFormGradebook extends HttpServlet {
         return false;
     }
 
-    public static int get_course_index(Connection connection, String netid, String courseName){
+  /*  public static int get_course_index(Connection connection, String netid, String courseName){
         ArrayList cids = new ArrayList();
         try {
             PreparedStatement st = connection.prepareStatement("SELECT U.uid FROM Usr U WHERE U.unetid = ?");
@@ -472,6 +472,6 @@ public class AppFormGradebook extends HttpServlet {
             return -1;
         }
 
-    }
+    }*/
 
 }
