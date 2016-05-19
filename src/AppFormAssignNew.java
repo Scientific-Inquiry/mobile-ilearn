@@ -99,32 +99,37 @@ public class AppFormAssignNew extends HttpServlet {
             st.executeUpdate();
 
             /* Writes assign */
-            PrintWriter file = new PrintWriter("assigner.json");
-            file.println("\"assignment\":[");
-            st = connection.prepareStatement("SELECT A.*, C.cquarter, C.cnum, C.csection FROM Assignments A, Class C WHERE C.cid = ? AND A.cid = C.cid");
+            st = connection.prepareStatement("SELECT C.cquarter, C.cnum, C.csection FROM Class C WHERE C.cid = ?");
             st.setInt(1, idClass);
             rs = st.executeQuery();
-            while(rs.next()) {
-                System.out.println(rs.getString("aname"));
-                System.out.println(rs.getString("description"));
-            }
-            /*if (rs.next())
-                file.println("{\"title\":\"" + rs.getString("aname").trim() + "\", \"due\":\"" + new Date(rs.getTimestamp("due").getTime() + "\", \"desc\":\""
-                    + rs.getString("description").trim() + "\", \"points\":\"" + rs.getInt("apts") + "\", \"courseNum\":\"" + rs.getString("cnum").trim() + "\", \"courseSec\":\""
-                    + rs.getString("csection").trim()) + "\"}");
+            String cnum = rs.getString("cnum").trim();
+            String csection = rs.getString("csection").trim();
+            String cquarter = rs.getString("cquarter").trim();
+
+
+            PrintWriter file = new PrintWriter("assigner.json");
+            file.println("\"assignment\":[");
+            st = connection.prepareStatement("SELECT A.* FROM Assignments A, Class C WHERE C.cid = ? AND A.cid = C.cid");
+            st.setInt(1, idClass);
+            rs = st.executeQuery();
+
+            if (rs.next())
+                file.println("{\"title\":\"" + rs.getString("aname").trim() + "\", \"due\":\"" + new Date(rs.getTimestamp("due").getTime()) + "\", \"desc\":\""
+                    + rs.getString("description").trim() + "\", \"points\":\"" + rs.getInt("apts") + "\", \"courseNum\":\"" + cnum + "\", \"courseSec\":\""
+                    + csection + "\"}");
             while (rs.next())
             {
-                file.println(",{\"title\":\"" + rs.getString("aname").trim() + "\", \"due\":\"" + new Date(rs.getTimestamp("due").getTime() + "\", \"desc\":\""
-                        + rs.getString("description").trim() + "\", \"points\":\"" + rs.getInt("apts") + "\", \"courseNum\":\"" + rs.getString("cnum").trim() + "\", \"courseSec\":\""
-                        + rs.getString("csection").trim()) + "\"}");
-            }*/
+                file.println(",{\"title\":\"" + rs.getString("aname").trim() + "\", \"due\":\"" + new Date(rs.getTimestamp("due").getTime()) + "\", \"desc\":\""
+                        + rs.getString("description").trim() + "\", \"points\":\"" + rs.getInt("apts") + "\", \"courseNum\":\"" + cnum + "\", \"courseSec\":\""
+                        + csection + "\"}");
+            }
             file.println("]");
             file.close();
             System.out.println("Reached file.close()!");
             File f = new File("assigner.json");
             System.out.println("Wrote assigner.json!");
 
-            String pathS3 = "data/classes/" + rs.getString("cquarter") + "/" + rs.getString("cnum").trim() + "-" + rs.getString("csection") + "/assigner.json";
+            String pathS3 = "data/classes/" + cquarter + "/" + rs.getString("cnum").trim() + "-" + rs.getString("csection") + "/assigner.json";
             System.out.println(pathS3);
             String bucketName = "milearn";
             AWSCredentials credentials = new BasicAWSCredentials("AKIAJWYCYKZJ3BZ5XEBA", "NGJuCS16bH3R6ywlJf7m2NSmdTPd0yA0qANIUDkM");
