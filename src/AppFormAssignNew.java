@@ -130,7 +130,7 @@ public class AppFormAssignNew extends HttpServlet {
                 else
                     file.println("{\"title\":\"" + rs.getString("aname").trim() + "\", \"due\":\"" + new Date(rs.getTimestamp("due").getTime()) + "\", \"desc\":\""
                             + rs.getString("description").trim() + "\", \"points\":\"" + rs.getInt("apts") + "\", \"courseNum\":\"" + cnum + "\", \"courseSec\":\""
-                            + csection + "\"},");
+                            + csection + "\"}");
                 cpt++;
             }
             file.println("]");
