@@ -1,6 +1,13 @@
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+
 import org.postgresql.Driver;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -8,6 +15,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.servlet.ServletException;
@@ -94,6 +102,28 @@ public class AppFormAssignNew extends HttpServlet {
             st.executeUpdate();
 
             st.close();
+
+            /* Writes assign */
+            PrintWriter file = new PrintWriter("assigner.json");
+            file.println("\"assignment\":[");
+            st = connection.prepareStatement("SELECT A.*, C.cnum, C.csection FROM Assignments A, Class C WHERE C.cid = ? AND A.cid = C.cid");
+            st.setInt(1, idClass);
+            rs = st.executeQuery();
+            file.println("{\"title\":\"" + rs.getString("aname").trim() + "\", \"due\":\"" + new Date(rs.getTimestamp("due").getTime() + "\", \"desc\":\""
+                    + rs.getString("description").trim() + "\", \"points\":\"" + rs.getInt("apts") + "\", \"courseNum\":\"" + rs.getString("cnum").trim() + "\", \"courseSec\":\""
+                    + rs.getString("csection").trim()) + "\"}");
+            file.println("]");
+            file.close();
+            File f = new File("assigner.json");
+            System.out.println("Wrote assigner.json!");
+
+            String pathS3 = "data/classes/" + rs.getString("cquarter") + "/" + rs.getString("cnum").trim() + "-" + rs.getString("csection") + "/assigner.json";
+
+            String bucketName = "milearn";
+            AWSCredentials credentials = new BasicAWSCredentials("AKIAJWYCYKZJ3BZ5XEBA", "NGJuCS16bH3R6ywlJf7m2NSmdTPd0yA0qANIUDkM");
+
+            new AmazonS3Client(credentials).putObject(new PutObjectRequest(bucketName, pathS3, f));
+            f.delete();
 
             /* Redirect to the static website */
             String site = new String("http://milearn.s3-website-us-west-2.amazonaws.com/");

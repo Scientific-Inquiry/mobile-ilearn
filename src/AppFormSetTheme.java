@@ -106,8 +106,7 @@ public class AppFormSetTheme extends HttpServlet {
             String bucketName = "milearn";
             AWSCredentials credentials = new BasicAWSCredentials("AKIAJWYCYKZJ3BZ5XEBA", "NGJuCS16bH3R6ywlJf7m2NSmdTPd0yA0qANIUDkM");
 
-            new AmazonS3Client(credentials).putObject(new PutObjectRequest(bucketName, pathS3,
-                    f));
+            new AmazonS3Client(credentials).putObject(new PutObjectRequest(bucketName, pathS3, f));
             f.delete();
 
             rs.close();
