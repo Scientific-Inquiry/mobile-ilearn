@@ -31,6 +31,7 @@ public class AppFormGradebook extends HttpServlet {
         System.out.println("Total points: " + total_points);
         int aid = Integer.parseInt(request.getParameter("aid"));
         System.out.println("AID: " + aid);
+        String login = request.getParameter("slogin");
 
         /* Register driver (absolutely needed for Tomcat) */
         try
@@ -63,7 +64,7 @@ public class AppFormGradebook extends HttpServlet {
             st = connection.prepareStatement("SELECT U.uid, U.unetid FROM Usr U, Class C, Assignments A, enrolls_in E WHERE A.aid = ? AND C.cid = A.cid AND E.cid = C.cid AND U.uid = E.uid ORDER BY unetid ASC");
             st.setInt(1, aid);
             ResultSet rs = st.executeQuery();
-            String login = rs.getString("unetid").trim();
+
             while (rs.next())
             {
                 Integer grade = Integer.parseInt(request.getParameter(rs.getString("unetid").trim()));
@@ -113,7 +114,7 @@ public class AppFormGradebook extends HttpServlet {
             System.out.println("Wrote graded.json!");
 
                 /* Send assign.json to S3 */
-            String pathS3 = "data/users/" + login.trim() + "/graded.json";
+            String pathS3 = "data/users/" + login + "/graded.json";
             System.out.println(pathS3);
 
             /* Redirect to the static website */
