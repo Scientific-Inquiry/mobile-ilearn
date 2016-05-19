@@ -172,16 +172,6 @@ public class AppFormGradebook extends HttpServlet {
                 String csection = rs.getString("csection").trim();
                 String cquarter = rs.getString("cquarter").trim();
 
-                if (rs.getString("ctype").trim().equals("LECTURE")) {
-                    Lecture lec = new Lecture(cnum, csection, cname, cquarter, netid);
-                    classes.add(lec);
-                } else if (rs.getString("ctype").trim().equals("DISCUSSION")) {
-                    Discussion dis = new Discussion(cnum, csection, cname, cquarter, netid);
-                    classes.add(dis);
-                } else {
-                    Lab lab = new Lab(cnum, csection, cname, cquarter, netid);
-                    classes.add(lab);
-                }
 
                 // For each class, get the list of the students' name and login, and save it
                 PreparedStatement students = connection.prepareStatement("SELECT U.uname, U.unetid FROM Usr U, enrolls_in E WHERE E.cid = ? AND E.uid = U.uid ORDER BY unetid ASC");
