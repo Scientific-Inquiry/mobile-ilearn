@@ -102,6 +102,7 @@ public class AppFormAssignNew extends HttpServlet {
             st = connection.prepareStatement("SELECT C.cquarter, C.cnum, C.csection FROM Class C WHERE C.cid = ?");
             st.setInt(1, idClass);
             rs = st.executeQuery();
+            rs.next();
             String cnum = rs.getString("cnum").trim();
             String csection = rs.getString("csection").trim();
             String cquarter = rs.getString("cquarter").trim();
