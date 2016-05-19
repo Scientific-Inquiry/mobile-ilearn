@@ -98,7 +98,7 @@ public class AppFormAssignNew extends HttpServlet {
             st.setInt(5, grade);
             st.executeUpdate();
 
-            /* Writes assign */
+            /* Write assigner.json */
             st = connection.prepareStatement("SELECT C.cquarter, C.cnum, C.csection FROM Class C WHERE C.cid = ?");
             st.setInt(1, idClass);
             rs = st.executeQuery();
@@ -109,7 +109,7 @@ public class AppFormAssignNew extends HttpServlet {
 
 
             PrintWriter file = new PrintWriter("assigner.json");
-            file.println("\"assignment\":[");
+            file.println("[");
             st = connection.prepareStatement("SELECT COUNT(*) FROM Assignments A, Class C WHERE C.cid = ? AND A.cid = C.cid");
             st.setInt(1, idClass);
             rs = st.executeQuery();
@@ -124,7 +124,7 @@ public class AppFormAssignNew extends HttpServlet {
             while (rs.next())
             {
                 if (cpt < nbRows)
-                file.println("{\"title\":\"" + rs.getString("aname").trim() + "\", \"due\":\"" + new Date(rs.getTimestamp("due").getTime()) + "\", \"desc\":\""
+                    file.println("{\"title\":\"" + rs.getString("aname").trim() + "\", \"due\":\"" + new Date(rs.getTimestamp("due").getTime()) + "\", \"desc\":\""
                         + rs.getString("description").trim() + "\", \"points\":\"" + rs.getInt("apts") + "\", \"courseNum\":\"" + cnum + "\", \"courseSec\":\""
                         + csection + "\"},");
                 else
@@ -139,13 +139,63 @@ public class AppFormAssignNew extends HttpServlet {
             File f = new File("assigner.json");
             System.out.println("Wrote assigner.json!");
 
-            String pathS3 = "data/classes/" + cquarter + "/" + cnum + "-" + csection + "/assigner.json";
+            /* Sends assigner.json to S3 */
+            String pathS3 = "data/users/" + login + "/assigner.json";
             System.out.println(pathS3);
             String bucketName = "milearn";
             AWSCredentials credentials = new BasicAWSCredentials("AKIAJWYCYKZJ3BZ5XEBA", "NGJuCS16bH3R6ywlJf7m2NSmdTPd0yA0qANIUDkM");
 
             new AmazonS3Client(credentials).putObject(new PutObjectRequest(bucketName, pathS3, f));
             f.delete();
+
+
+            /* Write assign.json */
+            st = connection.prepareStatement("SELECT U.unetid FROM Usr U, enrolls_in E, Class C WHERE C.cnum = ? AND C.csection = ? AND C.cquarter = ? AND E.cid = C.cid AND  U.uid = E.uid");
+            st.setString(1, cnum);
+            st.setString(2, csection);
+            st.setString(3, cquarter);
+            rs = st.executeQuery();
+            while (rs.next()) /* For each student of this class, update assignments */
+            {
+                file = new PrintWriter("assign.json");
+                file.println("[");
+
+                PreparedStatement tmp = connection.prepareStatement("SELECT COUNT(*) FROM Assignments A, Class C WHERE C.cid = ? AND A.cid = C.cid");
+                st.setInt(1, idClass);
+                ResultSet rtmp = tmp.executeQuery();
+                rs.next();
+                nbRows = rtmp.getInt(1);
+
+                tmp = connection.prepareStatement("SELECT A.* FROM Assignments A, Class C WHERE C.cid = ? AND A.cid = C.cid");
+                tmp.setInt(1, idClass);
+                rtmp = tmp.executeQuery();
+
+                cpt = 1;
+                while (rtmp.next())
+                {
+                    if (cpt < nbRows)
+                        file.println("{\"title\":\"" + rtmp.getString("aname").trim() + "\", \"due\":\"" + new Date(rtmp.getTimestamp("due").getTime()) + "\", \"desc\":\""
+                                + rtmp.getString("description").trim() + "\", \"points\":\"" + rtmp.getInt("apts") + "\", \"courseNum\":\"" + cnum + "\", \"courseSec\":\""
+                                + csection + "\", \"aid\":\"" + rtmp.getInt("aid") + "\"},");
+                    else
+                        file.println("{\"title\":\"" + rtmp.getString("aname").trim() + "\", \"due\":\"" + new Date(rtmp.getTimestamp("due").getTime()) + "\", \"desc\":\""
+                                + rtmp.getString("description").trim() + "\", \"points\":\"" + rtmp.getInt("apts") + "\", \"courseNum\":\"" + cnum + "\", \"courseSec\":\""
+                                + csection + "\", \"aid\":\"" + rtmp.getInt("aid") + "\"}");
+                    cpt++;
+                }
+                file.println("]");
+                file.close();
+                System.out.println("Reached file.close()!");
+                f = new File("assign.json");
+                System.out.println("Wrote assign.json!");
+
+                /* Send assign.json to S3 */
+                pathS3 = "data/users/" + rs.getString("unetid").trim() + "/assign.json";
+                System.out.println(pathS3);
+
+                new AmazonS3Client(credentials).putObject(new PutObjectRequest(bucketName, pathS3, f));
+                f.delete();
+            }
 
             /* Redirect to the static website */
             String site = new String("http://milearn.s3-website-us-west-2.amazonaws.com/");
