@@ -52,7 +52,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>                        
                         </button>
-                    <a class="navbar-brand" href="#">Contents</a>
+                    <a class="navbar-brand" href="#menu">Contents</a>
                     </div>
                     <div>
                         <div class="collapse navbar-collapse" id="docContents">
@@ -155,6 +155,8 @@
                                     <dd>Links the application to the online data hosted on Amazon Web Services.</dd>
                                     <dt>Android Webkit.JavascriptInterface</dt>
                                     <dd>Allows for the javascript methods to call on a specified Java method upon the tap of a button.</dd>
+                                    <dt>Bootstrap</dt>
+                                    <dd>Mobile-first framework used for building the Crumb Lords website.</dd>
                                 </dl>
                             </li>
                         </ul>
@@ -342,6 +344,12 @@
                     
                     <section id="section3-1">
                         <h3>3.1&ndash;Candice Bentejac</h3>
+                        
+                        <h4>Rationale</h4>
+                        
+                        <h4>What Worked</h4>
+                        
+                        <h4>Features Designed and Implemented</h4>
                     </section>
                     
                     <section id="section3-2">
@@ -355,7 +363,7 @@
                         <p>This relates to modularization as it minimized the amount of errors per activity. It also allowed for bugs to be more localized to a specific activity.</p>
                         
                         <h4>What Worked</h4>
-                        <p>Vincenet managed to incorporate Java calls to JavaScript methods within the Webview portion of the app. This allowed for the app to interact with AWS services. </p>
+                        <p>Vincent managed to incorporate Java calls to JavaScript methods within the Webview portion of the app. This allowed for the app to interact with AWS services. </p>
                         
                         <h4>Features Designed and Implemented</h4>
                         <ul>
@@ -388,10 +396,88 @@
                     
                     <section id="section3-3">
                         <h3>3.3&ndash;Rebecca Hom</h3>
+                        
+                        <h4>Rationale</h4>
+                        <p>Rebecca decided to work on the user interface due to having previous experience working with implementing designs using JavaScript.</p>
+                        
+                        <p>Although it was possible to use Android development to create the user interface, using jQuery Mobile was allowed for a more efficient use of her skillset and it came with icons that could be used on the app.</p>
+                        
+                        <p>Since MiLearn is a simplified version of Blackboard iLearn, Rebecca arranged the essential functions into an intuitive design. This accomplished two things: retaining the simplicity of the app and splitting up each function into its own section. In turn, each of these sections could be styled and displayed as distinctly as possible.</p>
+                        
+                        <p>For the MiLearn app, the user would be able to access a Home screen, Classes, Assignments, Grades, and Settings. Each of those sections have JavaScript functions that generate the data to display from the database.</p>
+                        
+                        <p>It was also decided that the data displayed for a user would be taken from fixed JSON files. Each of these JSON files had fixed names and attributes for efficient parsing and displaying using JavaScript. These files would also be consistent for each user and user level which allowed for easily cached information and reduced the need to do new queries to the database.</p>
+                        
+                        <p>Also it was decided that a set of collapsibles would be used for Classes, Assignments, and Grades. This would hide information pertaining to a topic heading. In turn, this would be more efficient for the user as they would be able to scroll through headings to get what they needed instead of (potentially) large blocks of information.</p>
+                        
+                        <p>Alerts were added to the Home screen as a way to increase MiLearn's functionality as a mobile organizer. The user would be able to set three different alarm priority levels. These could be used as a buffer for the user to guage how much time they have left to do an assignment.</p>
+                        
+                        <p>As an extension of allowing users to impress their preferences on to MiLearn, themes for the user interface were included. This would allow the user to somewhat customize MiLearn for their own use.</p>
+                        
+                        <p>Users were also split into two groups: students and instructors. The HTML page was then split into separate dividers to allow for either of those groups or a combination of them to use the app.</p>
+                        
+                        <p>HTML forms were used as a security feature for users modifying the database. This was to allow for input sanitation to prevent users from corrupting the database.</p>
+                        
+                        <h4>What Worked</h4>
+                        <p>Rebecca implemented an HTML page that contained all of the screens for main MiLearn app that allowed for the screens to change using JavaScript.</p> 
+                        
+                        <p>In addition changing the screens, JavaScript was also used to parse the JSON files to display the data elements into their certain arrangements depending on what screen was used.</p>
+                        
+                        <p>JavaScript was also used to interact with Java to retrieve user information and move in and out from the Android app.</p>
+                        
+                        <h4>Features Designed and Implemented</h4>
+                        <ul>
+                            <li>MiLearn page
+                                <ul>
+                                    <li>Home Screen
+                                        <ul>
+                                            <li>Welcome screen with image.</li>
+                                            <li>Alerts for assignments that are due within a certain period of time.</li>
+                                        </ul>
+                                    </li>
+                                    <li>Classes
+                                        <ul>
+                                            <li>Created a screen that displayed the current quarter of the class.</li>
+                                            <li>Showed the classes that the user was enrolled in and/or teaching in a collapsible set.</li>
+                                        </ul>
+                                    </li>
+                                    <li>Assignments
+                                        <ul>
+                                            <li>Created a file upload form for student users to turn in files from their mobile device.</li>
+                                            <li>Created an HTML form for instructor users to either create new assignments or modify existing assignments.</li>
+                                        </ul>
+                                    </li>
+                                    <li>Grades
+                                        <ul>
+                                            <li>Created a tabular HTML form so that instructor users could input grades for each assignment they created.</li>
+                                            <li>Allowed student users to view the overall number of points they have for a class and the grade for individual assignments.</li>
+                                        </ul>
+                                    </li>
+                                    <li>Settings
+                                        <ul>
+                                            <li>Used JavaScript to allow users to change their user interface theme and the different alarm priority levels.</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>Crumb Lords website
+                                <ul>
+                                    <li>Added in HTML version of documentation.</li>
+                                    <li>Built site to present information about MiLearn project.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        
                     </section>
                     
                     <section id="section3-4">
                         <h3>3.4&ndash;Krissi Mena</h3>
+                        
+                        <h4>Rationale</h4>
+                        
+                        <h4>What Worked</h4>
+                        
+                        <h4>Features Designed and Implemented</h4>
                     </section>
                 </article>
             </div>
