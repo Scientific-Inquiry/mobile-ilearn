@@ -159,13 +159,13 @@ public class AppFormAssignNew extends HttpServlet {
                 file.println("[");
 
                 PreparedStatement tmp = connection.prepareStatement("SELECT COUNT(*) FROM Assignments A, Class C, enrolls_in E, Usr U WHERE U.unetid = ? AND E.uid = U.uid AND C.cid = E.cid AND A.cid = C.cid");
-                tmp.setString(1, login);
+                tmp.setString(1, rs.getString("unetid").trim());
                 ResultSet rtmp = tmp.executeQuery();
                 rtmp.next();
                 nbRows = rtmp.getInt(1);
 
                 tmp = connection.prepareStatement("SELECT A.* FROM Assignments A, Class C, enrolls_in E, Usr U WHERE U.unetid = ? AND E.uid = U.uid AND C.cid = E.cid AND A.cid = C.cid");
-                tmp.setString(1, login);
+                tmp.setString(1, rs.getString("unetid").trim());
                 rtmp = tmp.executeQuery();
 
                 cpt = 1;
