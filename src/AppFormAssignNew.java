@@ -114,6 +114,7 @@ public class AppFormAssignNew extends HttpServlet {
                     + rs.getString("csection").trim()) + "\"}");
             file.println("]");
             file.close();
+            System.out.println("Reached file.close()!");
             File f = new File("assigner.json");
             System.out.println("Wrote assigner.json!");
 
