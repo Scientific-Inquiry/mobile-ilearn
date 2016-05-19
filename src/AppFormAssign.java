@@ -1,9 +1,17 @@
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+
 import org.postgresql.Driver;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -30,6 +38,7 @@ public class AppFormAssign extends HttpServlet {
         Integer grade = Integer.parseInt(request.getParameter("grade"));
         System.out.println("Grade :" + grade);
         String date = request.getParameter("dueDate");
+        String login = request.getParameter("slogin");
 
 
         /* Register driver (absolutely needed for Tomcat) */
@@ -96,6 +105,56 @@ public class AppFormAssign extends HttpServlet {
                 st.executeUpdate();
                 st.close();
             }
+
+            /* Write assigner.json */
+            PreparedStatement st = connection.prepareStatement("SELECT C.cquarter, C.cnum, C.csection FROM Class C, Assignments A WHERE A.aid = ? AND C.cid = A.cid");
+            st.setInt(1, assignId);
+            ResultSet rs = st.executeQuery();
+            rs.next();
+            String cnum = rs.getString("cnum").trim();
+            String csection = rs.getString("csection").trim();
+            String cquarter = rs.getString("cquarter").trim();
+
+
+            PrintWriter file = new PrintWriter("assigner.json");
+            file.println("[");
+            st = connection.prepareStatement("SELECT COUNT(*) FROM Assignments A, Class C WHERE A.aid = ? AND C.cid = A.cid");
+            st.setInt(1, assignId);
+            rs = st.executeQuery();
+            rs.next();
+            int nbRows = rs.getInt(1);
+
+            st = connection.prepareStatement("SELECT A.* FROM Assignments A, Class C WHERE A.aid = ? AND C.cid = A.cid");
+            st.setInt(1, assignId);
+            rs = st.executeQuery();
+
+            int cpt = 1;
+            while (rs.next())
+            {
+                if (cpt < nbRows)
+                    file.println("{\"title\":\"" + rs.getString("aname").trim() + "\", \"due\":\"" + new Date(rs.getTimestamp("due").getTime()) + "\", \"desc\":\""
+                            + rs.getString("description").trim() + "\", \"points\":\"" + rs.getInt("apts") + "\", \"courseNum\":\"" + cnum + "\", \"courseSec\":\""
+                            + csection + "\", \"aid\":\"" + rs.getInt("aid") + "\"},");
+                else
+                    file.println("{\"title\":\"" + rs.getString("aname").trim() + "\", \"due\":\"" + new Date(rs.getTimestamp("due").getTime()) + "\", \"desc\":\""
+                            + rs.getString("description").trim() + "\", \"points\":\"" + rs.getInt("apts") + "\", \"courseNum\":\"" + cnum + "\", \"courseSec\":\""
+                            + csection + "\", \"aid\":\"" + rs.getInt("aid") + "\"}");
+                cpt++;
+            }
+            file.println("]");
+            file.close();
+            System.out.println("Reached file.close()!");
+            File f = new File("assigner.json");
+            System.out.println("Wrote assigner.json!");
+
+            /* Sends assigner.json to S3 */
+            String pathS3 = "data/users/" + login + "/assigner.json";
+            System.out.println(pathS3);
+            String bucketName = "milearn";
+            AWSCredentials credentials = new BasicAWSCredentials("AKIAJWYCYKZJ3BZ5XEBA", "NGJuCS16bH3R6ywlJf7m2NSmdTPd0yA0qANIUDkM");
+
+            new AmazonS3Client(credentials).putObject(new PutObjectRequest(bucketName, pathS3, f));
+            f.delete();
 
 
             /* Redirect to the static website */

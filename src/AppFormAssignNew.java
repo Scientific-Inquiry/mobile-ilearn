@@ -150,26 +150,22 @@ public class AppFormAssignNew extends HttpServlet {
 
 
             /* Write assign.json */
-            st = connection.prepareStatement("SELECT U.unetid FROM Usr U, enrolls_in E, Class C WHERE C.cnum = ? AND C.csection = ? AND C.cquarter = ? AND E.cid = C.cid AND  U.uid = E.uid");
-            st.setString(1, cnum);
-            st.setString(2, csection);
-            st.setString(3, cquarter);
+            st = connection.prepareStatement("SELECT U.unetid FROM Usr U, enrolls_in E, Class C WHERE C.cid = ? E.cid = C.cid AND U.uid = E.uid");
+            st.setInt(1, idClass);
             rs = st.executeQuery();
             while (rs.next()) /* For each student of this class, update assignments */
             {
-                if (rs.getString("unetid").trim().equals("bwayn052"))
-                    System.out.println("!!!!!!!!!!!!!!!!!!");
                 file = new PrintWriter("assign.json");
                 file.println("[");
 
-                PreparedStatement tmp = connection.prepareStatement("SELECT COUNT(*) FROM Assignments A, Class C WHERE C.cid = ? AND A.cid = C.cid");
-                tmp.setInt(1, idClass);
+                PreparedStatement tmp = connection.prepareStatement("SELECT COUNT(*) FROM Assignments A, Class C, enrolls_in E, Usr U WHERE U.unetid = ? AND E.uid = U.uid AND C.cid = E.cid AND A.cid = C.cid");
+                tmp.setString(1, login);
                 ResultSet rtmp = tmp.executeQuery();
                 rtmp.next();
                 nbRows = rtmp.getInt(1);
 
-                tmp = connection.prepareStatement("SELECT A.* FROM Assignments A, Class C WHERE C.cid = ? AND A.cid = C.cid");
-                tmp.setInt(1, idClass);
+                tmp = connection.prepareStatement("SELECT A.* FROM Assignments A, Class C, enrolls_in E, Usr U WHERE U.unetid = ? AND E.uid = U.uid AND C.cid = E.cid AND A.cid = C.cid");
+                tmp.setString(1, login);
                 rtmp = tmp.executeQuery();
 
                 cpt = 1;
