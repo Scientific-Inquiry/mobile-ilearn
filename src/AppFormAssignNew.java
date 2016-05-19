@@ -118,7 +118,7 @@ public class AppFormAssignNew extends HttpServlet {
             System.out.println("Wrote assigner.json!");
 
             String pathS3 = "data/classes/" + rs.getString("cquarter") + "/" + rs.getString("cnum").trim() + "-" + rs.getString("csection") + "/assigner.json";
-
+            System.out.println(pathS3);
             String bucketName = "milearn";
             AWSCredentials credentials = new BasicAWSCredentials("AKIAJWYCYKZJ3BZ5XEBA", "NGJuCS16bH3R6ywlJf7m2NSmdTPd0yA0qANIUDkM");
 
