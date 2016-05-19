@@ -15,7 +15,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 import javax.servlet.ServletException;
@@ -105,7 +104,9 @@ public class AppFormAssignNew extends HttpServlet {
             st = connection.prepareStatement("SELECT A.*, C.cquarter, C.cnum, C.csection FROM Assignments A, Class C WHERE C.cid = ? AND A.cid = C.cid");
             st.setInt(1, idClass);
             rs = st.executeQuery();
-            if (rs.next())
+            System.out.println(rs.getString("aname"));
+            System.out.println(rs.getString("description"));
+            /*if (rs.next())
                 file.println("{\"title\":\"" + rs.getString("aname").trim() + "\", \"due\":\"" + new Date(rs.getTimestamp("due").getTime() + "\", \"desc\":\""
                     + rs.getString("description").trim() + "\", \"points\":\"" + rs.getInt("apts") + "\", \"courseNum\":\"" + rs.getString("cnum").trim() + "\", \"courseSec\":\""
                     + rs.getString("csection").trim()) + "\"}");
@@ -114,7 +115,7 @@ public class AppFormAssignNew extends HttpServlet {
                 file.println(",{\"title\":\"" + rs.getString("aname").trim() + "\", \"due\":\"" + new Date(rs.getTimestamp("due").getTime() + "\", \"desc\":\""
                         + rs.getString("description").trim() + "\", \"points\":\"" + rs.getInt("apts") + "\", \"courseNum\":\"" + rs.getString("cnum").trim() + "\", \"courseSec\":\""
                         + rs.getString("csection").trim()) + "\"}");
-            }
+            }*/
             file.println("]");
             file.close();
             System.out.println("Reached file.close()!");
