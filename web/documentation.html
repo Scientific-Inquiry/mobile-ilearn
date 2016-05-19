@@ -19,28 +19,24 @@
     <link rel="stylesheet" href="css/local.css">
 </head>
 <body data-spy="scroll" data-target=".navbar" data-offset="100">
-    <div class="container-fluid">
-        <!-- Navigation Bar -->
-        <div class="row" id="menu">
-            <div class="col-sm-12">
-                <nav class="navbar">
-                    <div class="container-fluid">
-                        <div class="navbar-header">
-                            <a class="navbar-brand" href="index.html">Crumb Lords</a>
-                        </div>
-                        <ul class="nav navbar-nav">
-                            <li><a href="index.html">Home</a></li>
-                            <li><a href="about.html">About Us</a></li>
-                            <li><a href="documentation.html">Documentation</a></li>
-                            <li><a href="download.html">Download</a></li>
-                        </ul>
-                    </div>
-                </nav>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-inverse" id="menu">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="index.html">Crumb Lords</a>
             </div>
+            <ul class="nav navbar-nav">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="documentation.html">Documentation</a></li>
+                <li><a href="download.html">Download</a></li>
+            </ul>
         </div>
+    </nav>
+    <div class="container-fluid">
         <!-- Header -->
         <div class="row" id="header">
-            <div class="col-sm-12">
+            <div class="col-md-12">
                 <header>
                     <h1>Documentation</h1>
                 </header>
@@ -64,16 +60,18 @@
                                 <!-- Overview Section -->
                                 <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">1&ndash; Overview</a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="#section1">1&ndash; Overview</a></li>
+                                        <li><a href="#section1-0">1&ndash; Overview</a></li>
                                         <li><a href="#section1-1">1.1&ndash; Requirements</a></li>
                                         <li><a href="#section1-2">1.2&ndash; Development Process</a></li>
                                         <li><a href="#section1-3">1.3&ndash; Development Tools Used</a></li>
+                                        <li><a href="#section1-4">1.4&ndash; Current Bugs</a></li>
                                     </ul>
                                 </li>
+
                                 <!-- User Manual -->
-                                <li><a class="dropdown-toggle" data-toggle="dropdown" href="#">2 &ndash; User Manual</a>
+                                <li><a class="dropdown-toggle" data-toggle="dropdown" href="#">2&ndash; User Manual</a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="#section2">2&ndash; User Manual</a></li>
+                                        <li><a href="#section2-0">2&ndash; User Manual</a></li>
                                         <li><a href="#section2-1">2.1&ndash; Logging In/Logging Out</a></li>
                                         <li><a href="#section2-2">2.2&ndash; Home Screen</a></li>
                                         <li><a href="#section2-3">2.3&ndash; Classes Screen</a></li>
@@ -82,8 +80,17 @@
                                         <li><a href="#section2-6">2.6&ndash; Settings Screen</a></li>
                                     </ul>
                                 </li>
+
                                 <!-- Design/Development Process -->
-                                
+                                <li><a class="dropdown-toggle" data-toggle="dropdown" href="#">3&ndash; Design/Development Process</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="#section3-0">3&ndash;Design/Development Process</a></li>
+                                        <li><a href="#section3-1">3-1&ndash;Candice Bentejac</a></li>
+                                        <li><a href="#section3-2">3-2&ndash;Vincent Chang</a></li>
+                                        <li><a href="#section3-1">3-3&ndash;Rebecca Hom</a></li>
+                                        <li><a href="#section3-1">3-4&ndash;Krissi Mena</a></li>
+                                    </ul>
+                                </li>
                                 <!-- Other Sections -->
                             </ul>
                         </div>
@@ -93,9 +100,11 @@
 
             <div id="docManual" class="container-fluid">
                 <article id="section1">
-                    <h2>1&ndash;Overview</h2>
-                    <p>MiLearn is a streamlined, mobile version of Blackboard iLearn. It is currently available for Android devices.
-                    </p>
+                    <section id="section1-0">
+                        <h2>1&ndash;Overview</h2>
+                        
+                        <p>MiLearn is a streamlined, mobile version of Blackboard iLearn. It is currently available for Android devices.</p>
+                    </section>
                     
                     <section id="section1-1">
                         <h3>1.1&ndash;Requirements</h3>
@@ -142,24 +151,39 @@
                                     <dd>Simplifies creation of and mapping methods to buttons.</dd>
                                     <dt>jQuery Mobile</dt>
                                     <dd>Framework for mobile web app.</dd>
+                                    <dt>Android Webview</dt>
+                                    <dd>Links the application to the online data hosted on Amazon Web Services.</dd>
+                                    <dt>Android Webkit.JavascriptInterface</dt>
+                                    <dd>Allows for the javascript methods to call on a specified Java method upon the tap of a button.</dd>
                                 </dl>
                             </li>
+                        </ul>
+                    </section>
+                
+                    <section id="section1-4">
+                        <h3>1.4&ndash;Current Bugs</h3>
+                        <p>Due to the quick development of the project, there are some bugs in the MiLearn app:</p>
+                        <ul>
+                            
                         </ul>
                     </section>
                 </article>
                 
                 <article id="section2">
-                    <h2>2&ndash;User Manual</h2>
-                    <p>This is a quick reference for using the MiLearn app.</p>
+                    <section id="section2-0">
+                        <h2>2&ndash;User Manual</h2>
+                        <p>This is a quick reference for using the MiLearn app.</p>
+                        
+                        <p>For those who wish to know how the MiLearn app, please look here first.</p>
+                    </section>
                     
-                    <p>For those who wish to know how the MiLearn app, please look here first.</p>
                     <section id="section2-1">
                         <h3>2.1&ndash;Logging In/Logging Out</h3>
                         <div class="row">
-                            <div class="col-xs-2 l_col-pic">
-                                <img src="" alt="Login screen">
+                            <div class="col-md-3 l_col-pic">
+                                <img src="https://s3-us-west-2.amazonaws.com/crumblords/img/login-screen.png" alt="Login screen">
                             </div>
-                            <div class="col-xs-10">
+                            <div class="col-md-9">
                                 <p>When MiLearn is first opened, the Login screen is brought up. Here, the user will need to insert their username (i.e. UCR NetID) and password.</p>
                             </div>
                         </div>
@@ -168,21 +192,23 @@
                     <section id="section2-2">
                         <h3>2.2&ndash;Home Screen</h3>
                         <div class="row">
-                            <div class="col-xs-10">
+                            <div class="col-md-9">
                                 <p>Once the user has logged in, they are brought to the Home Screen. This will initially display the "Welcome to MiLearn" screen.</p>
                             </div>
-                            <div class="col-xs-2 l_col-pic">
-                                <img src="" alt="Welcome screen">
+                            <div class="col-md-3 l_col-pic">
+                                <img src="https://s3-us-west-2.amazonaws.com/crumblords/img/welcome-screen.png" alt="Welcome screen">
                             </div>
-                            <div class="col-xs-2 l_col-pic">
-                                <img src="" alt="Home screen">
-                            </div>
-                            <div class="col-xs-10">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-9">
                                 <p>The Home Screen should then display the user's name and any alerts that they may have.</p>
                                 
                                 <p>Alerts are coded such that high priority alerts are in red, medium priority in yellow, and low priority in green.</p>
                                 
                                 <p>The timing of each priority can be set in the <a href="#section2-6">Settings Screen</a>.</p>
+                            </div>
+                            <div class="col-md-3 l_col-pic">
+                                <img src="https://s3-us-west-2.amazonaws.com/crumblords/img/home-screen.png" alt="Home screen">
                             </div>
                         </div>
                     </section>
@@ -190,15 +216,21 @@
                     <section id="section2-3">
                         <h3>2.3&ndash;Classes Screen</h3>
                         <div class="row">
-                            <div class="col-xs-10">
+                            <div class="col-md-9">
                                 <p>The Classes Screen displays an accordion for all of the user's classes for the current quarter. The header of each collapsible contains the course number followed by the course section. Inside of each collapsible is the full name of the course.</p>
                                 
                                 <p>If the user is a <strong>student</strong>, then they will see what class(es) that they are enrolled in. In addition the name(s) of the instructor(s) are displayed inside the collapsible.</p>
-                                
+                            </div>
+                            <div class="col-md-3 l_col-pic">
+                                <img src="https://s3-us-west-2.amazonaws.com/crumblords/img/classes-screen-S.png" alt="Classes screen (Student)">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-9">
                                 <p>If the user is an <strong>instructor</strong>, then they will see what class(es) they are teaching. The collapsible content also includes a list of students that are enrolled in that course.</p>
                             </div>
-                            <div class="col-xs-2">
-                                <img src="" alt="Classes screen">
+                            <div class="col-md-3  l_col-pic">
+                                <img src="https://s3-us-west-2.amazonaws.com/crumblords/img/classes-screen-I.png" alt="Classes screen (Instructor)">
                             </div>
                         </div>
                     </section>
@@ -206,15 +238,21 @@
                     <section id="section2-4">
                         <h3>2.4&ndash;Assignments Screen</h3>
                         <div class="row">
-                            <div class="col-xs-2">
-                                <img src="" alt="Assignments screen">
+                            <div class="col-md-3 l_col-pic">
+                                <img src="https://s3-us-west-2.amazonaws.com/crumblords/img/assignments-screen-S.png" alt="Assignments screen">
                             </div>
-                            <div class="col-xs-10">
+                            <div class="col-md-9">
                                 <p>The Assignments Screen displays an accordion with the assignments ordered by due date (from sooner to later). Each collapsible header has the course that the assignment is for followed by the assignment title.</p>
                                 
                                 <p><strong>Students</strong> can view what assignments are due for all classes that they are enrolled in. They can also upload a file to turn in for an assignment. Assignment uploads can be done multiple times, but the instructor will only see the most recent submission. Currently, students can only upload one file at a time.</p>
-                                
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-9">
                                 <p><strong>Instructors</strong> can create new assignments or edit assignments for any class they teach. This is respectively done through an already existing assignment collapsible or through the "New Assignment" collapsible at the bottom of the list. </p>
+                            </div>
+                            <div class="col-md-3 l_col-pic">
+                                <img src="https://s3-us-west-2.amazonaws.com/crumblords/img/assignments-screen-I-newAssignment.png" alt="New Assignments collapsible">
                             </div>
                         </div>
                     </section>
@@ -222,15 +260,15 @@
                     <section id="section2-5">
                         <h3>2.5&ndash;Grades Screen</h3>
                         <div class="row">
-                            <div class="col-xs-10">
+                            <div class="col-md-9">
                                 <p>The Grades Screen displays an accordion with the grades for each assignment in each class.</p>
                                 
                                 <p>For <strong>students</strong>, each collapsible is for a course that they are enrolled in. The collapsible heading indicates which course the student they will be looking in while the content displays (in chronological order), the grades for each assignment.</p>
                                 
                                 <p><strong>Instructors</strong> each collapsible is for an assignment that they have assigned and is ordered chronologically. Inside each collapsible is the name of the assignment, how many points it was worth, and a table of students' grades for the assignment. The total points and each student grade can be edited.</p>
                             </div>
-                            <div class="col-xs-2">
-                                <img src="" alt="Grades screen">
+                            <div class="col-md-3 l_col-pic">
+                                <img src="https://s3-us-west-2.amazonaws.com/crumblords/img/grades-screen-S.png" alt="Grades screen">
                             </div>
                         </div>
                     </section>
@@ -238,10 +276,10 @@
                     <section id="section2-6">
                         <h3>2.6&ndash;Settings Screen</h3>
                         <div class="row">
-                            <div class="col-xs-2">
-                                <img src="" alt="Settings screen">
+                            <div class="col-md-3 l_col-pic">
+                                <img src="https://s3-us-west-2.amazonaws.com/crumblords/img/settings-screen.png" alt="Settings screen">
                             </div>
-                            <div class="col-xs-10">
+                            <div class="col-md-9">
                                 <p>The Settings Screen allows all users to configure the theme of their user interface and the time for priority levels.</p>
                                 
                                 <p>A quick guide for themes:</p>
@@ -281,13 +319,88 @@
                         </div>
                     </section>
                 </article>
+
+                <article id="section3">
+                    <section id="section3-0">
+                        <h2>3&ndash;Design/Development Process</h2>
+                        <p>During the development of MiLearn, each team member took responsibility for developing a component of the MiLearn app. Each member had their own rationale and design process regarding their own component.</p>
+                        
+                        <p>The MiLearn app project was split between members such that:</p>
+                        <dl>
+                            <dt>Candice Bantejac</dt>
+                            <dd></dd>
+                            <dt>Vincent Chang</dt>
+                            <dd>Worked on the Android portion of MiLearn.</dd>
+                            <dt>Rebecca Hom</dt>
+                            <dd>Worked on the user interface of MiLearn.</dd>
+                            <dt>Krissi Mena</dt>
+                            <dd></dd>
+                        </dl>
+                        
+                        <p>The following sections are broken up further into what each member of the project rationale about the portion they picked to work on, what worked, and what features they designed and implemented.</p>
+                    </section>
+                    
+                    <section id="section3-1">
+                        <h3>3.1&ndash;Candice Bentejac</h3>
+                    </section>
+                    
+                    <section id="section3-2">
+                        <h3>3.2&ndash;Vincent Chang</h3>
+                        
+                        <h4>Rationale</h4>
+                        <p>Vincent chose to work on the Android implementation due to prior experience working with Android development.</p>
+                        
+                        <p>He also split each page of the application into three separate activities. These consisted of the Login page, a Webview (the main MiLearn) page, and a page that went to the team's website.</p>
+                        
+                        <p>This relates to modularization as it minimized the amount of errors per activity. It also allowed for bugs to be more localized to a specific activity.</p>
+                        
+                        <h4>What Worked</h4>
+                        <p>Vincenet managed to incorporate Java calls to JavaScript methods within the Webview portion of the app. This allowed for the app to interact with AWS services. </p>
+                        
+                        <h4>Features Designed and Implemented</h4>
+                        <ul>
+                            <li>Android application
+                                <ul>
+                                    <li>Designed and implemented the login page.
+                                        <ul>
+                                            <li>However Candice handled the login verification.</li>
+                                        </ul>
+                                    </li>
+                                    <li>MiLearn page
+                                        <ul>
+                                            <li>Created an interactive relationship between Webview and the web UI.</li>
+                                            <li>Used JavaScriptInterface from WebKit library to properly call logout code in Java upon pressing the Logout button within the web UI.</li>
+                                            <li>Locked the user on to the main page via no back button functionality, such that the user would have to press the Logout button within the UI to properly exit.</li>
+                                        </ul>
+                                    </li>
+                                    <li>Website page
+                                        <ul>
+                                            <li>Created a new Webview activity that displays the <a href="index.html">team website</a>.</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>MiLearn logo</li>
+                            <li>Crumb Lords logo</li>
+                        </ul>
+                        
+                    </section>
+                    
+                    <section id="section3-3">
+                        <h3>3.3&ndash;Rebecca Hom</h3>
+                    </section>
+                    
+                    <section id="section3-4">
+                        <h3>3.4&ndash;Krissi Mena</h3>
+                    </section>
+                </article>
             </div>
         </div>
         <!-- Footer -->
         <div class="row" id="footer">
-            <div class="col-sm-12">
+            <div class="col-md-12">
                 <footer>
-                    <p>Crumb Lords &mdash; 2016-05-13</p>
+                    <p>Crumb Lords &mdash; 2016-05-16</p>
                 </footer>
             </div>
         </div>
