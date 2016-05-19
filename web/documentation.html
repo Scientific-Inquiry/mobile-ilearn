@@ -110,14 +110,26 @@
                     
                     <section id="section1-1">
                         <h3>1.1&ndash;Requirements</h3>
-                        <p>Have MiLearn app downloaded.</p>
+                        <h4>Midquarter Requirements</h4>
+                        
+                        <h4>Final Requirements</h4>
                     </section>
                     
                     <section id="section1-2">
                         <h3>1.2&ndash;Development Process</h3>
                         <p>During development of MiLearn, we used a Scrum process of development. Our group would meet up at least once a week on Mondays for discussing our contributions towards the project, as well as planning on what part of the project to do next.</p>
                         
-                        <p>In addition, we took a modular approach towards development. Each group member focused on a different component of the app. This boosted overall group efficiency as we were able to concentrate on one item to do per week instead of several. One problem was actually getting each component integrated properly each week.</p>
+                        <p>What prevented our Scrum process from degenerating into the bug-fix model was rigor. Each week we would test reliability and correctness by creating various regression tests.</p>
+                        
+						<p>By using the Scrum method we had high visibility of our problems and goals each week. </p>
+                        
+                        <p>In addition, we took a modular approach towards development. Each group member focused on a different component of the app. This boosted overall group efficiency as we were able to concentrate on one item to do per week instead of several.</p>
+                        
+						<p>One problem was actually getting each component integrated properly each week. Some file writers and other libraries were not supported by Android and we had to find workarounds.</p>
+                        
+						<p>Previous Java classes we wrote had to be reimplemented in order to function properly with Tomcat.</p>
+                        
+						<p>Scalability of the system was tested after a small sample by increasing the database to 103 users, 20 lectures, 5 labs, 20 instructors, 5 lab instructors, and 50 assignments.</p>
                     </section>
                     
                     <section id="section1-3">
@@ -142,6 +154,8 @@
                                 <dl>
                                     <dt>Android Studio</dt>
                                     <dd>IDE used for developing the Android app.</dd>
+                                    <dt>GitHub</dt>
+                                    <dd>Used for version control.</dd>
                                 </dl>
                             </li>
                             <li>APIs/Libraries/Frameworks
@@ -182,7 +196,7 @@
                                 <figure>
                                     <a target="_blank" href="https://s3-us-west-2.amazonaws.com/crumblords/img/Milearn-ERD.png">
                                         <img src="https://s3-us-west-2.amazonaws.com/crumblords/img/Milearn-ERD.png" alt="MiLearn ER diagram">
-                                    </a>
+                                    </a><br />
                                     <figcaption>MiLearn ER Diagram for data flow.</figcaption>
                                 </figure>
                             </div>
@@ -349,13 +363,13 @@
                         <p>The MiLearn app project was split between members such that:</p>
                         <dl>
                             <dt>Candice Bantejac</dt>
-                            <dd>Worked on the user, classes, database and Java servlets of Milearn.</dd>
+                            <dd>Worked on the user, classes, database, Tomcat, and Java servlets of Milearn.</dd>
                             <dt>Vincent Chang</dt>
                             <dd>Worked on the Android portion of MiLearn.</dd>
                             <dt>Rebecca Hom</dt>
                             <dd>Worked on the user interface of MiLearn.</dd>
                             <dt>Krissi Mena</dt>
-                            <dd></dd>
+                            <dd>Worked on S3, databases associated with assignments, grades, and submissions, and file upload aspects of MiLearn.</dd>
                         </dl>
                         
                         <p>The following sections are broken up further into what each member of the project rationale about the portion they picked to work on, what worked, and what features they designed and implemented.</p>
@@ -473,25 +487,17 @@
                         <h3>3.3&ndash;Rebecca Hom</h3>
                         
                         <h4>Rationale</h4>
-                        <p>Rebecca decided to work on the user interface due to having previous experience working with implementing designs using JavaScript.</p>
+                        <p>Rebecca decided to work on the user interface due to having previous experience working with implementing designs using JavaScript. Although it was possible to use Android development to create the user interface, using jQuery Mobile was allowed for a more efficient use of her skillset and it came with icons that could be used on the app.</p>
                         
-                        <p>Although it was possible to use Android development to create the user interface, using jQuery Mobile was allowed for a more efficient use of her skillset and it came with icons that could be used on the app.</p>
-                        
-                        <p>Since MiLearn is a simplified version of Blackboard iLearn, Rebecca arranged the essential functions into an intuitive design. This accomplished two things: retaining the simplicity of the app and splitting up each function into its own section. In turn, each of these sections could be styled and displayed as distinctly as possible.</p>
-                        
-                        <p>For the MiLearn app, the user would be able to access a Home screen, Classes, Assignments, Grades, and Settings. Each of those sections have JavaScript functions that generate the data to display from the database.</p>
+                        <p>Since MiLearn is a simplified version of Blackboard iLearn, Rebecca arranged the essential functions into an intuitive design. This accomplished two things: retaining the simplicity of the app and splitting up each function into its own section. In turn, each of these sections could be styled and displayed as distinctly as possible. For the MiLearn app, the user would be able to access a Home screen, Classes, Assignments, Grades, and Settings. Each of those sections have JavaScript functions that generate the data to display from the database.</p>
                         
                         <p>It was also decided that the data displayed for a user would be taken from fixed JSON files. Each of these JSON files had fixed names and attributes for efficient parsing and displaying using JavaScript. These files would also be consistent for each user and user level which allowed for easily cached information and reduced the need to do new queries to the database.</p>
                         
                         <p>Also it was decided that a set of collapsibles would be used for Classes, Assignments, and Grades. This would hide information pertaining to a topic heading. In turn, this would be more efficient for the user as they would be able to scroll through headings to get what they needed instead of (potentially) large blocks of information.</p>
                         
-                        <p>Alerts were added to the Home screen as a way to increase MiLearn's functionality as a mobile organizer. The user would be able to set three different alarm priority levels. These could be used as a buffer for the user to guage how much time they have left to do an assignment.</p>
+                        <p>Alerts were added to the Home screen as a way to increase MiLearn's functionality as a mobile organizer. The user would be able to set three different alarm priority levels. These could be used as a buffer for the user to guage how much time they have left to do an assignment.  In addition, themes for the user interface were included. This would allow the user to somewhat customize MiLearn for their own use.</p>
                         
-                        <p>As an extension of allowing users to impress their preferences on to MiLearn, themes for the user interface were included. This would allow the user to somewhat customize MiLearn for their own use.</p>
-                        
-                        <p>Users were also split into two groups: students and instructors. The HTML page was then split into separate dividers to allow for either of those groups or a combination of them to use the app.</p>
-                        
-                        <p>HTML forms were used as a security feature for users modifying the database. This was to allow for input sanitation to prevent users from corrupting the database.</p>
+                        <p>Users were also split into two groups: students and instructors. The HTML page was then split into separate dividers to allow for either of those groups or a combination of them to use the app. HTML forms were used as a security feature for users modifying the database. This was to allow for input sanitation to prevent users from corrupting the database.</p>
                         
                         <h4>What Worked</h4>
                         <p>Rebecca implemented an HTML page that contained all of the screens for main MiLearn app that allowed for the screens to change using JavaScript.</p> 
@@ -549,10 +555,34 @@
                         <h3>3.4&ndash;Krissi Mena</h3>
                         
                         <h4>Rationale</h4>
+                        <p>Krissi decided to work on assigments, submissions, grades, Amazon S3 data management, and their associated databases. Seperation of concerns aided in modularization, but the difficulty in decoupling from one another ultimately resulted in the grouping of such tasks. By working on this set, important aspects shared among them permitted a level of abstraction for refined implementations and clearer dicussions with the team.</p>
                         
                         <h4>What Worked</h4>
+                        <p>Java implementation of assignments, submissions, grades integrated with sql libraries and Amazon S3/database worked to sucessfully update the database and files simultaneously on s3, but it required more restriction than anticipated due to using Tomcat for processing forms.</p>
                         
                         <h4>Features Designed and Implemented</h4>
+                        <ul>
+                            <li>Assignments, Grades, and Submissions
+                                <ul>
+                                    <li>Creation of associated databases and defined such interations.
+                                        <ul>
+                                            <li>Used the PostgreSQL library to execute database functionality.</li>
+                                            <li>Candice formalized the process with a single class handling database operations.</li>
+                                        </ul>
+                                    </li>
+                                    <li>Creation and of Implementation S3 class general enough for all modules to use 
+                                        <ul>
+                                            <li>Used the AWS library to interface with bucket data.</li>
+                                        </ul>
+                                    </li>
+                                    <li>Refresh functions
+                                        <ul>
+                                            <li>Created for each class above to refresh data when it is modified to display accurate content when demanded</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
                     </section>
                 </article>
             </div>
