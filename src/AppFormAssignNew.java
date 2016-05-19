@@ -157,6 +157,8 @@ public class AppFormAssignNew extends HttpServlet {
             rs = st.executeQuery();
             while (rs.next()) /* For each student of this class, update assignments */
             {
+                if (rs.getString("unetid").trim().equals("bwayn052"))
+                    System.out.println("!!!!!!!!!!!!!!!!!!");
                 file = new PrintWriter("assign.json");
                 file.println("[");
 
@@ -173,8 +175,6 @@ public class AppFormAssignNew extends HttpServlet {
                 cpt = 1;
                 while (rtmp.next())
                 {
-                    if (rtmp.getString("unetid").trim().equals("bwayn052"))
-                        System.out.println("!!!!!!!!!!!!!!!!!!");
                     if (cpt < nbRows)
                         file.println("{\"title\":\"" + rtmp.getString("aname").trim() + "\", \"due\":\"" + new Date(rtmp.getTimestamp("due").getTime()) + "\", \"desc\":\""
                                 + rtmp.getString("description").trim() + "\", \"points\":\"" + rtmp.getInt("apts") + "\", \"courseNum\":\"" + cnum + "\", \"courseSec\":\""
