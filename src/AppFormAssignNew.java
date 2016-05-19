@@ -109,19 +109,27 @@ public class AppFormAssignNew extends HttpServlet {
 
             PrintWriter file = new PrintWriter("assigner.json");
             file.println("\"assignment\":[");
+            st = connection.prepareStatement("SELECT COUNT(*) FROM Assignments A, Class C WHERE C.cid = ? AND A.cid = C.cid");
+            rs = st.executeQuery();
+            rs.next();
+            int nbRows = rs.getInt(1);
+
             st = connection.prepareStatement("SELECT A.* FROM Assignments A, Class C WHERE C.cid = ? AND A.cid = C.cid");
             st.setInt(1, idClass);
             rs = st.executeQuery();
 
-            if (rs.next())
-                file.println("{\"title\":\"" + rs.getString("aname").trim() + "\", \"due\":\"" + new Date(rs.getTimestamp("due").getTime()) + "\", \"desc\":\""
-                    + rs.getString("description").trim() + "\", \"points\":\"" + rs.getInt("apts") + "\", \"courseNum\":\"" + cnum + "\", \"courseSec\":\""
-                    + csection + "\"}");
+            int cpt = 1;
             while (rs.next())
             {
-                file.println(",{\"title\":\"" + rs.getString("aname").trim() + "\", \"due\":\"" + new Date(rs.getTimestamp("due").getTime()) + "\", \"desc\":\""
+                if (cpt < nbRows)
+                file.println("{\"title\":\"" + rs.getString("aname").trim() + "\", \"due\":\"" + new Date(rs.getTimestamp("due").getTime()) + "\", \"desc\":\""
                         + rs.getString("description").trim() + "\", \"points\":\"" + rs.getInt("apts") + "\", \"courseNum\":\"" + cnum + "\", \"courseSec\":\""
-                        + csection + "\"}");
+                        + csection + "\"},");
+                else
+                    file.println("{\"title\":\"" + rs.getString("aname").trim() + "\", \"due\":\"" + new Date(rs.getTimestamp("due").getTime()) + "\", \"desc\":\""
+                            + rs.getString("description").trim() + "\", \"points\":\"" + rs.getInt("apts") + "\", \"courseNum\":\"" + cnum + "\", \"courseSec\":\""
+                            + csection + "\"},");
+                cpt++;
             }
             file.println("]");
             file.close();
