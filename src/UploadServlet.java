@@ -108,7 +108,7 @@ public class UploadServlet extends HttpServlet {
                 filecontent.close();
             }
             String extension = "." + fileName.toString().substring(fileName.toString().indexOf(".") + 1, fileName.toString().length());
-            PreparedStatement tmp = connection.prepareStatement("SELECT C.cnum, C.csection, S.attempts, S.uid FROM Submissions S, Usr U, Class C, Assignments A WHERE S.aid = ? AND A.aid = S.aid AND C.cid = A.cid AND U.unetid = ? AND S.uid = U.uid");
+            PreparedStatement tmp = connection.prepareStatement("SELECT C.cnum, C.csection, C.quarter, S.attempts, S.uid FROM Submissions S, Usr U, Class C, Assignments A WHERE S.aid = ? AND A.aid = S.aid AND C.cid = A.cid AND U.unetid = ? AND S.uid = U.uid");
             tmp.setInt(1, Integer.parseInt(request.getParameter("aid")));
             tmp.setString(2, request.getParameter("slogin"));
             rs = tmp.executeQuery();
@@ -130,7 +130,7 @@ public class UploadServlet extends HttpServlet {
             System.out.println("File renamed!");
 
             /* Upload to S3 */
-            String pathS3 = "data/classes/qyyyy/" + classC + "/" + newName;
+            String pathS3 = "data/classes/" + rs.getString("cquarter") + "/" + classC + "/" + newName;
 
             String bucketName = "milearn";
             AWSCredentials credentials = new BasicAWSCredentials("AKIAJWYCYKZJ3BZ5XEBA", "NGJuCS16bH3R6ywlJf7m2NSmdTPd0yA0qANIUDkM");
