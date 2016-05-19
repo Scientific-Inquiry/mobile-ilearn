@@ -171,8 +171,8 @@ public class AppFormAssignNew extends HttpServlet {
                 cpt = 1;
                 while (rtmp.next())
                 {
-                    cnum = rs.getString("cnum").trim();
-                    csection = rs.getString("csection").trim();
+                    cnum = rtmp.getString("cnum").trim();
+                    csection = rtmp.getString("csection").trim();
                     if (cpt < nbRows)
                         file.println("{\"title\":\"" + rtmp.getString("aname").trim() + "\", \"due\":\"" + new Date(rtmp.getTimestamp("due").getTime()) + "\", \"desc\":\""
                                 + rtmp.getString("description").trim() + "\", \"points\":\"" + rtmp.getInt("apts") + "\", \"courseNum\":\"" + cnum + "\", \"courseSec\":\""
