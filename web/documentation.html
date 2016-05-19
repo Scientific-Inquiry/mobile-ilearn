@@ -17,6 +17,7 @@
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/local.css">
+    <link rel="stylesheet" media="print" href="css/print.css">
 </head>
 <body data-spy="scroll" data-target=".navbar" data-offset="100">
     <!-- Navigation Bar -->
@@ -65,6 +66,7 @@
                                         <li><a href="#section1-2">1.2&ndash; Development Process</a></li>
                                         <li><a href="#section1-3">1.3&ndash; Development Tools Used</a></li>
                                         <li><a href="#section1-4">1.4&ndash; Current Bugs</a></li>
+                                        <li><a href="#section1-5">1.5&ndash; ER Diagram</a></li>
                                     </ul>
                                 </li>
 
@@ -157,6 +159,9 @@
                                     <dd>Allows for the javascript methods to call on a specified Java method upon the tap of a button.</dd>
                                     <dt>Bootstrap</dt>
                                     <dd>Mobile-first framework used for building the Crumb Lords website.</dd>
+                                    <dt>Apache Tomcat 8</dt>
+                                    <dd>Open source implementation of the Java Servlet, JavaServer Pages, Java Expression Language and Java WebSocket technologies.</dd>
+
                                 </dl>
                             </li>
                         </ul>
@@ -166,8 +171,22 @@
                         <h3>1.4&ndash;Current Bugs</h3>
                         <p>Due to the quick development of the project, there are some bugs in the MiLearn app:</p>
                         <ul>
-                            
+                            <li>Students cannot submit their assignments on the Android app.</li>
                         </ul>
+                    </section>
+                    
+                    <section id="section1-5">
+                        <h3>1.5&ndash;ER Diagram</h3>
+                        <div class="row">
+                            <div class="col-md-12 l_diagram">
+                                <figure>
+                                    <a target="_blank" href="https://s3-us-west-2.amazonaws.com/crumblords/img/Milearn-ERD.png">
+                                        <img src="https://s3-us-west-2.amazonaws.com/crumblords/img/Milearn-ERD.png" alt="MiLearn ER diagram">
+                                    </a>
+                                    <figcaption>MiLearn ER Diagram for data flow.</figcaption>
+                                </figure>
+                            </div>
+                        </div>
                     </section>
                 </article>
                 
@@ -293,23 +312,23 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
+                                        <tr class="milearn theme-a">
                                             <td>Default</td>
                                             <td>Generic gray/chrome theme.</td>
                                         </tr>
-                                        <tr>
+                                        <tr class="milearn theme-b">
                                             <td>Dark</td>
                                             <td>Generic dark theme.</td>
                                         </tr>
-                                        <tr>
+                                        <tr class="milearn theme-c">
                                             <td>Highlander</td>
                                             <td>Show UCR school spirit.</td>
                                         </tr>
-                                        <tr>
+                                        <tr class="milearn theme-y">
                                             <td>Go Blind!</td>
                                             <td>For trolls and schmucks only.</td>
                                         </tr>
-                                        <tr>
+                                        <tr class="milearn theme-z">
                                             <td>Super! Basic!</td>
                                             <td>... why?</td>
                                         </tr>
@@ -330,7 +349,7 @@
                         <p>The MiLearn app project was split between members such that:</p>
                         <dl>
                             <dt>Candice Bantejac</dt>
-                            <dd></dd>
+                            <dd>Worked on the user, classes, database and Java servlets of Milearn.</dd>
                             <dt>Vincent Chang</dt>
                             <dd>Worked on the Android portion of MiLearn.</dd>
                             <dt>Rebecca Hom</dt>
@@ -346,10 +365,66 @@
                         <h3>3.1&ndash;Candice Bentejac</h3>
                         
                         <h4>Rationale</h4>
-                        
+                        <p>Candice decided to work on the users, classes, login/logout module and the associated PostgreSQL database (hosted on the cloud using Amazon Web Services RDS). Later on during the project, the team had to handle data from several HTML forms to Java: Java Servlets have thus been used, as well as Amazon Web Services EC2, which allowed us to create a virtual machine on which we could install our server. Amazon Web Services S3 has also been used to store data that we could easily access from the cloud.</p>
+
+                        <p>The goal of the project being to create an Android app, the backend of the application has been entirely coded using Java. We wanted MiLearn to be a complete and easy-to-use alternative to the BlackBoard iLearn mobile app. The users would thus have access to their Classes, Assignments, Grades and would be able to set up alerts with three different priority levels.</p>
+
+                        <p>Since Rebecca used Javascript to develop the frontend, we needed a way to give her access to the data that we were parsing in Java. To do so, we decided to use JSON files that would be created with Java, sent to the cloud (more precisely, to an S3 bucket) and then parsed by Rebecca's JavaScript.</p>
+
+                        <p>Candice's tasks consisted of creating Java objects that would represent the users and the classes. Users were divided into three categories: the Students, the Instructors, and the Teaching Assistants. Something similar was done with the Classes, which were divided into Lectures, Laboratories, and Discussions. Users can, depending on their status, be enrolled in a class or teach a class. The Teaching Assistant are both enrolled in and teaching a class.</p>
+
+                        <p>Another of Candice's goals was to implement the login/logout module.The login module required a direct interaction between the user and the app. For this reason, it was developed in collaboration with Vincent, since he in charge of integrating the code in an Android environment. Vincent designed and implemented the login page, and Candice handled the login verification.</p>
+
+                        <p>Candice also set up an Amazon Web Services RDS database that used PostgreSQL. She also collaborated with Krissi to maintain this database, and Krissi populated it with some user data.</p>
+
+                        <p>Despite the resources already available, we very quickly needed to get data from the users to the backend, and decided to use HTML forms to do so. The users would only have to fill in those forms and submit them. Using Java Servlets, we can parse those HTML forms in Java and respond to the user's request - safely storing secure data while avoid corrupting the database. Candice consequently created an Amazon Web Services EC2 instance, setting up a virtual machine and installing Tomcat on it. Servlets were then implemented, stored, configured and mapped on this EC2 instance, on which Tomcat runs continuously.</p>
+
                         <h4>What Worked</h4>
+                        <p>Candice implemented User and Classes classes, which were linked to the Login class, that Vincent integrated into the Android environment. Those Java classes allowed JSON files to be automatically generated and stored as soon as a user was logged in. Many libraries were integrated into the project to handle the database requests and to use Java Servlets. Java Servlets were used to treat data sent by users, and to regenerate certain JSON files when the context justified it. Amazon Web Services tools that were constantly used were also integrated to the code.</p>
                         
+                        <p>Retrieving data from the database and generating the corresponding JSON files that could be read by Rebecca's code was the main challenge, since all the the user interface relied on the correctness of those JSON files.</p>
+
                         <h4>Features Designed and Implemented</h4>
+                        <ul>
+                            <li>Users and Classes
+                                <ul>
+                                    <li>Creation and setting up of a RDS PostgreSQL database
+                                        <ul>
+                                            <li>Candice created a class called <em>DBManager</em> that contained basic and more advanced SQL operations.</li>
+                                            <li>Krissi populated the database.</li>
+                                            <li>Made User and Class classes interact with the database.</li>
+                                        </ul>
+                                    </li>
+                                    <li>Creation and setting up of a S3 instance
+                                        <ul>
+                                            <li>Rebecca created the first bucket and Krissi created a class making the use of this instance (especially the upload/downloads operations) way easier and clearer.</li>
+                                            <li>The Amazon Web Services libraries were used a lot to send freshly generated JSON files to the cloud.</li>
+                                        </ul>
+                                    </li>
+                                    <li>Creation and setting up of a EC2 instance
+                                        <ul>
+                                            <li>Installed Tomcat 8 on an Amazon virtual machine</li>
+                                            <li>Created Java Servlets that were parsing data retrieved from HTML forms and treating it afterwards.</li>
+                                            <li>Created a Java Servlet that handles uploading files to S3.</li>
+                                            <li>Handled JSON files regeneration when the database is updated.</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>Login module
+                                <ul>
+                                    <li>Created login class that uses User and Class classes.
+                                        <ul>
+                                            <li>"Merged" the JSON files generation for User and Class.</li>
+                                            <li>Automated JSON generation when a user logs in.</li>
+                                            <li>Checked the user's input and determined whether they had the correct credentials or not. All associated data was generated if the credentials were accepted. Otherwise the connection was rejected.</li>
+                                        </ul>
+                                    </li>
+                                    <li>Vincent integrated this module to the Android environment.</li>
+                                </ul>
+                            </li>
+                        </ul>
+
                     </section>
                     
                     <section id="section3-2">
