@@ -104,8 +104,10 @@ public class AppFormAssignNew extends HttpServlet {
             st = connection.prepareStatement("SELECT A.*, C.cquarter, C.cnum, C.csection FROM Assignments A, Class C WHERE C.cid = ? AND A.cid = C.cid");
             st.setInt(1, idClass);
             rs = st.executeQuery();
-            System.out.println(rs.getString("aname"));
-            System.out.println(rs.getString("description"));
+            while(rs.next()) {
+                System.out.println(rs.getString("aname"));
+                System.out.println(rs.getString("description"));
+            }
             /*if (rs.next())
                 file.println("{\"title\":\"" + rs.getString("aname").trim() + "\", \"due\":\"" + new Date(rs.getTimestamp("due").getTime() + "\", \"desc\":\""
                     + rs.getString("description").trim() + "\", \"points\":\"" + rs.getInt("apts") + "\", \"courseNum\":\"" + rs.getString("cnum").trim() + "\", \"courseSec\":\""
