@@ -244,6 +244,7 @@ public class AppFormAssignNew extends HttpServlet {
                 tmp = connection.prepareStatement("SELECT G.*, U.unetid FROM Grades G, Usr U WHERE G.aid = ? AND U.uid = G.uid");
                 tmp.setInt(1, rs.getInt("aid"));
                 rtmp = tmp.executeQuery();
+
                 while (rtmp.next())
                 {
                     String late;
