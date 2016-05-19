@@ -101,6 +101,7 @@ public class AppFormAssignNew extends HttpServlet {
             /* Select the id of the assignment that has just been added */
             st = connection.prepareStatement("SELECT aid FROM Assignments ORDER BY aid DESC LIMIT 1");
             rs = st.executeQuery();
+            rs.next();
             int aid = rs.getInt("aid");
 
             /* Insert 0 as a grade for that assignment for all the students in that class */
