@@ -89,7 +89,7 @@ public class AppFormGradebook extends HttpServlet {
             st.close();
 
             /* Write graded.json */
-            st = connection.prepareStatement("SELECT COUNT(*) FROM Assignments A, Class C WHERE A.aid = ? AND C.cid = A.cid ORDER BY A.due ASC");
+            st = connection.prepareStatement("SELECT COUNT(*) FROM Assignments A, Class C WHERE A.aid = ? AND C.cid = A.cid");
             st.setInt(1, aid);
             rs = st.executeQuery();
             rs.next();
