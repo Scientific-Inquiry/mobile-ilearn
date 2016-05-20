@@ -223,6 +223,11 @@ public class AppFormAssignNew extends HttpServlet {
             }
 
             /* Write graded.json */
+            st = connection.prepareStatement("SELECT COUNT(*) FROM Assignments A, Class C WHERE C.cid = ? AND A.cid = C.cid ORDER BY A.due ASC");
+            st.setInt(1, idClass);
+            rs = st.executeQuery();
+            rs.next();
+            int nbAssign = rs.getInt(1);
             st = connection.prepareStatement("SELECT A.* FROM Assignments A, Class C WHERE C.cid = ? AND A.cid = C.cid ORDER BY A.due ASC");
             st.setInt(1, idClass);
             rs = st.executeQuery();
@@ -230,11 +235,12 @@ public class AppFormAssignNew extends HttpServlet {
             file = new PrintWriter("graded.json");
             file.println("[");
 
+            int cptAssign = 1;
 
             while (rs.next())
             {
                 cpt = 1;
-                //grade, title, late, total, due, slogin, courseNum, courseSec, aid
+
                 PreparedStatement tmp = connection.prepareStatement("SELECT COUNT(*) FROM Grades G, Usr U WHERE G.aid = ? AND U.uid = G.uid");
                 tmp.setInt(1, rs.getInt("aid"));
                 ResultSet rtmp = tmp.executeQuery();
@@ -253,7 +259,7 @@ public class AppFormAssignNew extends HttpServlet {
                     else
                         late = "true";
 
-                    if (cpt < nb)
+                    if (cpt < nb && cptAssign < nbAssign)
                         file.println("{" + "\"grade\":" + "\"" + rtmp.getInt("gpts") + "\""
                                 + ", " + "\"total\":" + "\"" + rs.getInt("apts") + "\"" + ", " + "\"courseNum\":" + "\"" + cnumtmp + "\""
                                 + ", " + "\"courseSec\":" + "\"" + csectiontmp + "\""
@@ -271,7 +277,7 @@ public class AppFormAssignNew extends HttpServlet {
                                 + ", " + "\"aid\":" + "\"" + rs.getInt("aid") + "\"" + "}");
                     cpt++;
                 }
-
+                cptAssign++;
             }
             file.println("]");
             file.close();
