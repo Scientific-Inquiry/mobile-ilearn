@@ -1,0 +1,9 @@
+/* Styles for printing out documentation. */
+#footer {
+    display: none;
+}
+.l_col-img, .l_diagram img {
+    width: 50%;
+    height: auto;
+    max-height: 50%;
+}

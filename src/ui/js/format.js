@@ -10,7 +10,9 @@ var url;
 var priLow = 7;     // Low priority is by default 7 days (7-21 days)
 var priMed = 3;     // Medium priority is by default 3 days (3-6 days)
 var priHigh = 24;   // High priority is by default 24 hours (1-72 hours)
+var quarter;
 
+/* Initializes the user's data. */
 function init(user) {
     // Gets the user data
     function jsonUser(arr) {
@@ -28,11 +30,14 @@ function init(user) {
         var themeUse = arr[0].theme;
         changeTheme(themeUse);
     }
+    getQuarter();
     url = "data/users/" + user + "/";
     getData(url + "user.json", jsonUser);
     $(document).ready(function() {
-        loadHome();
         menu();
+        $("#app-wait-img").click(function() {
+            loadHome();
+        });
     });
 }
 
@@ -54,7 +59,12 @@ function menu() {
     $("#app-menu-setting").click(function(){
         loadSets();
     });
-
+    $("#app-site").click(function(){
+        androidWebsite();
+    });
+    $("#app-logout").click(function(){
+        androidLogout();
+    });
     // Gets the current time.
     footer();
 }
@@ -66,6 +76,32 @@ function footer() {
     var now = new Date();
     document.getElementById("app-time").innerHTML = now.toString();
     var t = setTimeout(footer, 1000);
+}
+
+/* Function for getting the quarter. 
+ * Returns a five character string.*/
+function getQuarter() {
+    var now = new Date();
+    var q;
+    // Gets the month
+    if(now.getMonth() < 3) {
+        q = "w";    // Winter quarter (0-2)
+    }
+    else if(now.getMonth() < 6) {
+        q = "s";    // Spring quarter (3-5)
+    }
+    else if(now.getMonth() < 9) {
+        q = "u";    // Summer Session (6-8)
+    }
+    else if(now.getMonth() < 12) {
+        q = "f";
+    }
+    else {
+        q = "q";    // Quarter not recognized
+    }
+    // Gets the year.
+    q += now.getFullYear();
+    quarter = q;
 }
 
 /* Functions for getting data from JSON files and outputting into the proper array. */
@@ -109,10 +145,12 @@ function jsonAssigns(arr) {
     for(i = 0; i < arr.length; i++) {
         idNum++;
         // Generates a collapsible with the assignment.
-        out += '<div data-role="collapsible" id="assnNum' + idNum + '"><h3 class="assigned">' + arr[i].courseNum + '-' + arr[i].courseSec + ': ' + arr[i].title + '</h3><p>' + arr[i].desc + '</p><p>Due: ' + arr[i].due + '</p><p>Points: ' + arr[i].points + '</p></div>';
+        var className = arr[i].courseNum + '-' + arr[i].courseSec;
+        out += '<div data-role="collapsible" id="assnNum' + idNum + '"><h3 class="assigned">' + className + ': ' + arr[i].title + '</h3><form class="ui-form" action="http://ec2-52-37-165-140.us-west-2.compute.amazonaws.com:8080/UploadServlet" method="post" enctype="multipart/form-data"><fieldset data-role="fieldcontain" id="assnField' + idNum + '"><input type="hidden" name="aid" value="' + arr[i].aid + '"><input type="hidden" name="slogin" value="' + login + '" readonly><input type="file" name="file"><input type="submit" value="Turn in assignment"></fieldset></form><p>' + arr[i].desc + '</p><p>Due: ' + arr[i].due + '</p><p>Points: ' + arr[i].points + '</p></div>';
     }
     // Refreshes the assignments collapsible set.
     $("#assignS").html(out).collapsibleset("refresh");
+    $("#assn").trigger("create");
 }
 
 /* Function for generating a student's class list. */
@@ -132,23 +170,43 @@ function jsonClassList(arr) {
 
 /* Function for getting a student's grades. */
 function jsonGrades(arr) {
-    var out = "";
     var i;
     var prevClass = arr[0].courseNum + '-' + arr[0].courseSec;
     var currClass;
+    var totalGrade = 0;
+    var totalPoints = 0;
+    var arrClasses = [];
+    var arrGrades = [];
+    var out = '<li><strong>Total</strong> <span id="gradedTotal-' + prevClass + '"></span></li>';
     
     for(i = 0; i < arr.length; i++) {
         currClass = arr[i].courseNum + '-' + arr[i].courseSec;
         if (prevClass != currClass) {
             // If the current class does not match the previous one, then the previous class's grades are put into the collapsible and the current class is now the previous class.
             $("#gradebook-" + prevClass).html(out);
-            out = "";
+            var graded = totalGrade + " / " + totalPoints;
+            arrClasses.push(prevClass);
+            arrGrades.push(graded);
             prevClass = currClass;
+            out = '<li><strong>Total</strong> <span id="gradedTotal-' + prevClass + '"></span></li>';
+            totalGrade = 0;
+            totalPoints = 0;
         }
-        out += '<li>' + arr[i].title + '<br /><span class="gradedTotal">' + arr[i].grade + '/' + arr[i].total + '</span></li>';
+        out += '<li>' + arr[i].title + '<br />' + arr[i].grade + '/' + arr[i].total + '</span></li>';
+        totalGrade += Number(arr[i].grade);
+        totalPoints += Number(arr[i].total);
     }
+    var graded = totalGrade + " / " + totalPoints;
+    arrClasses.push(prevClass);
+    arrGrades.push(graded);
     $("#gradebook-" + prevClass).html(out);
     $("#gradedS").collapsibleset("refresh");
+    
+    /* Gets the total grades. */
+    for(i = 0; i < arrClasses.length; i++) {
+        alert(arrClasses[i] + " - " + arrGrades[i]);
+        $("#gradedTotal-" + arrClasses[i]).text(arrGrades[i]);
+    }
 }
 
 /* Function for getting alerts. */
@@ -214,28 +272,36 @@ function jsonCourse(arr) {
     $("#courseI").html(out).collapsibleset("refresh");
 }
 
+/* Function for setting up new assignment options. */
+function jsonClassOption(arr) {
+    var i;
+    var className = arr[0].courseNum + '-' + arr[0].courseSec;
+    var out = '<option value=' + className + ' selected>' + className + '</option>';
+    for(i = 0; i < arr.length; i++) {
+        var curr = arr[i].courseNum + '-' + arr[i].courseSec;
+        if(curr != className) {
+            className = curr;
+            out += '<option value=' + className + '>' + className + '</option>';
+        }
+    }
+    $("#app-class-option").html(out).selectmenu("refresh");
+}
+
 /* Function for getting the assignments that an instructor assigned. */
 function jsonAssigner(arr) {
     var out = "";
     var i;
     var idNum = 0;
     var className = arr[0].courseNum + '-' + arr[0].courseSec;
-    var classes = [className];
     for(i = 0; i < arr.length; i++) {
         idNum++;
         className = arr[i].courseNum + '-' + arr[i].courseSec;
-        if(className !== classes[classes.length - 1]) { classes.push(className); }
         // Generates a collapsible with the assignment.
-        out += '<div data-role="collapsible" id="assnNum' + idNum + '"><h3 class="assigned">' + arr[i].courseNum + '-' + arr[i].courseSec + ': ' + arr[i].title + '</h3><form action="" method="post" target="_blank" accept-charset="UTF-8" enctype="application/x-www-form-urlencoded" autocomplete="off" novalidate><fieldset><p>Assignment Title: <input type="text" name="title" value="' + arr[i].title + '" maxlength="50"><br /><textarea name="description" rows="10" cols="15" maxlength="150">' + arr[i].desc + '</textarea></p><p>Due: ' + arr[i].due + '<br />New Due Date<br />(mm/dd/yyyy, hh:dd AM/PM):<br /><input type="datetime-local" name="dueDate"></p><p>Points: <input type="text" name="grade" value="' + arr[i].points + '" maxlength="4" size="3"></p><input type="submit" value="Submit"></fieldset></form></div>';
+        out += '<div data-role="collapsible" id="assnNum' + idNum + '"><h3 class="assigned">' + className + ': ' + arr[i].title + '</h3><form action="http://ec2-52-37-165-140.us-west-2.compute.amazonaws.com:8080/AppFormAssign" method="post" accept-charset="UTF-8" enctype="application/x-www-form-urlencoded" autocomplete="off" novalidate><fieldset data-role="fieldcontain" id="assnField' + idNum + '"><div class="ui-field-contain"><input type="hidden" name="slogin" value="' + login + '" readonly><input type="hidden" name="aid" value="' + arr[i].aid + '" readonly><p>Assignment Title: <input type="text" name="title" value="' + arr[i].title + '" maxlength="50" required><br /><label for="description">Description: </label><textarea name="description" rows="10" cols="15" maxlength="150">' + arr[i].desc + '</textarea></p><p>Due: ' + arr[i].due + '<br />New Due Date<br />(mm/dd/yyyy, hh:dd AM/PM):<br /><input type="datetime-local" name="dueDate" required></p><p>Points: <input type="text" name="grade" value="' + arr[i].points + '" maxlength="4" size="3" required></p><input type="submit" value="Submit"></div></fieldset></form></div>';
     }
-    /* New Assignment form */
-    out += '<div data-role="collapsible" id="assnNew"><h3 class="assigned">New Assignment</h3><form action="" method="post" target="_blank" accept-charset="UTF-8" enctype="application/x-www-form-urlencoded" autocomplete="off" novalidate><fieldset><p>Class: <select name="className">';
-    for(i = 0; i < classes.length; ++i) { 
-        out += '<option value="' + classes[i] + '">' + classes[i] + '</option>';
-    }
-    out += '</select></p><p>Assignment Title: <input type="text" name="title" value="New Assignment Title" maxlength="50"><br /><textarea name="description" rows="10" cols="15" maxlength="150">Put a description of the assignment here!</textarea></p><p>Due Date<br />(mm/dd/yyyy, hh:dd AM/PM):<br /><input type="datetime-local" name="dueDate"></p><p>Points: <input type="text" name="grade" value="0" maxlength="4" size="3"></p><input type="submit" value="Submit"></fieldset></form></div>';
     // Refreshes the assignments collapsible set.
     $("#assignI").html(out).collapsibleset("refresh");
+    $("#assn").trigger("create");
 }
 
 /* Function for displaying the grades for a class. */
@@ -249,24 +315,27 @@ function jsonGrader(arr) {
         // Generates a collapsible with the course information.
         if(currAssn !== currGrade) {
             idNum++;
-            currAssn = currGrade; 
-            out += '<div data-role="collapsible" id="gradeI' + idNum + '"><h3 class="grader">' + arr[i].courseNum + '-' + arr[i].courseSec + ': ' + currAssn + '</h3><p>Assignment Title: ' + arr[i].title + '<br />Total Points: ' + arr[i].total + '</p><form action="" method="post" target="_blank" accept-charset="UTF-8" enctype="application/x-www-form-urlencoded" autocomplete="off" novalidate><table data-role="table" class="ui-responsive"><thead><tr><th>Student<br /> Login</th><th>Student<br /> Grade</th><th>Percent</tr></thead><tbody>';
+            currAssn = currGrade;
+            var className = arr[i].courseNum + '-' + arr[i].courseSec
+            out += '<div data-role="collapsible" id="gradeI' + idNum + '"><h3 class="grader">' + className + ': ' + currAssn + '</h3><p>Assignment Title: ' + arr[i].title + '<br /><form action="http://ec2-52-37-165-140.us-west-2.compute.amazonaws.com:8080/AppFormGradebook" method="post" accept-charset="UTF-8" enctype="application/x-www-form-urlencoded" autocomplete="off" novalidate>Total Points: ' + '<input type="text" name="points" value="' + arr[i].total + '" size="3"></p><input type="hidden" name="aid" value="' + arr[i].aid + '" readonly><input type="hidden" name="slogin" value="' + login + '" readonly><fieldset><div class="ui-field-contain"><table data-role="table" class="ui-responsive"><thead><tr><th>Student<br /> Login</th><th>Student<br /> Grade</th><th>Percent</tr></thead><tbody>';
         }
         // Gets the students in the class.
         var percent = Number((arr[i].grade / arr[i].total) * 100);
         out += '<tr';
         if(arr[i].late === "true") { out += ' class="grade-late" '; }
-        out += '><td>' + arr[i].slogin + '</td><td><input type="text" name="grade-' + arr[i].slogin + '" maxlength="4" size="3" value="' + arr[i].grade + '"></td><td>' + percent + '%</td></tr>';
+        out += '><td>' + arr[i].slogin + '</td><td><input type="text" name="' + arr[i].slogin + '" maxlength="4" size="3" value="' + arr[i].grade + '"></td><td>' + percent + '%</td></tr>';
         var next = i + 1;
         if(next < arr.length) {
             currGrade = arr[next].title;
             // Closes the collapsible
-            if(currAssn !== currGrade) { out += '</tbody></table><input type="submit" value="Submit"></form></div>'; }
+            if(currAssn !== currGrade) { out += '</tbody></table><input type="submit" value="Submit"></div></fieldset></form></div>'; }
         }
     }
+    out += '</tbody></table><input type="submit" value="Submit"></div></fieldset></form></div>';
     $("#gradedI").html(out).collapsibleset("refresh");
 }
 
+/* Functions for changing information on pages. */
 /* Function for getting the name of the quarter. */
 function changeQuarter() {
     // If quarter does not match the format such that the first letter of the quarter followed by the year, then output "Class Schedule".
@@ -328,6 +397,7 @@ function changeTheme(themeUse) {
     }
 }
 
+/* Functions for loading screens. */
 /* Function for loading the Home screen. */
 function loadHome() {
     var title = "home";
@@ -373,6 +443,9 @@ function loadAssigns() {
     }
     if(typeI) { 
         $("#assnI").removeClass("app-label");
+        $("#assnNew").removeClass("app-label");
+        $(".app-form-login").attr("value", login);
+        getData(url + "course.json", jsonClassOption);
         getData(url + "assigner.json", jsonAssigner);
     }
 }
@@ -403,9 +476,35 @@ function loadSets() {
     changeLink(title);
     changeContent(title);
     
+    // Sets up the forms with the user login.
+    $(".app-form-login").attr("value", login);
+    
     // Loads the users settings.
     // Sets up user theme changing
     $("#app-theme-select").change(function() {
        changeTheme(this.value); 
     });
+    // Sets the current user's setting into the fields.
+    $("#priHigh").attr("value", priHigh);
+    $("#priMed").attr("value", priMed);
+    $("#priLow").attr("value", priLow);
+}
+
+/* Functions for setting up Android functions. */
+/* Function for logging out. */
+function androidLogout() {
+    alert("You are logging out!");
+    Android.logout();
+}
+
+/* Function for going to Crumb Lords website in browser. */
+function androidWebsite() {
+    Android.openWebsite();
+}
+
+/* Function for logging in the user. */
+function androidLogin() {
+    //login = Android.getUser();
+    login = "bwayn052";
+    return login;
 }

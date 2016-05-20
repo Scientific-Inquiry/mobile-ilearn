@@ -3,7 +3,7 @@
 <head>
   <!-- Meta Attributes -->
   <title>Mobile iLearn Screen</title>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <!-- Viewport in order to ensure proper rendering and touch zooming -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -24,7 +24,7 @@
   <script src="js/format.js"></script>
   <script>
     $(document).ready(function(){
-      init("bwayn052");
+      init(androidLogin());
     });
   </script>
 </head>
@@ -41,7 +41,7 @@
         <ul>
           <li><a href="#app-logo-link"><span id="app-logo">MiLearn</span></a></li>
           <li><a href="#app-help" data-rel="popup" data-position-to="window" data-icon="info"><span class="app-small">Help</span></a></li>
-          <li><a href="#" data-icon="power"><span class="app-small">Logout</span></a></li>
+          <li><a href="#" id="app-logout" data-icon="power"><span class="app-small">Logout</span></a></li>
         </ul>
       </div>
       
@@ -59,7 +59,7 @@
       
     <!-- Home Screen -->
     <div data-role="content" class="ui-content app-active" id="home">
-        <h2>Welcome <span class="app-user-name"></span></h2>
+        <h2>Welcome <span class="app-user-name">to MiLearn!</span></h2>
         <div id="app-home">
           <!-- A listview that shows different alerts in order of priority.
           Currently we will have assignments as alerts.
@@ -67,6 +67,7 @@
           JavaScript is used to determine low, medium, and high priority as well as user settings. -->
           <ul data-role="listview" id="app-alerts">
               <!-- This is where the user's alerts go. -->
+              <img id="app-wait-img" xsrc="http://vignette3.wikia.nocookie.net/theevilliouschronicles/images/7/77/Clockworkers_Life.png/revision/latest?cb=20160506122547" src="http://vignette1.wikia.nocookie.net/batman/images/8/8d/12.jpg/revision/latest?cb=20111101145249" alt="Waiting image">
           </ul>
         </div>
     </div>
@@ -100,6 +101,34 @@
           <!-- Displays the student's assignments that are due. -->
         </div>
         <h3 class="app-label" id="assnI">To Grade:</h3>
+        <div class="app-label" data-role="collapsible" id="assnNew">
+            <h3 class="assigned">New Assignment</h3>
+            <form action="http://ec2-52-37-165-140.us-west-2.compute.amazonaws.com:8080/AppFormAssignNew" method="post" accept-charset="UTF-8" enctype="application/x-www-form-urlencoded" autocomplete="off" novalidate>
+                <fieldset>
+                    <div class="ui-field-contain">
+                        <input class="app-form-login" type="hidden" name="slogin" value="">
+                        <p><label for="className">Class*: </label>
+                        <select id="app-class-option" name="className">
+                        
+                        </select>
+                        </p>
+                        <p><label for="title">Assignment Title*: </label>
+                        <input type="text" name="title" placeholder="New Assignment Title" maxlength="50" required>
+                        </p>
+                        <p><label for="description">Assignment Description: </label>
+                        <textarea name="description" rows="10" cols="15" maxlength="150" placeholder="Put a description of the assignment here." required></textarea>
+                        </p>
+                        <p><label for="dueDate">Due Date*<br />(mm/dd/yyyy, hh:dd AM/PM):</label>
+                        <input type="datetime-local" name="dueDate" required>
+                        </p>
+                        <p><label for="grade">Points*: </label>
+                        <input type="text" name="grade" placeholder="10" maxlength="4" size="3" required>
+                        </p>
+                        <input type="submit" value="Submit">
+                    </div>
+                </fieldset>
+            </form>
+        </div>
         <div data-role="collapsibleset" class="assign" id="assignI">
             <!-- Displays the assignments that will be turned in. -->
         </div>
@@ -125,30 +154,50 @@
       <h2>Settings</h2>
       <div id="app-setting">
         <h3>Change Theme</h3>
-        <p>The user will be able to change what their interface looks like here.</p>
         <div id="app-theme">
             <!-- Option to change theme goes here. -->
-            <select id="app-theme-select" name="themeName" data-native-menu="false">
-                <option id="app-theme-a" value="a">Default</option>
-                <option id="app-theme-b" value="b">Dark</option>
-                <option id="app-theme-c" value="c">Highlander</option>
-                <option id="app-theme-y" value="y">Go Blind! (High Contrast)</option>
-                <option id="app-theme-z" value="z">Super! Basic!</option>
-            </select>
+            <form action="http://ec2-52-37-165-140.us-west-2.compute.amazonaws.com:8080/AppFormSetTheme" method="post" accept-charset="UTF-8" enctype="application/x-www-form-urlencoded" autocomplete="off" novalidate>
+                <input class="app-form-login" type="hidden" name="slogin" value="">
+                <label>Select a new theme to use:</label>
+                <select id="app-theme-select" name="themeName" xdata-native-menu="false">
+                    <option id="app-theme-a" value="a">Default</option>
+                    <option id="app-theme-b" value="b">Dark</option>
+                    <option id="app-theme-c" value="c">Highlander</option>
+                    <option id="app-theme-y" value="y">Go Blind!</option>
+                    <option id="app-theme-z" value="z">Super! Basic!</option>
+                </select>
+                <input type="submit" value="Set Theme">
+            </form>
         </div>
         <h3>Change Priority</h3>
         <p>The user will be able to change what their high, medium, and low priority settings are.</p>
-        <div id="app-priority">
+        <div id="app-priorities">
             <!-- Option to change priority goes here. -->
+            <form action="http://ec2-52-37-165-140.us-west-2.compute.amazonaws.com:8080/AppFormSetPriority" method="post" accept-charset="UTF-8" enctype="application/x-www-form-urlencoded" autocomplete="off" novalidate>
+                <input class="app-form-login" type="hidden" name="slogin" value="">
+                <div class="ui-field-contain priorityHigh">
+                    <label for="priHigh">High Priority (hours):</label> 
+                    <input type="number" id="priHigh" name="priHigh" min="1" max="72" maxlength="3" size="3" value="24">
+                </div>
+                <div class="ui-field-contain priorityMed">
+                    <label for="priMed">Medium Priority (days):</label> 
+                    <input type="number" maxlength="3" size="3" id="priMed" name="priMed" min="3" max="7" value="3">
+                </div>
+                <div class="ui-field-contain priorityLow">
+                    <label for="priLow">Low Priority (days):</label>
+                    <input type="number" maxlength="3" size="3" id="priLow" name="priLow" min="7" max="21" value="7">
+                </div>
+                <input type="submit" value="Set Priority Values">
+            </form>
         </div>
       </div>
     </div>
       
     <!-- Help Popup -->
     <div data-role="popup" id="app-help">
-        <h2>Help</h2>
+        <!--<h2>Legend</h2>-->
         <!-- Legend -->
-        <ul data-role="listview" data-inset="true">
+        <!--<ul data-role="listview" data-inset="true">
             <li data-icon="home"><a href="#">Home</a></li>
             <li data-icon="bars"><a href="#">Classes</a></li>
             <li data-icon="edit"><a href="#">Assignments</a></li>
@@ -156,12 +205,14 @@
             <li data-icon="gear"><a href="#">Settings</a></li>
             <li data-icon="info"><a href="#">Help</a></li>
             <li data-icon="power"><a href="#">Logout</a></li>
-        </ul>
+        </ul>-->
+        <h2>Help Popup</h2>
+        <p>For more information, please go to the <a id="app-site" href="#">Crumb Lords website</a>?</p>
     </div>
 
     <!-- Footer -->
     <div data-role="footer" class="app-footer">
-      <h1>Team 5X5<br />
+      <h1>Crumb Lords<br />
       <span id="app-time"></span></h1>
     </div>
   </div>

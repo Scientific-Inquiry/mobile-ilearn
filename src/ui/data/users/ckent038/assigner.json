@@ -1,4 +1,4 @@
 [
-    {"title":"Investigation Article 4", "due":"Mon May 9 16:00:00 PDT 2016", "desc":"Pick up your assigned evidence to write an article about an ongoing investigation. You will be penalized for for not writing about what evidence you have.", "points":"50", "courseNum":"CRWT177", "courseSec":"001"},
-    {"title":"Camera Effects on Action", "due":"Tue May 10 15:00:00 PDT 2016", "desc":"Watch an action sequence from the last 3 years and describe how camera techniques affects motion.", "points":"40", "courseNum":"TFPD138", "courseSec":"001"}
+    {"title":"Investigation Article 4", "due":"Mon May 9 16:00:00 PDT 2016", "desc":"Pick up your assigned evidence to write an article about an ongoing investigation. You will be penalized for for not writing about what evidence you have.", "points":"50", "courseNum":"CRWT177", "courseSec":"001", "aid":"9"},
+    {"title":"Camera Effects on Action", "due":"Tue May 10 15:00:00 PDT 2016", "desc":"Watch an action sequence from the last 3 years and describe how camera techniques affects motion.", "points":"40", "courseNum":"TFPD138", "courseSec":"001", "aid":"10"}
 ]

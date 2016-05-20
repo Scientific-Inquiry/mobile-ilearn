@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Meta Attributes -->
+    <title>Crumb Lords - Documentation</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- Required Libraries -->
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+    
+    <!-- Bootstrap -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <!-- Latest compiled JavaScript -->
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/local.css">
+    <link rel="stylesheet" media="print" href="css/print.css">
+</head>
+<body data-spy="scroll" data-target=".navbar" data-offset="100">
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-inverse" id="menu">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="index.html">Crumb Lords</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="documentation.html">Documentation</a></li>
+                <li><a href="download.html">Download</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container-fluid">
+        <!-- Header -->
+        <div class="row" id="header">
+            <div class="col-md-12">
+                <header>
+                    <h1>Documentation</h1>
+                </header>
+            </div>
+        </div>
+        <!-- Content -->
+        <div class="row" id="content">
+            <nav class="navbar navbar-inverse" data-spy="affix" data-offset-top="50">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#docContents">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>                        
+                        </button>
+                    <a class="navbar-brand" href="#menu">Contents</a>
+                    </div>
+                    <div>
+                        <div class="collapse navbar-collapse" id="docContents">
+                            <ul class="nav navbar-nav">
+                                <!-- Overview Section -->
+                                <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">1&ndash; Overview</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="#section1-0">1&ndash; Overview</a></li>
+                                        <li><a href="#section1-1">1.1&ndash; Requirements</a></li>
+                                        <li><a href="#section1-2">1.2&ndash; Development Process</a></li>
+                                        <li><a href="#section1-3">1.3&ndash; Development Tools Used</a></li>
+                                        <li><a href="#section1-4">1.4&ndash; Current Bugs</a></li>
+                                        <li><a href="#section1-5">1.5&ndash; ER Diagram</a></li>
+                                    </ul>
+                                </li>
+
+                                <!-- User Manual -->
+                                <li><a class="dropdown-toggle" data-toggle="dropdown" href="#">2&ndash; User Manual</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="#section2-0">2&ndash; User Manual</a></li>
+                                        <li><a href="#section2-1">2.1&ndash; Logging In/Logging Out</a></li>
+                                        <li><a href="#section2-2">2.2&ndash; Home Screen</a></li>
+                                        <li><a href="#section2-3">2.3&ndash; Classes Screen</a></li>
+                                        <li><a href="#section2-4">2.4&ndash; Assignments Screen</a></li>
+                                        <li><a href="#section2-5">2.5&ndash; Grades Screen</a></li>
+                                        <li><a href="#section2-6">2.6&ndash; Settings Screen</a></li>
+                                    </ul>
+                                </li>
+
+                                <!-- Design/Development Process -->
+                                <li><a class="dropdown-toggle" data-toggle="dropdown" href="#">3&ndash; Design/Development Process</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="#section3-0">3&ndash;Design/Development Process</a></li>
+                                        <li><a href="#section3-1">3-1&ndash;Candice Bentejac</a></li>
+                                        <li><a href="#section3-2">3-2&ndash;Vincent Chang</a></li>
+                                        <li><a href="#section3-1">3-3&ndash;Rebecca Hom</a></li>
+                                        <li><a href="#section3-1">3-4&ndash;Krissi Mena</a></li>
+                                    </ul>
+                                </li>
+                                <!-- Other Sections -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </nav>    
+
+            <div id="docManual" class="container-fluid">
+                <article id="section1">
+                    <section id="section1-0">
+                        <h2>1&ndash;Overview</h2>
+                        
+                        <p>MiLearn is a streamlined, mobile version of Blackboard iLearn. It is currently available for Android devices.</p>
+                    </section>
+                    
+                    <section id="section1-1">
+                        <h3>1.1&ndash;Requirements</h3>
+                        <p>MiLearn was proposed to be a mobile version of student course information following the structure implemented for two types of users: instructors and students.</p>
+                        <ul>
+                            <li>Alerts
+                                <ul>
+                                    <li>Instructors can make alerts (announcements).</li>
+                                    <li>
+                                        Students are notified of alerts and can view their content.
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>Classes
+                                <ul>
+                                    <li>Instructors can view the classes they teach.</li>
+                                    <li>Students can view the classes they are enrolled in.</li>
+                                </ul>
+                            </li>
+                            <li>Assignments
+                                <ul>
+                                    <li>Instructors can view and creates assignments.</li>
+                                </ul>
+                                <ul>
+                                    <li>Students can review/submit their assignments.</li>
+                                </ul>
+                            </li>
+                            <li>Grades
+                                <ul>
+                                    <li>Instructors can update grades in the GUI.</li>
+                                    <li>Students can view their grades.</li>
+                                </ul>
+                            </li>
+                            <li>Settings
+                                <ul>
+                                    <li>Instructors and students can personalize the visual interface of MiLearn.</li>
+                                    <li>Both types of users can also customize when alert notifications.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </section>
+                    
+                    <section id="section1-2">
+                        <h3>1.2&ndash;Development Process</h3>
+                        <p>During development of MiLearn, we used a Scrum process of development. Our group would meet up at least once a week on Mondays for discussing our contributions towards the project, as well as planning on what part of the project to do next.</p>
+                        
+                        <p>What prevented our Scrum process from degenerating into the bug-fix model was rigor. Each week we would test reliability and correctness by creating various regression tests.</p>
+                        
+						<p>By using the Scrum method we had high visibility of our problems and goals each week. </p>
+                        
+                        <p>In addition, we took a modular approach towards development. Each group member focused on a different component of the app. This boosted overall group efficiency as we were able to concentrate on one item to do per week instead of several.</p>
+                        
+						<p>One problem was actually getting each component integrated properly each week. Some file writers and other libraries were not supported by Android and we had to find workarounds.</p>
+                        
+						<p>Previous Java classes we wrote had to be reimplemented in order to function properly with Tomcat.</p>
+                        
+						<p>Scalability of the system was tested after a small sample by increasing the database to 103 users, 20 lectures, 5 labs, 20 instructors, 5 lab instructors, and 50 assignments.</p>
+                    </section>
+                    
+                    <section id="section1-3">
+                        <h3>1.3&ndash;Development Tools Used</h3>
+                        <p>In order to build MiLearn, the following languages, tools, and APIs were used.</p>
+                        <ul>
+                            <li>Languages
+                                <dl>
+                                    <dt>Java</dt>
+                                    <dd>Used for actual app developement.</dd>
+                                    <dt>XML</dt>
+                                    <dd>Used for app layout.</dd>
+                                    <dt>JavaScript</dt>
+                                    <dd>Used for displaying data on to screens.</dd>
+                                    <dt>HTML</dt>
+                                    <dd>Used for displaying the screens.</dd>
+                                    <dt>CSS</dt>
+                                    <dd>Used for styling the screens.</dd>
+                                </dl>
+                            </li>
+                            <li>Tools
+                                <dl>
+                                    <dt>Android Studio</dt>
+                                    <dd>IDE used for developing the Android app.</dd>
+                                    <dt>GitHub</dt>
+                                    <dd>Used for version control.</dd>
+                                </dl>
+                            </li>
+                            <li>APIs/Libraries/Frameworks
+                                <dl>
+                                    <dt>AWS API</dt>
+                                    <dd>Allows connection to Amazon Web Services</dd>
+                                    <dt>ButterKnife Library</dt>
+                                    <dd>Lets JavaScript functions call Java methods.</dd>
+                                    <dd>Simplifies creation of and mapping methods to buttons.</dd>
+                                    <dt>jQuery Mobile</dt>
+                                    <dd>Framework for mobile web app.</dd>
+                                    <dt>Android Webview</dt>
+                                    <dd>Links the application to the online data hosted on Amazon Web Services.</dd>
+                                    <dt>Android Webkit.JavascriptInterface</dt>
+                                    <dd>Allows for the javascript methods to call on a specified Java method upon the tap of a button.</dd>
+                                    <dt>Bootstrap</dt>
+                                    <dd>Mobile-first framework used for building the Crumb Lords website.</dd>
+                                    <dt>Apache Tomcat 8</dt>
+                                    <dd>Open source implementation of the Java Servlet, JavaServer Pages, Java Expression Language and Java WebSocket technologies.</dd>
+
+                                </dl>
+                            </li>
+                        </ul>
+                    </section>
+                
+                    <section id="section1-4">
+                        <h3>1.4&ndash;Current Bugs</h3>
+                        <p>Due to the quick development of the project, there are some bugs in the MiLearn app:</p>
+                        <ul>
+                            <li>Students cannot submit their assignments on the Android app.</li>
+                        </ul>
+                    </section>
+                    
+                    <section id="section1-5">
+                        <h3>1.5&ndash;ER Diagram</h3>
+                        <div class="row">
+                            <div class="col-md-12 l_diagram">
+                                <figure>
+                                    <a target="_blank" href="https://s3-us-west-2.amazonaws.com/crumblords/img/Milearn-ERD.png">
+                                        <img src="https://s3-us-west-2.amazonaws.com/crumblords/img/Milearn-ERD.png" alt="MiLearn ER diagram">
+                                    </a><br />
+                                    <figcaption>MiLearn ER Diagram for data flow.</figcaption>
+                                </figure>
+                            </div>
+                        </div>
+                    </section>
+                </article>
+                
+                <article id="section2">
+                    <section id="section2-0">
+                        <h2>2&ndash;User Manual</h2>
+                        <p>This is a quick reference for using the MiLearn app.</p>
+                        
+                        <p>For those who wish to know how the MiLearn app, please look here first.</p>
+                    </section>
+                    
+                    <section id="section2-1">
+                        <h3>2.1&ndash;Logging In/Logging Out</h3>
+                        <div class="row">
+                            <div class="col-md-3 l_col-pic">
+                                <img src="https://s3-us-west-2.amazonaws.com/crumblords/img/login-screen.png" alt="Login screen">
+                            </div>
+                            <div class="col-md-9">
+                                <p>When MiLearn is first opened, the Login screen is brought up. Here, the user will need to insert their username (i.e. UCR NetID) and password.</p>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <section id="section2-2">
+                        <h3>2.2&ndash;Home Screen</h3>
+                        <div class="row">
+                            <div class="col-md-9">
+                                <p>Once the user has logged in, they are brought to the Home Screen. This will initially display the "Welcome to MiLearn" screen.</p>
+                            </div>
+                            <div class="col-md-3 l_col-pic">
+                                <img src="https://s3-us-west-2.amazonaws.com/crumblords/img/welcome-screen.png" alt="Welcome screen">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-9">
+                                <p>The Home Screen should then display the user's name and any alerts that they may have.</p>
+                                
+                                <p>Alerts are coded such that high priority alerts are in red, medium priority in yellow, and low priority in green.</p>
+                                
+                                <p>The timing of each priority can be set in the <a href="#section2-6">Settings Screen</a>.</p>
+                            </div>
+                            <div class="col-md-3 l_col-pic">
+                                <img src="https://s3-us-west-2.amazonaws.com/crumblords/img/home-screen.png" alt="Home screen">
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <section id="section2-3">
+                        <h3>2.3&ndash;Classes Screen</h3>
+                        <div class="row">
+                            <div class="col-md-9">
+                                <p>The Classes Screen displays an accordion for all of the user's classes for the current quarter. The header of each collapsible contains the course number followed by the course section. Inside of each collapsible is the full name of the course.</p>
+                                
+                                <p>If the user is a <strong>student</strong>, then they will see what class(es) that they are enrolled in. In addition the name(s) of the instructor(s) are displayed inside the collapsible.</p>
+                            </div>
+                            <div class="col-md-3 l_col-pic">
+                                <img src="https://s3-us-west-2.amazonaws.com/crumblords/img/classes-screen-S.png" alt="Classes screen (Student)">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-9">
+                                <p>If the user is an <strong>instructor</strong>, then they will see what class(es) they are teaching. The collapsible content also includes a list of students that are enrolled in that course.</p>
+                            </div>
+                            <div class="col-md-3  l_col-pic">
+                                <img src="https://s3-us-west-2.amazonaws.com/crumblords/img/classes-screen-I.png" alt="Classes screen (Instructor)">
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <section id="section2-4">
+                        <h3>2.4&ndash;Assignments Screen</h3>
+                        <div class="row">
+                            <div class="col-md-3 l_col-pic">
+                                <img src="https://s3-us-west-2.amazonaws.com/crumblords/img/assignments-screen-S.png" alt="Assignments screen">
+                            </div>
+                            <div class="col-md-9">
+                                <p>The Assignments Screen displays an accordion with the assignments ordered by due date (from sooner to later). Each collapsible header has the course that the assignment is for followed by the assignment title.</p>
+                                
+                                <p><strong>Students</strong> can view what assignments are due for all classes that they are enrolled in. They can also upload a file to turn in for an assignment. Assignment uploads can be done multiple times, but the instructor will only see the most recent submission. Currently, students can only upload one file at a time.</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-9">
+                                <p><strong>Instructors</strong> can create new assignments or edit assignments for any class they teach. This is respectively done through an already existing assignment collapsible or through the "New Assignment" collapsible at the bottom of the list. </p>
+                            </div>
+                            <div class="col-md-3 l_col-pic">
+                                <img src="https://s3-us-west-2.amazonaws.com/crumblords/img/assignments-screen-I-newAssignment.png" alt="New Assignments collapsible">
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <section id="section2-5">
+                        <h3>2.5&ndash;Grades Screen</h3>
+                        <div class="row">
+                            <div class="col-md-9">
+                                <p>The Grades Screen displays an accordion with the grades for each assignment in each class.</p>
+                                
+                                <p>For <strong>students</strong>, each collapsible is for a course that they are enrolled in. The collapsible heading indicates which course the student they will be looking in while the content displays (in chronological order), the grades for each assignment.</p>
+                                
+                                <p><strong>Instructors</strong> each collapsible is for an assignment that they have assigned and is ordered chronologically. Inside each collapsible is the name of the assignment, how many points it was worth, and a table of students' grades for the assignment. The total points and each student grade can be edited.</p>
+                            </div>
+                            <div class="col-md-3 l_col-pic">
+                                <img src="https://s3-us-west-2.amazonaws.com/crumblords/img/grades-screen-S.png" alt="Grades screen">
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <section id="section2-6">
+                        <h3>2.6&ndash;Settings Screen</h3>
+                        <div class="row">
+                            <div class="col-md-3 l_col-pic">
+                                <img src="https://s3-us-west-2.amazonaws.com/crumblords/img/settings-screen.png" alt="Settings screen">
+                            </div>
+                            <div class="col-md-9">
+                                <p>The Settings Screen allows all users to configure the theme of their user interface and the time for priority levels.</p>
+                                
+                                <p>A quick guide for themes:</p>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Theme</th>
+                                            <th>Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="milearn theme-a">
+                                            <td>Default</td>
+                                            <td>Generic gray/chrome theme.</td>
+                                        </tr>
+                                        <tr class="milearn theme-b">
+                                            <td>Dark</td>
+                                            <td>Generic dark theme.</td>
+                                        </tr>
+                                        <tr class="milearn theme-c">
+                                            <td>Highlander</td>
+                                            <td>Show UCR school spirit.</td>
+                                        </tr>
+                                        <tr class="milearn theme-y">
+                                            <td>Go Blind!</td>
+                                            <td>For trolls and schmucks only.</td>
+                                        </tr>
+                                        <tr class="milearn theme-z">
+                                            <td>Super! Basic!</td>
+                                            <td>... why?</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                
+                                <p>Priority levels should reflect the user's feelings about how soon they should begin an assignment or how late they should be when finishing one.</p>
+                            </div>
+                        </div>
+                    </section>
+                </article>
+
+                <article id="section3">
+                    <section id="section3-0">
+                        <h2>3&ndash;Design/Development Process</h2>
+                        <p>During the development of MiLearn, each team member took responsibility for developing a component of the MiLearn app. Each member had their own rationale and design process regarding their own component.</p>
+                        
+                        <p>The MiLearn app project was split between members such that:</p>
+                        <dl>
+                            <dt>Candice Bantejac</dt>
+                            <dd>Worked on the user, classes, database, Tomcat, and Java servlets of Milearn.</dd>
+                            <dt>Vincent Chang</dt>
+                            <dd>Worked on the Android portion of MiLearn.</dd>
+                            <dt>Rebecca Hom</dt>
+                            <dd>Worked on the user interface of MiLearn.</dd>
+                            <dt>Krissi Mena</dt>
+                            <dd>Worked on S3, databases associated with assignments, grades, and submissions, and file upload aspects of MiLearn.</dd>
+                        </dl>
+                        
+                        <p>The following sections are broken up further into what each member of the project rationale about the portion they picked to work on, what worked, and what features they designed and implemented.</p>
+                    </section>
+                    
+                    <section id="section3-1">
+                        <h3>3.1&ndash;Candice Bentejac</h3>
+                        
+                        <h4>Rationale</h4>
+                        <p>Candice decided to work on the users, classes, login/logout module and the associated PostgreSQL database (hosted on the cloud using Amazon Web Services RDS). Later on during the project, the team had to handle data from several HTML forms to Java: Java Servlets have thus been used, as well as Amazon Web Services EC2, which allowed us to create a virtual machine on which we could install our server. Amazon Web Services S3 has also been used to store data that we could easily access from the cloud.</p>
+
+                        <p>The goal of the project being to create an Android app, the backend of the application has been entirely coded using Java. We wanted MiLearn to be a complete and easy-to-use alternative to the BlackBoard iLearn mobile app. The users would thus have access to their Classes, Assignments, Grades and would be able to set up alerts with three different priority levels.</p>
+
+                        <p>Since Rebecca used Javascript to develop the frontend, we needed a way to give her access to the data that we were parsing in Java. To do so, we decided to use JSON files that would be created with Java, sent to the cloud (more precisely, to an S3 bucket) and then parsed by Rebecca's JavaScript.</p>
+
+                        <p>Candice's tasks consisted of creating Java objects that would represent the users and the classes. Users were divided into three categories: the Students, the Instructors, and the Teaching Assistants. Something similar was done with the Classes, which were divided into Lectures, Laboratories, and Discussions. Users can, depending on their status, be enrolled in a class or teach a class. The Teaching Assistant are both enrolled in and teaching a class.</p>
+
+                        <p>Another of Candice's goals was to implement the login/logout module.The login module required a direct interaction between the user and the app. For this reason, it was developed in collaboration with Vincent, since he in charge of integrating the code in an Android environment. Vincent designed and implemented the login page, and Candice handled the login verification.</p>
+
+                        <p>Candice also set up an Amazon Web Services RDS database that used PostgreSQL. She also collaborated with Krissi to maintain this database, and Krissi populated it with some user data.</p>
+
+                        <p>Despite the resources already available, we very quickly needed to get data from the users to the backend, and decided to use HTML forms to do so. The users would only have to fill in those forms and submit them. Using Java Servlets, we can parse those HTML forms in Java and respond to the user's request - safely storing secure data while avoid corrupting the database. Candice consequently created an Amazon Web Services EC2 instance, setting up a virtual machine and installing Tomcat on it. Servlets were then implemented, stored, configured and mapped on this EC2 instance, on which Tomcat runs continuously.</p>
+
+                        <h4>What Worked</h4>
+                        <p>Candice implemented User and Classes classes, which were linked to the Login class, that Vincent integrated into the Android environment. Those Java classes allowed JSON files to be automatically generated and stored as soon as a user was logged in. Many libraries were integrated into the project to handle the database requests and to use Java Servlets. Java Servlets were used to treat data sent by users, and to regenerate certain JSON files when the context justified it. Amazon Web Services tools that were constantly used were also integrated to the code.</p>
+                        
+                        <p>Retrieving data from the database and generating the corresponding JSON files that could be read by Rebecca's code was the main challenge, since all the the user interface relied on the correctness of those JSON files.</p>
+
+                        <h4>Features Designed and Implemented</h4>
+                        <ul>
+                            <li>Users and Classes
+                                <ul>
+                                    <li>Creation and setting up of a RDS PostgreSQL database
+                                        <ul>
+                                            <li>Candice created a class called <em>DBManager</em> that contained basic and more advanced SQL operations.</li>
+                                            <li>Krissi populated the database.</li>
+                                            <li>Made User and Class classes interact with the database.</li>
+                                        </ul>
+                                    </li>
+                                    <li>Creation and setting up of a S3 instance
+                                        <ul>
+                                            <li>Rebecca created the first bucket and Krissi created a class making the use of this instance (especially the upload/downloads operations) way easier and clearer.</li>
+                                            <li>The Amazon Web Services libraries were used a lot to send freshly generated JSON files to the cloud.</li>
+                                        </ul>
+                                    </li>
+                                    <li>Creation and setting up of a EC2 instance
+                                        <ul>
+                                            <li>Installed Tomcat 8 on an Amazon virtual machine</li>
+                                            <li>Created Java Servlets that were parsing data retrieved from HTML forms and treating it afterwards.</li>
+                                            <li>Created a Java Servlet that handles uploading files to S3.</li>
+                                            <li>Handled JSON files regeneration when the database is updated.</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>Login module
+                                <ul>
+                                    <li>Created login class that uses User and Class classes.
+                                        <ul>
+                                            <li>"Merged" the JSON files generation for User and Class.</li>
+                                            <li>Automated JSON generation when a user logs in.</li>
+                                            <li>Checked the user's input and determined whether they had the correct credentials or not. All associated data was generated if the credentials were accepted. Otherwise the connection was rejected.</li>
+                                        </ul>
+                                    </li>
+                                    <li>Vincent integrated this module to the Android environment.</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                    </section>
+                    
+                    <section id="section3-2">
+                        <h3>3.2&ndash;Vincent Chang</h3>
+                        
+                        <h4>Rationale</h4>
+                        <p>Vincent chose to work on the Android implementation due to prior experience working with Android development.</p>
+                        
+                        <p>He also split each page of the application into three separate activities. These consisted of the Login page, a Webview (the main MiLearn) page, and a page that went to the team's website.</p>
+                        
+                        <p>This relates to modularization as it minimized the amount of errors per activity. It also allowed for bugs to be more localized to a specific activity.</p>
+                        
+                        <h4>What Worked</h4>
+                        <p>Vincent managed to incorporate Java calls to JavaScript methods within the Webview portion of the app. This allowed for the app to interact with AWS services. </p>
+                        
+                        <h4>Features Designed and Implemented</h4>
+                        <ul>
+                            <li>Android application
+                                <ul>
+                                    <li>Designed and implemented the login page.
+                                        <ul>
+                                            <li>However Candice handled the login verification.</li>
+                                        </ul>
+                                    </li>
+                                    <li>MiLearn page
+                                        <ul>
+                                            <li>Created an interactive relationship between Webview and the web UI.</li>
+                                            <li>Used JavaScriptInterface from WebKit library to properly call logout code in Java upon pressing the Logout button within the web UI.</li>
+                                            <li>Locked the user on to the main page via no back button functionality, such that the user would have to press the Logout button within the UI to properly exit.</li>
+                                        </ul>
+                                    </li>
+                                    <li>Website page
+                                        <ul>
+                                            <li>Created a new Webview activity that displays the <a href="index.html">team website</a>.</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>MiLearn logo</li>
+                            <li>Crumb Lords logo</li>
+                        </ul>
+                        
+                    </section>
+                    
+                    <section id="section3-3">
+                        <h3>3.3&ndash;Rebecca Hom</h3>
+                        
+                        <h4>Rationale</h4>
+                        <p>Rebecca decided to work on the user interface due to having previous experience working with implementing designs using JavaScript. Although it was possible to use Android development to create the user interface, using jQuery Mobile was allowed for a more efficient use of her skillset and it came with icons that could be used on the app.</p>
+                        
+                        <p>Since MiLearn is a simplified version of Blackboard iLearn, Rebecca arranged the essential functions into an intuitive design. This accomplished two things: retaining the simplicity of the app and splitting up each function into its own section. In turn, each of these sections could be styled and displayed as distinctly as possible. For the MiLearn app, the user would be able to access a Home screen, Classes, Assignments, Grades, and Settings. Each of those sections have JavaScript functions that generate the data to display from the database.</p>
+                        
+                        <p>It was also decided that the data displayed for a user would be taken from fixed JSON files. Each of these JSON files had fixed names and attributes for efficient parsing and displaying using JavaScript. These files would also be consistent for each user and user level which allowed for easily cached information and reduced the need to do new queries to the database.</p>
+                        
+                        <p>Also it was decided that a set of collapsibles would be used for Classes, Assignments, and Grades. This would hide information pertaining to a topic heading. In turn, this would be more efficient for the user as they would be able to scroll through headings to get what they needed instead of (potentially) large blocks of information.</p>
+                        
+                        <p>Alerts were added to the Home screen as a way to increase MiLearn's functionality as a mobile organizer. The user would be able to set three different alarm priority levels. These could be used as a buffer for the user to guage how much time they have left to do an assignment.  In addition, themes for the user interface were included. This would allow the user to somewhat customize MiLearn for their own use.</p>
+                        
+                        <p>Users were also split into two groups: students and instructors. The HTML page was then split into separate dividers to allow for either of those groups or a combination of them to use the app. HTML forms were used as a security feature for users modifying the database. This was to allow for input sanitation to prevent users from corrupting the database.</p>
+                        
+                        <h4>What Worked</h4>
+                        <p>Rebecca implemented an HTML page that contained all of the screens for main MiLearn app that allowed for the screens to change using JavaScript.</p> 
+                        
+                        <p>In addition changing the screens, JavaScript was also used to parse the JSON files to display the data elements into their certain arrangements depending on what screen was used.</p>
+                        
+                        <p>JavaScript was also used to interact with Java to retrieve user information and move in and out from the Android app.</p>
+                        
+                        <h4>Features Designed and Implemented</h4>
+                        <ul>
+                            <li>MiLearn page
+                                <ul>
+                                    <li>Home Screen
+                                        <ul>
+                                            <li>Welcome screen with image.</li>
+                                            <li>Alerts for assignments that are due within a certain period of time.</li>
+                                        </ul>
+                                    </li>
+                                    <li>Classes
+                                        <ul>
+                                            <li>Created a screen that displayed the current quarter of the class.</li>
+                                            <li>Showed the classes that the user was enrolled in and/or teaching in a collapsible set.</li>
+                                        </ul>
+                                    </li>
+                                    <li>Assignments
+                                        <ul>
+                                            <li>Created a file upload form for student users to turn in files from their mobile device.</li>
+                                            <li>Created an HTML form for instructor users to either create new assignments or modify existing assignments.</li>
+                                        </ul>
+                                    </li>
+                                    <li>Grades
+                                        <ul>
+                                            <li>Created a tabular HTML form so that instructor users could input grades for each assignment they created.</li>
+                                            <li>Allowed student users to view the overall number of points they have for a class and the grade for individual assignments.</li>
+                                        </ul>
+                                    </li>
+                                    <li>Settings
+                                        <ul>
+                                            <li>Used JavaScript to allow users to change their user interface theme and the different alarm priority levels.</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>Crumb Lords website
+                                <ul>
+                                    <li>Added in HTML version of documentation.</li>
+                                    <li>Built site to present information about MiLearn project.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        
+                    </section>
+                    
+                    <section id="section3-4">
+                        <h3>3.4&ndash;Krissi Mena</h3>
+                        
+                        <h4>Rationale</h4>
+                        <p>Krissi decided to work on assigments, submissions, grades, Amazon S3 data management, and their associated databases. Seperation of concerns aided in modularization, but the difficulty in decoupling from one another ultimately resulted in the grouping of such tasks. By working on this set, important aspects shared among them permitted a level of abstraction for refined implementations and clearer dicussions with the team.</p>
+                        
+                        <h4>What Worked</h4>
+                        <p>Java implementation of assignments, submissions, grades integrated with sql libraries and Amazon S3/database worked to sucessfully update the database and files simultaneously on s3, but it required more restriction than anticipated due to using Tomcat for processing forms.</p>
+                        
+                        <h4>Features Designed and Implemented</h4>
+                        <ul>
+                            <li>Assignments, Grades, and Submissions
+                                <ul>
+                                    <li>Creation of associated databases and defined such interations.
+                                        <ul>
+                                            <li>Used the PostgreSQL library to execute database functionality.</li>
+                                            <li>Candice formalized the process with a single class handling database operations.</li>
+                                        </ul>
+                                    </li>
+                                    <li>Creation and of Implementation S3 class general enough for all modules to use 
+                                        <ul>
+                                            <li>Used the AWS library to interface with bucket data.</li>
+                                        </ul>
+                                    </li>
+                                    <li>Refresh functions
+                                        <ul>
+                                            <li>Created for each class above to refresh data when it is modified to display accurate content when demanded</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </section>
+                </article>
+            </div>
+        </div>
+        <!-- Footer -->
+        <div class="row" id="footer">
+            <div class="col-md-12">
+                <footer>
+                    <p>Crumb Lords &mdash; 2016-05-16</p>
+                </footer>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
