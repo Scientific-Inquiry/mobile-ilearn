@@ -169,6 +169,7 @@ function jsonClassList(arr) {
 }
 
 /* Function for getting a student's grades. */
+/* Function for getting a student's grades. */
 function jsonGrades(arr) {
     var i;
     var prevClass = arr[0].courseNum + '-' + arr[0].courseSec;
@@ -504,7 +505,9 @@ function androidWebsite() {
 
 /* Function for logging in the user. */
 function androidLogin() {
-    //login = Android.getUser();
-    login = "bwayn052";
+    login = Android.getUser();
+    /* For testing purposes. */
+    //login = "ckent038";   // Instructor user
+    //login = "bwayn052";   // Student user
     return login;
 }
