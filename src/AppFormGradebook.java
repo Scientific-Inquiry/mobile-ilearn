@@ -89,13 +89,19 @@ public class AppFormGradebook extends HttpServlet {
             st.close();
 
             /* Write graded.json */
-            st = connection.prepareStatement("SELECT COUNT(*) FROM Assignments A, Class C WHERE C.cid = A.cid AND A.cid = ?");
+            st = connection.prepareStatement("SELECT C.cid FROM Class C, Assignments A WHERE A.aid = ? AND C.cid = A.cid");
             st.setInt(1, aid);
             rs = st.executeQuery();
             rs.next();
+            int idClass = rs.getInt(1);
+
+            st = connection.prepareStatement("SELECT COUNT(*) FROM Assignments A, Class C WHERE C.cid = ? AND A.cid = C.cid");
+            st.setInt(1, idClass);
+            rs = st.executeQuery();
+            rs.next();
             int nbAssign = rs.getInt(1);
-            st = connection.prepareStatement("SELECT A.* FROM Assignments A, Class C WHERE C.cid = A.cid AND A.cid = ? ORDER BY A.due ASC");
-            st.setInt(1, aid);
+            st = connection.prepareStatement("SELECT A.* FROM Assignments A, Class C WHERE C.cid = ? AND A.cid = C.cid ORDER BY A.due ASC");
+            st.setInt(1, idClass);
             rs = st.executeQuery();
 
             PrintWriter file = new PrintWriter("graded.json");
