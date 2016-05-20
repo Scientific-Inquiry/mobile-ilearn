@@ -100,7 +100,7 @@ public class AppFormGradebook extends HttpServlet {
             rs = st.executeQuery();
             rs.next();
             int nbAssign = rs.getInt(1);
-            st = connection.prepareStatement("SELECT A.* FROM Assignments A, Class C WHERE C.cid = ? AND A.cid = C.cid ORDER BY A.due ASC");
+            st = connection.prepareStatement("SELECT A.*, C.* FROM Assignments A, Class C WHERE C.cid = ? AND A.cid = C.cid ORDER BY A.due ASC");
             st.setInt(1, idClass);
             rs = st.executeQuery();
 
