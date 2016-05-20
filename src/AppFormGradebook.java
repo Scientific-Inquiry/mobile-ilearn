@@ -89,7 +89,7 @@ public class AppFormGradebook extends HttpServlet {
             st.close();
 
             /* Write graded.json */
-            st = connection.prepareStatement("SELECT COUNT(*) FROM Assignments A, Class C WHERE C.cid = A.cid AND A.cid = ? ORDER BY A.due ASC");
+            st = connection.prepareStatement("SELECT COUNT(*) FROM Assignments A, Class C WHERE C.cid = A.cid AND A.cid = ?");
             st.setInt(1, aid);
             rs = st.executeQuery();
             rs.next();
@@ -113,7 +113,7 @@ public class AppFormGradebook extends HttpServlet {
                 rtmp.next();
                 int nb = rtmp.getInt(1);
 
-                tmp = connection.prepareStatement("SELECT G.*, U.unetid FROM Grades G, Usr U WHERE G.aid = ? AND U.uid = G.uid");
+                tmp = connection.prepareStatement("SELECT G.*, U.unetid FROM Grades G, Usr U WHERE G.aid = ? AND U.uid = G.uid ORDER BY U.unetid");
                 tmp.setInt(1, rs.getInt("aid"));
                 rtmp = tmp.executeQuery();
 
