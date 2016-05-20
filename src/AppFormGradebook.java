@@ -113,7 +113,7 @@ public class AppFormGradebook extends HttpServlet {
                 rtmp.next();
                 int nb = rtmp.getInt(1);
 
-                tmp = connection.prepareStatement("SELECT G.*, U.unetid FROM Grades G, Usr U WHERE G.aid = ? AND U.uid = G.uid ORDER BY U.unetid");
+                tmp = connection.prepareStatement("SELECT G.*, U.unetid FROM Grades G, Usr U WHERE G.aid = ? AND U.uid = G.uid ORDER BY U.unetid ASC");
                 tmp.setInt(1, rs.getInt("aid"));
                 rtmp = tmp.executeQuery();
 

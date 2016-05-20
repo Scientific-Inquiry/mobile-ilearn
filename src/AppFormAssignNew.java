@@ -223,7 +223,7 @@ public class AppFormAssignNew extends HttpServlet {
             }
 
             /* Write graded.json */
-            st = connection.prepareStatement("SELECT COUNT(*) FROM Assignments A, Class C WHERE C.cid = ? AND A.cid = C.cid ORDER BY A.due ASC");
+            st = connection.prepareStatement("SELECT COUNT(*) FROM Assignments A, Class C WHERE C.cid = ? AND A.cid = C.cid");
             st.setInt(1, idClass);
             rs = st.executeQuery();
             rs.next();
