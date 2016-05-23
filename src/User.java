@@ -67,15 +67,24 @@ public abstract class User implements UserInterface {
 		try{
 			PrintWriter file = new PrintWriter(filename);
 			file.println("[");
-			for (int i = 0; i < this.getClasses().size(); i++)
+			for (int i = 0; i < classes.size(); i++)
 			{
-                for (int j = 0; j < snames.get(i).size(); j++)
-                {
-                    if (i != this.getClasses().size()-1)
-                        file.println(classes.get(i).toString(rank, snames.get(i).get(j)) + ",");
-                    else
-                        file.println(classes.get(i).toString(rank, snames.get(i).get(j)));
+				if (filename.equals("course.json")) {
+                    for (int j = 0; j < snames.get(i).size(); j++) {
+                        if (i != (classes.size() - 1) || j != (snames.get(i).size() - 1))
+                            file.println(classes.get(i).toString(rank, snames.get(i).get(j)) + ",");
+                        else
+                            file.println(classes.get(i).toString(rank, snames.get(i).get(j)));
+                    }
                 }
+                else
+                {
+                    if(i != this.getClasses().size() - 1)
+                        file.println(classes.get(i).toString(rank, snames.get(i).get(0)) + ",");
+                    else
+                        file.println(classes.get(i).toString(rank, snames.get(i).get(0)));
+                }
+
 			}
 			file.println("]");
 	        file.close();
