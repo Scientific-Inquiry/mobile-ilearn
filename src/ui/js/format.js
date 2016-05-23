@@ -505,9 +505,9 @@ function androidWebsite() {
 
 /* Function for logging in the user. */
 function androidLogin() {
-    login = Android.getUser();
+    //login = Android.getUser();
     /* For testing purposes. */
-    //login = "ckent038";   // Instructor user
+    login = "ckent038";   // Instructor user
     //login = "bwayn052";   // Student user
     return login;
 }
