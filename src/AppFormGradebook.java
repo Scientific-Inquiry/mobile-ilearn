@@ -165,6 +165,89 @@ public class AppFormGradebook extends HttpServlet {
             new AmazonS3Client(credentials).putObject(new PutObjectRequest(bucketName, pathS3, f));
             f.delete();
 
+
+            /* Write grade.json */
+            /*st = connection.prepareStatement("SELECT C.*, A.*, G.* FROM Class C, enrolls_in E, Usr U, Assignments A");
+
+
+
+            st = connection.prepareStatement("SELECT C.cid FROM Class C, Assignments A WHERE A.aid = ? AND C.cid = A.cid");
+            st.setInt(1, aid);
+            rs = st.executeQuery();
+            rs.next();
+            idClass = rs.getInt(1);
+
+            st = connection.prepareStatement("SELECT COUNT(*) FROM Assignments A, Class C WHERE C.cid = ? AND A.cid = C.cid");
+            st.setInt(1, idClass);
+            rs = st.executeQuery();
+            rs.next();
+            nbAssign = rs.getInt(1);
+            st = connection.prepareStatement("SELECT A.*, C.* FROM Assignments A, Class C WHERE C.cid = ? AND A.cid = C.cid ORDER BY A.due ASC");
+            st.setInt(1, idClass);
+            rs = st.executeQuery();
+
+            file = new PrintWriter("graded.json");
+            file.println("[");
+
+            cptAssign = 1;
+
+            while (rs.next())
+            {
+                int cpt = 1;
+
+                PreparedStatement tmp = connection.prepareStatement("SELECT COUNT(*) FROM Grades G, Usr U WHERE G.aid = ? AND U.uid = G.uid");
+                tmp.setInt(1, rs.getInt("aid"));
+                ResultSet rtmp = tmp.executeQuery();
+                rtmp.next();
+                int nb = rtmp.getInt(1);
+
+                tmp = connection.prepareStatement("SELECT G.*, U.unetid FROM Grades G, Usr U WHERE G.aid = ? AND U.uid = G.uid ORDER BY U.unetid ASC");
+                tmp.setInt(1, rs.getInt("aid"));
+                rtmp = tmp.executeQuery();
+
+                while (rtmp.next())
+                {
+                    String late;
+                    if (rtmp.getBoolean("late") == false)
+                        late = "false";
+                    else
+                        late = "true";
+
+                    if (cpt < nb || cptAssign < nbAssign-1)
+                        file.println("{" + "\"grade\":" + "\"" + rtmp.getInt("gpts") + "\""
+                                + ", " + "\"total\":" + "\"" + rs.getInt("apts") + "\"" + ", " + "\"courseNum\":" + "\"" + rs.getString("cnum").trim() + "\""
+                                + ", " + "\"courseSec\":" + "\"" + rs.getString("csection").trim() + "\""
+                                + ", " + "\"title\":" + "\"" + rs.getString("aname").trim() + "\""
+                                + ", "+ "\"slogin\":" + "\"" + rtmp.getString("unetid").trim() + "\""
+                                + ", " + "\"late\":" + "\"" + late + "\""
+                                + ", " + "\"aid\":" + "\"" + rs.getInt("aid") + "\"" + "},");
+                    else
+                        file.println("{" + "\"grade\":" + "\"" + rtmp.getInt("gpts") + "\""
+                                + ", " + "\"total\":" + "\"" + rs.getInt("apts") + "\"" + ", " + "\"courseNum\":" + "\"" + rs.getString("cnum").trim() + "\""
+                                + ", " + "\"courseSec\":" + "\"" + rs.getString("csection").trim() + "\""
+                                + ", " + "\"title\":" + "\"" + rs.getString("aname").trim() + "\""
+                                + ", "+ "\"slogin\":" + "\"" + rtmp.getString("unetid").trim() + "\""
+                                + ", " + "\"late\":" + "\"" + late + "\""
+                                + ", " + "\"aid\":" + "\"" + rs.getInt("aid") + "\"" + "}");
+                    cpt++;
+                }
+                cptAssign++;
+            }
+            file.println("]");
+            file.close();
+            System.out.println("Reached file.close()!");
+            f = new File("graded.json");
+            System.out.println("Wrote graded.json!");
+
+            *//* Send grade.json to S3 *//*
+            pathS3 = "data/users/" + login + "/grade.json";
+            bucketName = "milearn";
+
+            new AmazonS3Client(credentials).putObject(new PutObjectRequest(bucketName, pathS3, f));
+            f.delete();
+*/
+
+
             /* Redirect to the static website */
             String site = new String("http://milearn.s3-website-us-west-2.amazonaws.com/");
             response.setStatus(response.SC_MOVED_TEMPORARILY);
@@ -207,7 +290,7 @@ public class AppFormGradebook extends HttpServlet {
                 + ", " + "\"aid\":" + "\"" + aid + "\"" + "}";
     }
 
-    /*public static ArrayList<ArrayList<Vector>> fill_snames(Connection connection, int tid, String netid) {
+    public static ArrayList<ArrayList<Vector>> fill_snames(Connection connection, int tid, String netid) {
         ArrayList<ArrayList<Vector>> snames = new ArrayList<ArrayList<Vector>>();
         try{
             PreparedStatement st = connection.prepareStatement("SELECT C.cid, C.cname, C.csection, C.cnum, C.cquarter, C.ctype FROM Class C, teaches T, Usr U WHERE U.uid = ? AND T.uid = U.uid AND C.cid = T.cid ORDER BY cnum ASC, csection ASC");
@@ -378,10 +461,10 @@ public class AppFormGradebook extends HttpServlet {
         try
         {
             System.out.println("Unetid: " + unetid);
-        *//*
-        PreparedStatement st = s3.connection.prepareStatement("SELECT A.aname, A.description, A.due, A.apts " +
+
+        PreparedStatement tmp = connection.prepareStatement("SELECT A.aname, A.description, A.due, A.apts " +
                 "FROM Assignments A, Usr U, enrolls_in E WHERE U.unetid = ? AND E.uid = U.uid AND A.cid = E.cid");
-        *//*
+
             PreparedStatement st = connection.prepareStatement("SELECT U.uid FROM Usr U WHERE U.unetid = ?");
             st.setString(1, unetid);
             ResultSet rs = st.executeQuery();
@@ -430,7 +513,7 @@ public class AppFormGradebook extends HttpServlet {
             return;
         }
     }
-*/
+
     public static boolean isLate(Connection connection, String netid, int aid){
         try {
             PreparedStatement st = connection.prepareStatement("SELECT uid FROM Usr WHERE unetid = ?");
@@ -469,7 +552,7 @@ public class AppFormGradebook extends HttpServlet {
         return false;
     }
 
-  /*  public static int get_course_index(Connection connection, String netid, String courseName){
+    public static int get_course_index(Connection connection, String netid, String courseName){
         ArrayList cids = new ArrayList();
         try {
             PreparedStatement st = connection.prepareStatement("SELECT U.uid FROM Usr U WHERE U.unetid = ?");
@@ -521,6 +604,6 @@ public class AppFormGradebook extends HttpServlet {
             return -1;
         }
 
-    }*/
+    }
 
 }
