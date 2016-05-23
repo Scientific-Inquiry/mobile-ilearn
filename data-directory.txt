@@ -57,7 +57,7 @@ Files:
         courseSec (01)
     course.json (course information) [courses they are teaching and students]
         courseName (Introduction to Software Engineering)
-        courseNumber (CS180)
+        courseNum (CS180)
         quarter (S16)
         sname (John Doe)
         slogin (jdoe035)
