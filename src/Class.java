@@ -5,8 +5,8 @@ public abstract class Class implements ClassInterface
 	public String toString(Rank rank, Vector snames)
 	{
 		if (rank.toString().equals("STUDENT"))
-		    return "{\"courseName\":" + "\"" + this.getName() + "\", " + "\"courseNumber\":\"" + this.getNumber() +
-				"\", \"courseSection\":\"" + this.getSection() + "\", \"quarter\":\"" + this.getQuarter() + 
+		    return "{\"courseName\":" + "\"" + this.getName() + "\", " + "\"courseNum\":\"" + this.getNumber() +
+				"\", \"courseSec\":\"" + this.getSection() + "\", \"quarter\":\"" + this.getQuarter() +
 				"\", \"instructor\":\"" + this.getFaculty() + "\"}";
         else
         {
@@ -14,7 +14,7 @@ public abstract class Class implements ClassInterface
             String firstName = name[0];
             String lastName = name[1];
 
-            return "{\"courseName\":" + "\"" + this.getName() + "\", " + "\"courseNumber\":\"" + this.getNumber()
+            return "{\"courseName\":" + "\"" + this.getName() + "\", " + "\"courseNum\":\"" + this.getNumber()
                     + "\", \"quarter\":\"" + this.getQuarter() + "\", \"sname\":\"" + lastName + ", "
                     + firstName + "\", \"slogin\":\"" + snames.get(1) + "\"}";
         }
