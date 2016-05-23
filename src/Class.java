@@ -15,7 +15,7 @@ public abstract class Class implements ClassInterface
             String lastName = name[1];
 
             return "{\"courseName\":" + "\"" + this.getName() + "\", " + "\"courseNum\":\"" + this.getNumber()
-                    + "\", \"quarter\":\"" + this.getQuarter() + "\", \"sname\":\"" + lastName + ", "
+                    + "\", \"courseSec\":\"" + this.getSection() + "\", \"quarter\":\"" + this.getQuarter() + "\", \"sname\":\"" + lastName + ", "
                     + firstName + "\", \"slogin\":\"" + snames.get(1) + "\"}";
         }
 	}
