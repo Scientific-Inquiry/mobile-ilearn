@@ -213,6 +213,13 @@ public class AppFormGradebook extends HttpServlet {
                                 + ", " + "\"aid\":" + "\"" + rs.getInt("aid") + "\"" + "}");
                     cpt++;
                 }
+                file.println("]");
+                file.close();
+                System.out.println("Reached file.close()!");
+                f = new File("grade.json");
+                System.out.println("Wrote graded.json!");
+                System.out.println(f);
+
             }
 
             /*st = connection.prepareStatement("SELECT C.*, A.*, G.* FROM Class C, enrolls_in E, Usr U, Assignments A");
