@@ -198,7 +198,7 @@ public class AppFormGradebook extends HttpServlet {
                     else
                         late = "true";
 
-                    if (cpt < cptAssign - 1)
+                    if (cpt <= cptAssign - 1)
                         file.println("{" + "\"grade\":" + "\"" + rs.getInt("gpts") + "\""
                                 + ", " + "\"total\":" + "\"" + rs.getInt("apts") + "\"" + ", " + "\"courseNum\":" + "\"" + rs.getString("cnum").trim() + "\""
                                 + ", " + "\"courseSec\":" + "\"" + rs.getString("csection").trim() + "\""
