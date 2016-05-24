@@ -168,7 +168,7 @@ public class AppFormGradebook extends HttpServlet {
             rs = st.executeQuery();
 
             while (rs.next())
-                studentNames.add(rs.getString("unetid"));
+                studentNames.add(rs.getString("unetid").trim());
 
             // For each student, get all the classes
             // For each class, get all assignments
