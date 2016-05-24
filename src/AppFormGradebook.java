@@ -167,6 +167,17 @@ public class AppFormGradebook extends HttpServlet {
 
 
             /* Write grade.json */
+            // Get all the students that are in at least one of the class of the teacher and make an array of it
+            ArrayList<String> studentNames = new ArrayList<String>();
+            st = connection.prepareStatement("SELECT U.* FROM Usr U, enrolls_in E, Class C, teaches T, Usr U2 WHERE U2.unetid = ? AND T.uid = U2.uid AND E.cid = T.cid");
+            st.setString(1, login);
+            rs = st.executeQuery();
+
+            while (rs.next())
+                studentNames.add(rs.getString("unetid"));
+
+            System.out.println(studentNames);
+
             /*st = connection.prepareStatement("SELECT C.*, A.*, G.* FROM Class C, enrolls_in E, Usr U, Assignments A");
 
 
@@ -462,8 +473,8 @@ public class AppFormGradebook extends HttpServlet {
         {
             System.out.println("Unetid: " + unetid);
 
-        PreparedStatement tmp = connection.prepareStatement("SELECT A.aname, A.description, A.due, A.apts " +
-                "FROM Assignments A, Usr U, enrolls_in E WHERE U.unetid = ? AND E.uid = U.uid AND A.cid = E.cid");
+            PreparedStatement tmp = connection.prepareStatement("SELECT A.aname, A.description, A.due, A.apts " +
+                    "FROM Assignments A, Usr U, enrolls_in E WHERE U.unetid = ? AND E.uid = U.uid AND A.cid = E.cid");
 
             PreparedStatement st = connection.prepareStatement("SELECT U.uid FROM Usr U WHERE U.unetid = ?");
             st.setString(1, unetid);
