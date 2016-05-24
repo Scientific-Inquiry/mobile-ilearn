@@ -177,7 +177,7 @@ public class AppFormGradebook extends HttpServlet {
                 studentNames.add(rs.getString("unetid"));
 
             for (int i = 0; i < studentNames.size(); i++)
-                System.out.println(studentNames);
+                System.out.println(studentNames.get(i));
 
             /*st = connection.prepareStatement("SELECT C.*, A.*, G.* FROM Class C, enrolls_in E, Usr U, Assignments A");
 
