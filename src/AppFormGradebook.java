@@ -169,14 +169,15 @@ public class AppFormGradebook extends HttpServlet {
             /* Write grade.json */
             // Get all the students that are in at least one of the class of the teacher and make an array of it
             ArrayList<String> studentNames = new ArrayList<String>();
-            st = connection.prepareStatement("SELECT U.* FROM Usr U, enrolls_in E, Class C, teaches T, Usr U2 WHERE U2.unetid = ? AND T.uid = U2.uid AND E.cid = T.cid");
+            st = connection.prepareStatement("SELECT DISTINCT U.* FROM Usr U, enrolls_in E, Class C, teaches T, Usr U2 WHERE U2.unetid = ? AND T.uid = U2.uid AND E.cid = T.cid ORDER BY U.unetid ASC");
             st.setString(1, login);
             rs = st.executeQuery();
 
             while (rs.next())
                 studentNames.add(rs.getString("unetid"));
 
-            System.out.println(studentNames);
+            for (int i = 0; i < studentNames.size(); i++)
+                System.out.println(studentNames);
 
             /*st = connection.prepareStatement("SELECT C.*, A.*, G.* FROM Class C, enrolls_in E, Usr U, Assignments A");
 
