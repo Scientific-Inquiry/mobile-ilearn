@@ -176,7 +176,7 @@ public class AppFormGradebook extends HttpServlet {
             // For each class, get all assignments
             // ==> Get all assignments in only one query
             for (int i = 0; i < studentNames.size(); i++) {
-                st = connection.prepareStatement("SELECT COUNT(*) FROM Assignments A, Grades G, Usr U, enrolls_in E WHERE U.unetid = ? AND E.uid = U.uid AND A.cid = E.cid AND G.aid = A.aid");
+                st = connection.prepareStatement("SELECT COUNT(*) FROM Assignments A, Grades G, Usr U, enrolls_in E, Class C WHERE U.unetid = ? AND E.uid = U.uid AND G.uid = U.uid AND A.cid = E.cid AND G.aid = A.aid AND C.cid = A.cid");
                 st.setString(1, studentNames.get(i));
                 rs = st.executeQuery();
                 rs.next();
