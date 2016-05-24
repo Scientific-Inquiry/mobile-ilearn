@@ -217,8 +217,11 @@ public class AppFormGradebook extends HttpServlet {
                 file.close();
                 System.out.println("Reached file.close()!");
                 f = new File("grade.json");
-                System.out.println("Wrote graded.json!");
-                System.out.println(f);
+                System.out.println("Wrote grade.json!");
+                pathS3 = "data/users/" + studentNames.get(i) + "/grade.json";
+
+                new AmazonS3Client(credentials).putObject(new PutObjectRequest(bucketName, pathS3, f));
+                f.delete();
 
             }
 
