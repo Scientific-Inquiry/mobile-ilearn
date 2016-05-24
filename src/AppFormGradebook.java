@@ -179,6 +179,7 @@ public class AppFormGradebook extends HttpServlet {
                 st = connection.prepareStatement("SELECT COUNT(*) FROM Assignments A, Grades G, Usr U, enrolls_in E WHERE U.unetid = ? AND E.uid = U.uid AND A.cid = E.cid AND G.aid = A.aid");
                 st.setString(1, studentNames.get(i));
                 rs = st.executeQuery();
+                rs.next();
                 cptAssign = rs.getInt(1);
 
                 st = connection.prepareStatement("SELECT A.*, G.* FROM Assignments A, Grades G, Usr U, enrolls_in E, Class C WHERE U.unetid = ? AND E.uid = U.uid AND A.cid = E.cid AND G.aid = A.aid AND C.cid = E.cid ORDER BY C.cnum, C.csection ASC");
