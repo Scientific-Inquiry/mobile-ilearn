@@ -189,8 +189,9 @@ public class AppFormGradebook extends HttpServlet {
                 file = new PrintWriter("grade.json");
                 file.println("[");
 
+                int cpt = 1;
+
                 while (rs.next()) {
-                    int cpt = 1;
                     String late;
                     if (rs.getBoolean("late") == false)
                         late = "false";
